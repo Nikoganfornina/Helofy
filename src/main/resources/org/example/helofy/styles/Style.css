@@ -1,0 +1,148 @@
+.root {
+    -fx-background-color: #0A0A0A;
+}
+
+/* Header Styles */
+.header {
+    -fx-background-color: #1A1A1A;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+}
+
+.logo {
+    -fx-text-fill: #00B4D8; /* Azul Solán de Cabras */
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.search-container {
+    -fx-background-color: #2D2D2D;
+    -fx-background-radius: 20;
+    -fx-padding: 5 15 5 15;
+}
+
+.search-field {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: #666;
+}
+
+.search-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #00B4D8;
+}
+
+/* Side Menu Styles */
+.side-menu {
+    -fx-background-color: #1A1A1A;
+    -fx-spacing: 15;
+    -fx-padding: 20 15 20 15;
+}
+
+.menu-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 16;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10 20;
+}
+
+.menu-button:hover {
+    -fx-background-color: #00B4D8;
+    -fx-text-fill: #000000;
+}
+
+.playlist-button {
+    -fx-background-color: #2D2D2D;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 5;
+}
+
+.playlist-button:hover {
+    -fx-background-color: #00B4D8;
+}
+
+.separator {
+    -fx-background-color: #333;
+}
+
+/* Content Area */
+.content-area {
+    -fx-background-color: #0A0A0A;
+}
+
+/* Footer Styles */
+.footer {
+    -fx-background-color: #1A1A1A;
+    -fx-padding: 15;
+}
+
+.album-art {
+    -fx-fit-width: 50;
+    -fx-fit-height: 50;
+    -fx-background-radius: 5;
+}
+
+.song-title {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 14;
+}
+
+.player-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #00B4D8;
+    -fx-font-size: 24;
+}
+
+.player-button:hover {
+    -fx-text-fill: #FFFFFF;
+}
+
+.progress-slider .track {
+    -fx-background-color: #333;
+}
+
+.progress-slider .thumb {
+    -fx-background-color: #00B4D8;
+}
+
+.volume-slider .track {
+    -fx-pref-height: 5;
+    -fx-background-color: #333;
+}
+
+.volume-slider .thumb {
+    -fx-background-color: #00B4D8;
+}
+.playlist-header {
+    -fx-padding: 20px;
+    -fx-background-color: #1a1a1a;
+}
+
+.playlist-title {
+    -fx-text-fill: #00aeef;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.playlist-description {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 14px;
+    -fx-wrap-text: true;
+}
+
+.song-list {
+    -fx-background-color: transparent;
+}
+
+.song-list .list-cell {
+    -fx-background-color: #2a2a2a;
+    -fx-text-fill: white;
+    -fx-padding: 15px;
+    -fx-border-color: #1a1a1a;
+}
+
+.song-list .list-cell:hover {
+    -fx-background-color: #00aeef;
+    -fx-text-fill: black;
+}

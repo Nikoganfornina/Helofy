@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.helofy.controllers.PlaylistViewController"
+      spacing="20"
+      styleClass="playlist-view">
+
+    <HBox spacing="20" styleClass="playlist-header">
+        <ImageView fx:id="coverImage" fitWidth="200" fitHeight="200"/>
+        <VBox spacing="10">
+            <Label fx:id="playlistName" styleClass="playlist-title"/>
+            <Label fx:id="playlistDescription" styleClass="playlist-description"/>
+        </VBox>
+    </HBox>
+
+    <ListView fx:id="songsListView" styleClass="song-list"/>
+</VBox>

@@ -1,0 +1,60 @@
+package org.example.helofy.utils;
+
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import org.example.helofy.model.Song;
+import java.io.File;
+import java.util.*;
+
+public class MusicPlayer {
+    private MediaPlayer mediaPlayer;
+    private List<Song> playlist;
+    private int currentIndex = -1;
+    private Runnable onSongChanged;
+
+    public void playPlaylist(List<Song> playlist) {
+        this.playlist = new ArrayList<>(playlist);
+        playSong(0);
+    }
+
+    public void playSong(int index) {
+        // Verificación crítica para evitar nulls
+        if (playlist == null || index < 0 || index >= playlist.size()) return;
+
+        try {
+            stop();
+            currentIndex = index;
+            Song song = playlist.get(index);
+
+            Media media = new Media(new File(song.getFilePath()).toURI().toString());
+            mediaPlayer = new MediaPlayer(media);
+
+            mediaPlayer.setOnReady(() -> {
+                mediaPlayer.play();
+                if (onSongChanged != null) onSongChanged.run();
+            });
+
+            mediaPlayer.setOnEndOfMedia(this::handleSongEnd);
+
+        } catch (Exception e) {
+            System.err.println("Error cargando canción: " + e.getMessage());
+        }
+    }
+
+    private void handleSongEnd() {
+        if (currentIndex < playlist.size() - 1) {
+            playSong(currentIndex + 1);
+        }
+    }
+
+    public void stop() {
+        if (mediaPlayer != null) {
+            mediaPlayer.stop();
+            mediaPlayer.dispose();
+        }
+    }
+
+    public void setOnSongChanged(Runnable callback) {
+        this.onSongChanged = callback;
+    }
+}
