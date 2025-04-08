@@ -1,0 +1,12 @@
+{
+  "playlist": {
+    "name": "PabloMas_Dj",
+    "description": "Remixes de Pablo Mas y colaboradores",
+    "coverImage": "portada.jpg",
+    "songs": [
+      "songs/Don Miguelo x El Mayor x Chimbala - Without Me (Pablo Mas & Juanjo García Remix).mp3",
+      "songs/Lirico En La Casa x Pablo Mas x Juanjo García - CHAPA CHAPA (Remix).mp3",
+      "songs/Pablo Mas x Juanjo Garcia - Deep In Love (Remix).mp3"
+    ]
+  }
+}
