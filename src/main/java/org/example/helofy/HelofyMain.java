@@ -3,19 +3,24 @@ package org.example.helofy;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import org.example.helofy.utils.ImageLoader;
 
 public class HelofyMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // Cargar el FXML para la interfaz
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/helofy/HelofyMain.fxml"));
         Parent root = loader.load();
 
-        // Mostrar la ventana sin especificar el tamaño, ya que lo toma del FXML
+        // Configurar ícono de la aplicación
+        primaryStage.getIcons().add(ImageLoader.loadAppLogo());
         primaryStage.setTitle("Helofy Music Player");
-        primaryStage.setScene(new javafx.scene.Scene(root));
+
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
         primaryStage.show();
     }
 

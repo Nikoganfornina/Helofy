@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import org.example.helofy.model.Song;
+import org.example.helofy.utils.ImageLoader;
 import org.example.helofy.utils.MusicPlayer;
 import org.example.helofy.model.Playlist;
 import org.example.helofy.utils.Rounded;
@@ -27,6 +28,7 @@ public class HelofyMainController {
     @FXML private Label songArtist;
     @FXML private ImageView songImage;
     @FXML private Button shuffleButton;
+    @FXML private ImageView headerImage;
 
     private final MusicPlayer musicPlayer = new MusicPlayer();
     private boolean isDraggingProgress = false;
@@ -36,6 +38,9 @@ public class HelofyMainController {
         configureMusicPlayer();
         setupControls();
         setupVolumePersistente();
+
+        headerImage.setImage(ImageLoader.loadAppLogo2());
+        Rounded.applyHeaderImageRoundness(headerImage); // Aplicar redondeado
     }
 
     private void configureMusicPlayer() {

@@ -23,4 +23,22 @@ public class Rounded {
             }
         }
     }
+    public static void applyHeaderImageRoundness(ImageView headerImageView) {
+        double borderRadius = 15.0; // Ajusta este valor según necesites
+
+        headerImageView.imageProperty().addListener((obs, oldImg, newImg) -> {
+            if (newImg != null) {
+                // Usar las dimensiones del ImageView o de la imagen
+                double width = headerImageView.getFitWidth() > 0 ?
+                        headerImageView.getFitWidth() : newImg.getWidth();
+                double height = headerImageView.getFitHeight() > 0 ?
+                        headerImageView.getFitHeight() : newImg.getHeight();
+
+                Rectangle clip = new Rectangle(width, height);
+                clip.setArcWidth(borderRadius);
+                clip.setArcHeight(borderRadius);
+                headerImageView.setClip(clip);
+            }
+        });
+    }
 }

@@ -1,0 +1,15 @@
+package org.example.helofy.utils;
+
+import javafx.scene.image.Image;
+
+public class ImageLoader {
+    private static final String LOGO_PATH = "/org/example/helofy/styles/logoapp.png";
+
+    public static Image loadAppLogo() {
+        return new Image(ImageLoader.class.getResourceAsStream(LOGO_PATH));
+    }
+
+    public static String getLogoPath() {
+        return LOGO_PATH;
+    }
+}
