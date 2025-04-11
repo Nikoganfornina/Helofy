@@ -99,12 +99,12 @@
 }
 
 .progress-slider .track {
-    -fx-background-color: #333;
-}
+ -fx-background-color: #404040; /* Color de fondo de la barra */
+    -fx-background-radius: 5px;}
 
 .progress-slider .thumb {
     -fx-background-color: #00B4D8;
-}
+}  
 
 .volume-slider .track {
     -fx-pref-height: 5;

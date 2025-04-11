@@ -2,6 +2,7 @@ package org.example.helofy.utils;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.media.Media;
@@ -9,16 +10,12 @@ import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import org.example.helofy.model.Playlist;
 import org.example.helofy.model.Song;
-
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class MusicPlayer {
-
-    private Playlist currentPlaylist;  // Nuevo campo
+    private Playlist currentPlaylist;
     private MediaPlayer mediaPlayer;
     private List<Song> playlist = new ArrayList<>();
     private int currentIndex = -1;
@@ -32,40 +29,41 @@ public class MusicPlayer {
 
     public void playSong(Song song) {
         int index = playlist.indexOf(song);
-        if (index != -1) {
-            currentIndex = index;
-            internalPlaySong();
-        }
+        if (index != -1) playSong(index);
+    }
+
+    public void playSong(int index) {
+        if (index < 0 || index >= playlist.size()) return;
+        stop();
+        currentIndex = index;
+        internalPlaySong();
     }
 
     private void internalPlaySong() {
-        stop();
-
         try {
             Song song = playlist.get(currentIndex);
             File file = new File(song.getFilePath());
+            if (!file.exists()) throw new Exception("Archivo no existe: " + song.getFilePath());
 
             Media media = new Media(file.toURI().toString());
             mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.setVolume(lastVolume);
 
             mediaPlayer.setOnReady(() -> {
                 mediaPlayer.play();
                 playing.set(true);
                 startProgressTracking();
-                setVolume(lastVolume);
-                if (onSongChanged != null) onSongChanged.accept(song);
+                if (onSongChanged != null) Platform.runLater(() -> onSongChanged.accept(song));
             });
 
-            mediaPlayer.setOnEndOfMedia(this::handleSongEnd);
-        } catch (Exception e) {
-            System.err.println("Error cargando canción: " + e.getMessage());
-        }
-    }
+            mediaPlayer.setOnEndOfMedia(() -> {
+                if (onSongFinished != null) Platform.runLater(onSongFinished);
+                Platform.runLater(this::nextSong);
+            });
 
-    public void playSong(int index) {
-        if (index >= 0 && index < playlist.size()) {
-            currentIndex = index;
-            internalPlaySong();
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+            if (onSongChanged != null) Platform.runLater(() -> onSongChanged.accept(null));
         }
     }
 
@@ -92,128 +90,91 @@ public class MusicPlayer {
         }
     }
 
-    public void previousSong() {
-        if (shuffle.get()) {
-            playRandomSong();
-        } else if (currentIndex > 0) {
-            playSong(currentIndex - 1);
-        }
+    public void nextSong() {
+        if (shuffle.get()) playRandomSong();
+        else playSong((currentIndex < playlist.size() - 1) ? currentIndex + 1 : 0);
     }
 
-    public void nextSong() {
-        if (shuffle.get()) {
-            playRandomSong();
-        } else if (currentIndex < playlist.size() - 1) {
-            playSong(currentIndex + 1);
-        } else {
-            playSong(0);
-        }
+    public void previousSong() {
+        if (shuffle.get()) playRandomSong();
+        else if (currentIndex > 0) playSong(currentIndex - 1);
     }
 
     private void playRandomSong() {
-        if (!playlist.isEmpty()) {
-            List<Integer> availableIndices = new ArrayList<>();
-            for (int i = 0; i < playlist.size(); i++) {
-                if (i != currentIndex) availableIndices.add(i);
-            }
-            if (!availableIndices.isEmpty()) {
-                int newIndex = availableIndices.get((int) (Math.random() * availableIndices.size()));
-                playSong(newIndex);
-            }
-        }
+        List<Integer> indices = new ArrayList<>();
+        for (int i = 0; i < playlist.size(); i++)
+            if (i != currentIndex) indices.add(i);
+
+        if (!indices.isEmpty())
+            playSong(indices.get(new Random().nextInt(indices.size())));
     }
 
     public void toggleShuffle() {
         shuffle.set(!shuffle.get());
-        if (shuffle.get()) Collections.shuffle(playlist);
-    }
-
-    public Song getCurrentSong() {
-        return (currentIndex >= 0 && currentIndex < playlist.size()) ?
-                playlist.get(currentIndex) : null;
-    }
-
-    public boolean isPlaying() {
-        return playing.get();
-    }
-
-    public void seek(double position) {
-        if (mediaPlayer != null && position >= 0 && position <= 1) {
-            mediaPlayer.seek(Duration.seconds(position * mediaPlayer.getMedia().getDuration().toSeconds()));
+        if (shuffle.get()) {
+            Song current = getCurrentSong();
+            Collections.shuffle(playlist);
+            currentIndex = playlist.indexOf(current);
         }
-    }
-
-    public double getVolume() {
-        return mediaPlayer != null ? mediaPlayer.getVolume() : lastVolume;
-    }
-
-    public void setVolume(double volume) {
-        lastVolume = volume;
-        if (mediaPlayer != null) mediaPlayer.setVolume(volume);
     }
 
     private void startProgressTracking() {
         stopProgressTracking();
-        progressUpdater = new Timeline(
-                new KeyFrame(Duration.seconds(0.1), e -> updateProgress())
-        );
+        progressUpdater = new Timeline(new KeyFrame(Duration.seconds(0.1), e -> updateProgress()));
         progressUpdater.setCycleCount(Timeline.INDEFINITE);
         progressUpdater.play();
+    }
+
+    private void updateProgress() {
+        if (mediaPlayer != null && onProgressChanged != null) {
+            double progress = mediaPlayer.getCurrentTime().toSeconds() / mediaPlayer.getMedia().getDuration().toSeconds();
+            Platform.runLater(() -> onProgressChanged.accept(progress));
+        }
     }
 
     private void stopProgressTracking() {
         if (progressUpdater != null) progressUpdater.stop();
     }
 
-    private void updateProgress() {
-        if (mediaPlayer != null && onProgressChanged != null) {
-            double progress = mediaPlayer.getCurrentTime().toSeconds() /
-                    mediaPlayer.getMedia().getDuration().toSeconds();
-            onProgressChanged.accept(progress);
-        }
-    }
-
-    private void handleSongEnd() {
-        if (onSongFinished != null) onSongFinished.run();
-        nextSong();
-    }
-
-    // Setters para listeners
-    public void setOnProgressChanged(Consumer<Double> listener) {
-        this.onProgressChanged = listener;
-    }
-
-    public void setOnSongChanged(Consumer<Song> listener) {
-        this.onSongChanged = listener;
-    }
-
-    public void setOnSongFinished(Runnable listener) {
-        this.onSongFinished = listener;
-    }
-
-    public void setOnPlayingStatusChanged(Consumer<Boolean> listener) {
-        playing.addListener((obs, oldVal, newVal) -> listener.accept(newVal));
-    }
-
-    public void setPlaylist(Playlist playlist) {
-        this.currentPlaylist = playlist;
-        this.playlist = playlist.getSongs();
-        this.currentIndex = -1;
+    public Song getCurrentSong() {
+        return (currentIndex >= 0 && currentIndex < playlist.size()) ? playlist.get(currentIndex) : null;
     }
 
     public String getCurrentPlaylistName() {
         return currentPlaylist != null ? currentPlaylist.getName() : "Desconocido";
     }
 
-    public boolean isShuffle() {
-        return shuffle.get();
+    public void setPlaylist(Playlist playlist) {
+        this.currentPlaylist = playlist;
+        this.playlist = new ArrayList<>(playlist.getSongs());
+        this.currentIndex = -1;
+        if (shuffle.get()) Collections.shuffle(this.playlist);
     }
 
-    public BooleanProperty shuffleProperty() {
-        return shuffle;
+    // Setters para listeners
+    public void setOnProgressChanged(Consumer<Double> listener) { this.onProgressChanged = listener; }
+    public void setOnSongChanged(Consumer<Song> listener) { this.onSongChanged = listener; }
+    public void setOnSongFinished(Runnable listener) { this.onSongFinished = listener; }
+    public void setOnPlayingStatusChanged(Consumer<Boolean> listener) {
+        playing.addListener((obs, oldVal, newVal) -> listener.accept(newVal));
     }
 
-    public BooleanProperty playingProperty() {
-        return playing;
+    // ======================== SEEK ========================
+    public void seek(double position) {
+        if (mediaPlayer != null && position >= 0 && position <= 1) {
+            mediaPlayer.seek(javafx.util.Duration.seconds(
+                    position * mediaPlayer.getMedia().getDuration().toSeconds()
+            ));
+        }
     }
+
+
+    // Getters
+    public double getVolume() { return mediaPlayer != null ? mediaPlayer.getVolume() : lastVolume; }
+    public void setVolume(double volume) {
+        lastVolume = volume;
+        if (mediaPlayer != null) mediaPlayer.setVolume(volume);
+    }
+    public boolean isPlaying() { return playing.get(); }
+    public boolean isShuffle() { return shuffle.get(); }
 }

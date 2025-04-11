@@ -12,12 +12,12 @@ import org.example.helofy.model.Song;
 import org.example.helofy.utils.MusicPlayer;
 import org.example.helofy.model.Playlist;
 import org.example.helofy.utils.Rounded;
-
 import java.io.IOException;
 import java.util.Objects;
 
 public class HelofyMainController {
 
+    // Componentes FXML
     @FXML private StackPane contentArea;
     @FXML private Slider volumeSlider;
     @FXML private Button playPauseButton;
@@ -40,10 +40,40 @@ public class HelofyMainController {
     }
 
     private void configureMusicPlayer() {
-        musicPlayer.setOnSongChanged(this::handleSongChanged);
-        musicPlayer.setOnProgressChanged(this::updateProgress);
-        musicPlayer.setOnSongFinished(this::handleSongFinished);
-        musicPlayer.setOnPlayingStatusChanged(this::updatePlayButton);
+        // Listener para cambios de canción
+        musicPlayer.setOnSongChanged(song -> {
+            Platform.runLater(() -> {
+                if (song != null) {
+                    songName.setText(song.getTitle());
+                    songArtist.setText(musicPlayer.getCurrentPlaylistName());
+                    loadSongCover(song);
+                    selectCurrentSongInListView(song);
+                } else {
+                    resetSongInfo();
+                }
+            });
+        });
+
+        // Listener para actualizar la barra de progreso
+        musicPlayer.setOnProgressChanged(progress -> {
+            Platform.runLater(() -> {
+                if (!isDraggingProgress) {
+                    progressSlider.setValue(progress * 100);
+                }
+            });
+        });
+
+        // Listener para cuando termina una canción
+        musicPlayer.setOnSongFinished(() -> {
+            Platform.runLater(() -> musicPlayer.nextSong());
+        });
+
+        // Listener para el estado de reproducción (play/pause)
+        musicPlayer.setOnPlayingStatusChanged(isPlaying -> {
+            Platform.runLater(() -> {
+                playPauseButton.setText(isPlaying ? "⏸" : "▶");
+            });
+        });
     }
 
     private void setupControls() {
@@ -67,12 +97,7 @@ public class HelofyMainController {
 
     private void setupVolumePersistente() {
         volumeSlider.setValue(musicPlayer.getVolume());
-        if (songImage != null) {
-            Rounded rounded = new Rounded(songImage);
-            songImage.imageProperty().addListener((obs, oldImg, newImg) ->
-                    rounded.applyRoundedClip(10)
-            );
-        }
+        new Rounded(songImage).applyRoundedClip(10);
     }
 
     public void setCenterContent(String fxmlPath) {
@@ -100,17 +125,7 @@ public class HelofyMainController {
             controller.configurarPlaylist(playlist, musicPlayer);
 
             contentArea.getChildren().setAll(view);
-
-            // Corrección clave: pasar el objeto Playlist completo al reproductor
             musicPlayer.setPlaylist(playlist);
-
-            // Forzar actualización de la UI con la primera canción si existe
-            if (!playlist.getSongs().isEmpty()) {
-                Song primeraCancion = playlist.getSongs().get(0);
-                songName.setText(primeraCancion.getTitle());
-                songArtist.setText(playlist.getName());
-            }
-
             updatePlayButton(musicPlayer.isPlaying());
 
         } catch (IOException e) {
@@ -121,30 +136,20 @@ public class HelofyMainController {
     @FXML
     private void togglePlayback() {
         if (musicPlayer.getCurrentSong() == null) return;
-
-        if (musicPlayer.isPlaying()) {
-            musicPlayer.pause();
-        } else {
-            musicPlayer.resume();
-        }
+        if (musicPlayer.isPlaying()) musicPlayer.pause();
+        else musicPlayer.resume();
     }
 
     @FXML
-    private void previousTrack() {
-        musicPlayer.previousSong();
-    }
+    private void previousTrack() { musicPlayer.previousSong(); }
 
     @FXML
-    private void nextTrack() {
-        musicPlayer.nextSong();
-    }
+    private void nextTrack() { musicPlayer.nextSong(); }
 
     private void handleSongChanged(Song song) {
         Platform.runLater(() -> {
             if (song != null) {
-                songName.setText(song.getTitle());
-                songArtist.setText(musicPlayer.getCurrentPlaylistName()); // Nombre de la playlist como artista
-                loadSongCover(song);
+                updateSongInfo(song);
                 selectCurrentSongInListView(song);
             } else {
                 resetSongInfo();
@@ -152,10 +157,15 @@ public class HelofyMainController {
         });
     }
 
+    private void updateSongInfo(Song song) {
+        songName.setText(song.getTitle());
+        songArtist.setText(musicPlayer.getCurrentPlaylistName());
+        loadSongCover(song);
+    }
+
     private void loadSongCover(Song song) {
         try {
-            Image cover = new Image("file:" + song.getCoverPath(), true);
-            songImage.setImage(cover);
+            songImage.setImage(new Image("file:" + song.getCoverPath()));
         } catch (Exception e) {
             loadDefaultCover();
         }
@@ -169,12 +179,12 @@ public class HelofyMainController {
 
     private void loadDefaultCover() {
         try {
-            Image defaultCover = new Image(Objects.requireNonNull(
-                    getClass().getResource("/org/example/helofy/styles/default_cover.png")
-            ).toExternalForm());
+            Image defaultCover = new Image(
+                    Objects.requireNonNull(getClass().getResource("/org/example/helofy/styles/default_cover.png")).toExternalForm()
+            );
             songImage.setImage(defaultCover);
         } catch (Exception e) {
-            System.err.println("❌ Error cargando cover predeterminado");
+            System.err.println("Error cargando cover predeterminado");
         }
     }
 
@@ -197,9 +207,7 @@ public class HelofyMainController {
 
     private void updateProgress(double progress) {
         Platform.runLater(() -> {
-            if (!isDraggingProgress) {
-                progressSlider.setValue(progress * 100);
-            }
+            if (!isDraggingProgress) progressSlider.setValue(progress * 100);
         });
     }
 
@@ -224,13 +232,12 @@ public class HelofyMainController {
     }
 
     private void handleSongFinished() {
-        musicPlayer.nextSong();
+        if (musicPlayer.getCurrentSong() != null) musicPlayer.nextSong();
     }
 
     public void onSongSelected(Song song) {
         musicPlayer.playSong(song);
-        handleSongChanged(song); // Actualización inmediata
-        updatePlayButton(true);
+        handleSongChanged(song);
     }
 
     private void showError(String title, String message) {
