@@ -7,7 +7,9 @@
 <HBox xmlns="http://javafx.com/javafx/17"
       xmlns:fx="http://javafx.com/fxml/1"
       spacing="10"
-      styleClass="song-item">
+      styleClass="song-item"
+      stylesheets="@../styles/Style.css"
+>
 
     <Label fx:id="songTitle" styleClass="song-title"/>
     <Label fx:id="songDuration" styleClass="song-duration"/>

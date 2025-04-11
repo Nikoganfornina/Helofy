@@ -9,4 +9,5 @@ module org.example.helofy {
     opens org.example.helofy.utils to com.fasterxml.jackson.databind;
 
     exports org.example.helofy;
+    opens org.example.helofy.model to com.fasterxml.jackson.databind;
 }

@@ -1,0 +1,24 @@
+package org.example.helofy.utils;
+
+import javafx.fxml.FXML;
+import javafx.scene.image.ImageView;
+
+public class Rounded {
+    @FXML
+    private ImageView songImage;
+
+    public   void applyRoundedClip(double borderRadius) {
+        if (songImage.getImage() != null) {
+            // Verificar si la imagen tiene dimensiones válidas
+            double width = songImage.getFitWidth();
+            double height = songImage.getFitHeight();
+            if (width > 0 && height > 0) {
+                javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(width, height);
+                clip.setArcWidth(borderRadius);
+                clip.setArcHeight(borderRadius);
+                songImage.setClip(clip);
+            }
+        }
+    }
+
+}

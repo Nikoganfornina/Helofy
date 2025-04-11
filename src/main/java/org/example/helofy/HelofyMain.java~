@@ -1,0 +1,76 @@
+package org.example.helofy;
+
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import org.example.helofy.model.Playlist;
+import org.example.helofy.utils.PlaylistData;
+import org.example.helofy.utils.PlaylistLoader;
+
+import java.io.File;
+
+public class HelofyMain extends Application {
+
+    private static final String PLAYLISTS_DIRECTORY = "F:/HELOFYAPP/HeloPlayList"; // Directorio de las carpetas de playlists
+    private static final String JSON_FILE_PATH = "F:/HELOFYAPP/HeloPlayList/playlists.json"; // Ruta del archivo JSON
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        // Escanear la carpeta y actualizar el JSON
+        scanAndUpdatePlaylists();
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/helofy/HelofyMain.fxml"));
+        Parent root = loader.load();
+
+        Scene scene = new Scene(root, 800, 600);
+
+        // ✅ Añade tu CSS aquí
+        scene.getStylesheets().add(getClass().getResource("/org/example/helofy/styles/Style.css").toExternalForm());
+
+        primaryStage.setTitle("Helofy Music Player");
+        primaryStage.setMinWidth(600);
+        primaryStage.setMinHeight(400);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    /**
+     * Método que escanea la carpeta de playlists y actualiza el archivo JSON con la información de las carpetas.
+     */
+    private void scanAndUpdatePlaylists() {
+        File playlistsDirectory = new File(PLAYLISTS_DIRECTORY);
+
+        // Comprobar si el directorio existe
+        if (playlistsDirectory.exists() && playlistsDirectory.isDirectory()) {
+            // Cargar el JSON actual
+            PlaylistData playlistData = new PlaylistData(); // Crear uno nuevo vacío
+            playlistData.setPlaylists(PlaylistLoader.loadPlaylistsFromJson());
+
+            // Recorrer las carpetas dentro del directorio de playlists
+            for (File file : playlistsDirectory.listFiles()) {
+                if (file.isDirectory()) {
+                    Playlist newPlaylist = new Playlist(
+                            file.getName(),
+                            file.getAbsolutePath(),
+                            false,
+                            "Playlist de " + file.getName(),
+                            "" // Ruta de imagen vacía por ahora
+                    );
+                    playlistData.getPlaylists().add(newPlaylist);
+                }
+            }
+
+            // Guardar las playlists actualizadas en el archivo JSON
+            PlaylistLoader.savePlaylists(playlistData);
+
+        } else {
+            System.err.println("El directorio de playlists no existe o no es válido.");
+        }
+    }
+}

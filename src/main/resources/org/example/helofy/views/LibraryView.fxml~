@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            prefHeight="532.0" prefWidth="870.0"
+            styleClass="playlist-view"
+            stylesheets="@../styles/Style.css"
+            vbarPolicy="AS_NEEDED" hbarPolicy="NEVER">
+
+    <VBox spacing="20" styleClass="playlist-view">
+        <ImageView fx:id="imgPortada" fitWidth="200" fitHeight="200"/>
+        <Label fx:id="lblTitulo" styleClass="playlist-title"/>
+        <ListView fx:id="listaCanciones" styleClass="song-list"/>
+    </VBox>
+
+</ScrollPane>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="532.0" prefWidth="870.0" styleClass="library-view" stylesheets="@../styles/Style.css" vbarPolicy="AS_NEEDED" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.helofy.controllers.LibraryViewController">
+
+
+    <content>
+        <VBox>
+            <Label prefHeight="25.0" prefWidth="873.0" styleClass="playlist-title-library" text="Mis Playlists" />
+
+            <TilePane fx:id="tilePane" hgap="15" prefTileHeight="200" prefTileWidth="180" styleClass="tile-pane" vgap="35" />
+        </VBox>
+    </content>
+
+</ScrollPane>

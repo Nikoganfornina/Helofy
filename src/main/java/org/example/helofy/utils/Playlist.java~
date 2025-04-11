@@ -1,0 +1,39 @@
+package org.example.helofy.utils;
+
+public class Playlist {
+    private String name;
+    private boolean favorite;
+    private String description;
+
+    // Constructor
+    public Playlist(String name, boolean favorite, String description) {
+        this.name = name;
+        this.favorite = favorite;
+        this.description = description;
+    }
+
+    // Getters y setters
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+}

@@ -1,0 +1,60 @@
+package org.example.helofy.model;
+
+import java.util.List;
+
+public class Playlist {
+    private String name;
+    private boolean favorite;
+    private String description;
+    private List<Song> songs;
+    private String coverPath;
+
+
+
+
+    // Constructor
+    public Playlist(String name, boolean favorite, String description, String coverPath, List<Song> songs) {
+        this.name = name;
+        this.favorite = favorite;
+        this.description = description;
+        this.coverPath = coverPath;
+        this.songs = songs;
+    }
+    public String getCoverPath() {
+        return coverPath;
+    }
+
+    // Getters y setters
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<Song> getSongs() {
+        return songs;
+    }
+
+    public void setSongs(List<Song> songs) {
+        this.songs = songs;
+    }
+
+}

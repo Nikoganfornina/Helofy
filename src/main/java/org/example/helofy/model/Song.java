@@ -3,7 +3,7 @@ package org.example.helofy.model;
 public class Song {
     private String title;
     private String filePath;
-    private String coverPath; // Campo corregido
+    private String coverPath;
     private double duration;
 
     public Song(String title, String filePath, String coverPath, double duration) {
@@ -22,4 +22,10 @@ public class Song {
     public String getTitle() { return title; }
     public String getFilePath() { return filePath; }
     public double getDuration() { return duration; }
+
+    @Override
+    public String toString() {
+        return title;  // Retorna el título de la canción
+    }
+
 }

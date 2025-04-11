@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<VBox xmlns="http://javafx.com/javafx/17"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="org.example.helofy.controllers.PlaylistViewController"
-      spacing="20"
-      styleClass="playlist-view">
+<ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" prefHeight="532.0" prefWidth="870.0" styleClass="playlist-view" stylesheets="@../styles/Style.css" vbarPolicy="AS_NEEDED" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.helofy.controllers.PlaylistViewController">
 
-    <HBox spacing="20" styleClass="playlist-header">
-        <ImageView fx:id="coverImage" fitWidth="200" fitHeight="200"/>
-        <VBox spacing="10">
-            <Label fx:id="playlistName" styleClass="playlist-title"/>
-            <Label fx:id="playlistDescription" styleClass="playlist-description"/>
-        </VBox>
-    </HBox>
+    <VBox fx:id="vboxContainer" prefHeight="675.0" prefWidth="870.0" spacing="20" styleClass="playlist-view">
 
-    <ListView fx:id="songsListView" styleClass="song-list"/>
-</VBox>
+        <HBox alignment="CENTER_LEFT" prefHeight="333.0" prefWidth="870.0" spacing="30">
+            <Label prefHeight="30.0" prefWidth="30.0">  </Label>
+            <ImageView id="image-view" fx:id="imgPortada" fitHeight="250.0" fitWidth="250.0" layoutX="50.0" style="-fx-margin-left: 10;" />
+            <VBox prefHeight="200.0" prefWidth="409.0" spacing="10" style="-fx-margin: 10;">
+                <Label fx:id="lblTitulo" prefHeight="84.0" prefWidth="403.0" styleClass="playlist-title" />
+                <Label fx:id="lblDescripcion" prefHeight="67.0" prefWidth="409.0" styleClass="playlist-description" text="Descripción de prueba" />
+            </VBox>
+        </HBox>
+
+
+
+
+        <ListView fx:id="listaCanciones" styleClass="song-list" />
+
+    </VBox>
+
+</ScrollPane>

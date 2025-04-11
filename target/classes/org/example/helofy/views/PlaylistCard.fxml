@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="tarjeta"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.helofy.controllers.PlaylistCardController"
+      stylesheets="@../styles/Style.css"
+      styleClass="playlist-card"
+      spacing="10"
+      alignment="CENTER"
+      onMouseClicked="#handleClick"
+>
+
+    <ImageView id="image-view"  fx:id="imgPortada" fitWidth="160" fitHeight="160"/>
+    <Label fx:id="lblNombre" styleClass="playlist-name" maxWidth="180"/>
+</VBox>

@@ -1,81 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="rootPane" xmlns="http://javafx.com/javafx/17"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.example.helofy.controllers.HelofyMainController"
-            stylesheets="@styles/Style.css">
+<BorderPane fx:id="rootPane" prefHeight="700" prefWidth="1200" stylesheets="@styles/Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.helofy.controllers.HelofyMainController">
 
   <!-- Header -->
   <top>
     <HBox styleClass="header">
       <children>
-        <Label text="Helofy" styleClass="logo"/>
-        <Region HBox.hgrow="ALWAYS"/>
-        <HBox styleClass="search-container" alignment="CENTER_LEFT" spacing="5">
-          <TextField fx:id="searchField" promptText="Buscar..." styleClass="search-field"/>
+        <Label prefHeight="35.0" prefWidth="92.0" styleClass="logo" text="Helofy" />
+        <Region HBox.hgrow="ALWAYS" />
+        <HBox alignment="CENTER_LEFT" spacing="5" styleClass="search-container">
+          <TextField promptText="Buscar..." styleClass="search-field" />
           <Button styleClass="search-button">
             <graphic>
-              <Label text="🔍" styleClass="search-icon"/>
+              <Label styleClass="search-icon" text="🔍" />
             </graphic>
           </Button>
         </HBox>
-        <Region HBox.hgrow="ALWAYS"/>
-        <Pane minWidth="100"/>
+        <Region HBox.hgrow="ALWAYS" />
+        <Pane minWidth="100" />
       </children>
     </HBox>
   </top>
 
-  <!-- Menú lateral -->
+  <!-- Menú lateral izquierdo -->
   <left>
-    <VBox styleClass="side-menu">
-      <Button text="Mi Biblioteca" styleClass="menu-button"/>
-      <Separator styleClass="separator"/>
-      <!-- Añadir fx:id aquí -->
-      <VBox fx:id="playlistsContainer" styleClass="playlist-container">
-        <!-- Eliminar los botones estáticos -->
+    <VBox prefHeight="532.0" prefWidth="191.0" styleClass="side-menu">
+      <Button onAction="#handleLibraryClick" styleClass="menu-button" text="Mi Biblioteca" />
+      <Separator styleClass="separator" />
+      <VBox prefHeight="25.0" prefWidth="240.0" styleClass="playlist-container">
+        <Label prefHeight="25.0" prefWidth="220.0" styleClass="playlist-title2" text="Playlist favoritas" />
+        <!-- Aquí puedes agregar botones o elementos estáticos de las playlists -->
+
       </VBox>
     </VBox>
   </left>
 
+  <!-- Menú lateral derecho -->
+  <right>
+    <VBox prefHeight="118.0" prefWidth="200.0" styleClass="side-menu">
+      <Label style="-fx-text-fill: white;" />
+    </VBox>
+  </right>
+
   <!-- Contenido principal -->
   <center>
-    <StackPane fx:id="contentArea" styleClass="content-area"/>
+    <StackPane fx:id="contentArea" styleClass="content-area" />
   </center>
 
   <!-- Footer -->
   <bottom>
     <BorderPane styleClass="footer">
+      <!-- Sección de información de canción (imagen, título y artista) -->
       <left>
-        <HBox alignment="CENTER_LEFT" spacing="10">
-          <ImageView fx:id="songImage" fitWidth="40" fitHeight="40" styleClass="album-art"/>
-          <VBox>
-            <Label fx:id="songName" text="No hay canción en reproducción" styleClass="song-title"/>
-            <Label fx:id="songArtist" text="Artista desconocido" styleClass="song-artist"/>
+        <HBox alignment="CENTER_LEFT" prefWidth="300" spacing="10">
+          <ImageView  id="image-view" fx:id="songImage" fitHeight="40" fitWidth="40" styleClass="album-art" />
+          <VBox alignment="CENTER_LEFT" prefHeight="51.0" prefWidth="250.0" spacing="5">
+            <Label fx:id="songName" styleClass="song-title" text="No hay canción en reproducción" />
+            <Label fx:id="songArtist" styleClass="song-artist" text="Artista desconocido" />
           </VBox>
         </HBox>
       </left>
 
+      <!-- Sección central: botones de control y barra de progreso -->
       <center>
-        <VBox alignment="CENTER">
-          <HBox spacing="20" alignment="CENTER">
-            <Button fx:id="prevButton" styleClass="player-button" text="⏮"/>
-            <Button fx:id="playButton" styleClass="player-button" text="⏯"/>
-            <Button fx:id="nextButton" styleClass="player-button" text="⏭"/>
+        <VBox alignment="CENTER" prefWidth="400" spacing="10">
+          <HBox alignment="CENTER" prefHeight="27.0" prefWidth="380.0" spacing="40">
+            <Button fx:id="previousButton" text="⏮" />
+            <Button fx:id="playPauseButton" text="⏯" />
+            <Button fx:id="nextButton" text="⏭" />
+            <Button fx:id="shuffleButton" text="🔀" />
           </HBox>
-          <Slider fx:id="progressSlider" styleClass="progress-slider"/>
+          <!-- Barra de progreso más pequeña y centrada -->
+          <Slider fx:id="progressSlider" prefHeight="10.0" prefWidth="300" styleClass="progress-slider" />
         </VBox>
       </center>
 
+      <!-- Sección derecha: control de volumen -->
       <right>
-        <HBox alignment="CENTER_RIGHT" spacing="10">
-          <Label text="🔊" styleClass="volume-icon"/>
-          <Slider fx:id="volumeSlider" styleClass="volume-slider" min="0" max="1" value="0.5"/>
+        <HBox alignment="CENTER_RIGHT" prefWidth="250" spacing="10">
+          <Label styleClass="volume-icon" text="🔊" />
+          <Slider fx:id="volumeSlider" max="1" min="0" styleClass="volume-slider" value="0.5" />
         </HBox>
       </right>
     </BorderPane>
   </bottom>
+
 </BorderPane>

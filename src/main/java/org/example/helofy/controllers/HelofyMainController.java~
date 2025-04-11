@@ -1,0 +1,250 @@
+package org.example.helofy.controllers;
+
+import javafx.application.Platform;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
+import org.example.helofy.model.Song;
+import org.example.helofy.utils.MusicPlayer;
+import org.example.helofy.model.Playlist;
+import org.example.helofy.utils.Rounded;
+
+import java.io.IOException;
+import java.util.Objects;
+
+public class HelofyMainController {
+
+    @FXML private StackPane contentArea;
+    @FXML private Slider volumeSlider;
+    @FXML private Button playPauseButton;
+    @FXML private Button previousButton;
+    @FXML private Button nextButton;
+    @FXML private Slider progressSlider;
+    @FXML private Label songName;
+    @FXML private Label songArtist;
+    @FXML private ImageView songImage;
+    @FXML private Button shuffleButton;
+
+    private final MusicPlayer musicPlayer = new MusicPlayer();
+    private boolean isDraggingProgress = false;
+
+    @FXML
+    public void initialize() {
+        configureMusicPlayer();
+        setupControls();
+        setupVolumePersistente();
+    }
+
+    private void configureMusicPlayer() {
+        musicPlayer.setOnSongChanged(this::handleSongChanged);
+        musicPlayer.setOnProgressChanged(this::updateProgress);
+        musicPlayer.setOnSongFinished(this::handleSongFinished);
+        musicPlayer.setOnPlayingStatusChanged(this::updatePlayButton);
+    }
+
+    private void setupControls() {
+        volumeSlider.valueProperty().addListener((obs, oldVal, newVal) ->
+                musicPlayer.setVolume(newVal.doubleValue())
+        );
+
+        progressSlider.setOnMousePressed(e -> isDraggingProgress = true);
+        progressSlider.setOnMouseDragged(e -> {
+            if (musicPlayer.getCurrentSong() != null) {
+                musicPlayer.seek(progressSlider.getValue() / 100);
+            }
+        });
+        progressSlider.setOnMouseReleased(e -> isDraggingProgress = false);
+
+        playPauseButton.setOnAction(e -> togglePlayback());
+        previousButton.setOnAction(e -> previousTrack());
+        nextButton.setOnAction(e -> nextTrack());
+        shuffleButton.setOnAction(e -> handleShuffle());
+    }
+
+    private void setupVolumePersistente() {
+        volumeSlider.setValue(musicPlayer.getVolume());
+        if (songImage != null) {
+            Rounded rounded = new Rounded(songImage);
+            songImage.imageProperty().addListener((obs, oldImg, newImg) ->
+                    rounded.applyRoundedClip(10)
+            );
+        }
+    }
+
+    public void setCenterContent(String fxmlPath) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent content = loader.load();
+
+            if (fxmlPath.contains("LibraryView")) {
+                LibraryViewController controller = loader.getController();
+                controller.setMainController(this);
+            }
+
+            contentArea.getChildren().setAll(content);
+        } catch (IOException e) {
+            showError("Error al cargar vista", e.getMessage());
+        }
+    }
+
+    public void loadPlaylistView(Playlist playlist) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/helofy/views/PlaylistView.fxml"));
+            Parent view = loader.load();
+
+            PlaylistViewController controller = loader.getController();
+            controller.configurarPlaylist(playlist, musicPlayer);
+
+            contentArea.getChildren().setAll(view);
+
+            // Corrección clave: pasar el objeto Playlist completo al reproductor
+            musicPlayer.setPlaylist(playlist);
+
+            // Forzar actualización de la UI con la primera canción si existe
+            if (!playlist.getSongs().isEmpty()) {
+                Song primeraCancion = playlist.getSongs().get(0);
+                songName.setText(primeraCancion.getTitle());
+                songArtist.setText(playlist.getName());
+            }
+
+            updatePlayButton(musicPlayer.isPlaying());
+
+        } catch (IOException e) {
+            showError("Error al cargar playlist", e.getMessage());
+        }
+    }
+
+    @FXML
+    private void togglePlayback() {
+        if (musicPlayer.getCurrentSong() == null) return;
+
+        if (musicPlayer.isPlaying()) {
+            musicPlayer.pause();
+        } else {
+            musicPlayer.resume();
+        }
+    }
+
+    @FXML
+    private void previousTrack() {
+        musicPlayer.previousSong();
+    }
+
+    @FXML
+    private void nextTrack() {
+        musicPlayer.nextSong();
+    }
+
+    private void handleSongChanged(Song song) {
+        Platform.runLater(() -> {
+            if (song != null) {
+                songName.setText(song.getTitle());
+                songArtist.setText(musicPlayer.getCurrentPlaylistName()); // Nombre de la playlist como artista
+                loadSongCover(song);
+                selectCurrentSongInListView(song);
+            } else {
+                resetSongInfo();
+            }
+        });
+    }
+
+    private void loadSongCover(Song song) {
+        try {
+            Image cover = new Image("file:" + song.getCoverPath(), true);
+            songImage.setImage(cover);
+        } catch (Exception e) {
+            loadDefaultCover();
+        }
+    }
+
+    private void resetSongInfo() {
+        songName.setText("Sin canción");
+        songArtist.setText("Artista desconocido");
+        loadDefaultCover();
+    }
+
+    private void loadDefaultCover() {
+        try {
+            Image defaultCover = new Image(Objects.requireNonNull(
+                    getClass().getResource("/org/example/helofy/styles/default_cover.png")
+            ).toExternalForm());
+            songImage.setImage(defaultCover);
+        } catch (Exception e) {
+            System.err.println("❌ Error cargando cover predeterminado");
+        }
+    }
+
+    private void selectCurrentSongInListView(Song currentSong) {
+        if (contentArea.getChildren().isEmpty()) return;
+
+        Parent currentContent = (Parent) contentArea.getChildren().get(0);
+        ListView<Song> listaCanciones = (ListView<Song>) currentContent.lookup("#listaCanciones");
+
+        if (listaCanciones != null && currentSong != null) {
+            int index = listaCanciones.getItems().indexOf(currentSong);
+            if (index != -1) {
+                Platform.runLater(() -> {
+                    listaCanciones.getSelectionModel().select(index);
+                    listaCanciones.scrollTo(index);
+                });
+            }
+        }
+    }
+
+    private void updateProgress(double progress) {
+        Platform.runLater(() -> {
+            if (!isDraggingProgress) {
+                progressSlider.setValue(progress * 100);
+            }
+        });
+    }
+
+    private void updatePlayButton(boolean isPlaying) {
+        Platform.runLater(() ->
+                playPauseButton.setText(isPlaying ? "⏸" : "▶")
+        );
+    }
+
+    @FXML
+    private void handleShuffle() {
+        musicPlayer.toggleShuffle();
+        updateShuffleButton();
+    }
+
+    private void updateShuffleButton() {
+        shuffleButton.setText(musicPlayer.isShuffle() ? "🔀" : "🔁");
+        shuffleButton.setStyle(musicPlayer.isShuffle() ?
+                "-fx-text-fill: #1DB954; -fx-font-weight: bold;" :
+                "-fx-text-fill: white;"
+        );
+    }
+
+    private void handleSongFinished() {
+        musicPlayer.nextSong();
+    }
+
+    public void onSongSelected(Song song) {
+        musicPlayer.playSong(song);
+        handleSongChanged(song); // Actualización inmediata
+        updatePlayButton(true);
+    }
+
+    private void showError(String title, String message) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle(title);
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+        });
+    }
+
+    @FXML
+    private void handleLibraryClick() {
+        setCenterContent("/org/example/helofy/views/LibraryView.fxml");
+    }
+}
