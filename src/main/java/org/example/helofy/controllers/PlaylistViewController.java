@@ -8,8 +8,10 @@ import org.example.helofy.utils.MusicPlayer;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
 import org.example.helofy.utils.Rounded;
 import java.io.File;
+
 
 public class PlaylistViewController {
 
@@ -34,6 +36,8 @@ public class PlaylistViewController {
 
         listaCanciones.setCellFactory(lv -> new javafx.scene.control.ListCell<Song>() {
             @Override
+
+
             protected void updateItem(Song cancion, boolean vacio) {
                 super.updateItem(cancion, vacio);
 
@@ -43,16 +47,28 @@ public class PlaylistViewController {
                     setOnMouseClicked(null);
                 } else {
                     setText(cancion.getTitle());
-                    setStyle(cancion.equals(player.getCurrentSong()) ?
-                            "-fx-text-fill: #00aeef; -fx-font-weight: bold;" : "");
 
+                    // Aseguramos que la canción que se reproduce se resalte
+                    if (cancion.equals(player.getCurrentSong())) {
+                        setStyle("-fx-text-fill: #00aeef; -fx-font-weight: bold;");
+                    } else {
+                        setStyle("");  // Las canciones no actuales se resetean al estilo normal
+                    }
+
+                    // Al hacer clic en una canción, la seleccionamos y reproducimos
                     setOnMouseClicked(e -> {
                         if (e.getClickCount() == 1) {
                             player.playSong(cancion);
+                            // Seleccionamos la canción visualmente
+                            listaCanciones.getSelectionModel().select(cancion);
+                            // Esto es importante para refrescar la selección visualmente en la lista
+                            listaCanciones.scrollTo(cancion);
                         }
                     });
                 }
             }
+
+
         });
     }
 }

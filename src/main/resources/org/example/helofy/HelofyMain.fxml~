@@ -51,7 +51,7 @@
             <Button fx:id="createSuperPlaylistButton" mnemonicParsing="false" styleClass="menu-button" text="Super PlayList" />
             <Separator styleClass="separator" />
             <Button fx:id="settingsButton" mnemonicParsing="false" styleClass="menu-button" text="Ajustes" />
-
+            
 
         </VBox>
     </right>

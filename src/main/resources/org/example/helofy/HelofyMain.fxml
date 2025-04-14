@@ -46,7 +46,13 @@
     <!-- Menú lateral derecho -->
     <right>
         <VBox prefHeight="118.0" prefWidth="200.0" styleClass="side-menu">
-            <Label style="-fx-text-fill: white;" />
+            <Button fx:id="createPlaylistButton" mnemonicParsing="false" styleClass="menu-button" text="Crear Playlist" />
+            <Separator styleClass="separator" />
+            <Button fx:id="createSuperPlaylistButton" mnemonicParsing="false" styleClass="menu-button" text="Super PlayList" />
+            <Separator styleClass="separator" />
+            <Button fx:id="settingsButton" mnemonicParsing="false" styleClass="menu-button" text="Ajustes" />
+
+
         </VBox>
     </right>
 

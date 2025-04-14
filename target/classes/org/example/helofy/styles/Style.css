@@ -47,6 +47,29 @@
     -fx-padding: 10 20;
 }
 
+.round-button {
+     -fx-background-color: transparent;
+     -fx-text-fill: white;
+     -fx-font-size: 16px; /* Base para escalado */
+     -fx-min-width: 40px;
+     -fx-min-height: 40px;
+     -fx-padding: 0;
+     -fx-background-radius: 50%;
+     -fx-border-color: transparent !important; /* Bordes siempre ocultos */
+ }
+
+ /* Escalar el texto SIN afectar el tamaño del botón */
+ .round-button .text {
+     -fx-scale-x: 2.5; /* 2.5x el tamaño base (14px → ~35px) */
+     -fx-scale-y: 2.5;
+ }
+
+ /* Efecto hover redondo y color #00B4D8 */
+ .round-button:hover {
+     -fx-background-color: #00B4D8 !important;
+     -fx-cursor: hand;
+ }
+
 .menu-button:hover {
     -fx-background-color: #00B4D8;
     -fx-text-fill: #000000;
@@ -85,7 +108,7 @@
 
 .song-title {
     -fx-text-fill: #FFFFFF;
-    -fx-font-size: 10;
+    -fx-font-size: 18;
 }
 
 .player-button {

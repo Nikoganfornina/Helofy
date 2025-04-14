@@ -16,7 +16,7 @@ public class PlaylistCardController {
     private final String DEFAULT_COVER_PATH = "/org/example/helofy/styles/defaultImage.png"; // Ruta personalizable
 
     public void configurar(Playlist playlist, Runnable accionClick) {
-        lblNombre.setText(playlist.getName());
+        lblNombre.setText(playlist.getName().toUpperCase());
 
         try {
             // Verificar si existe el archivo de portada
