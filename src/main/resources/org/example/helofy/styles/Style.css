@@ -50,7 +50,7 @@
 .round-button {
      -fx-background-color: transparent;
      -fx-text-fill: white;
-     -fx-font-size: 16px; /* Base para escalado */
+     -fx-font-size: 14px; /* Base para escalado */
      -fx-min-width: 40px;
      -fx-min-height: 40px;
      -fx-padding: 0;
@@ -69,6 +69,28 @@
      -fx-background-color: #00B4D8 !important;
      -fx-cursor: hand;
  }
+
+/* Estilos para el botón de play en las celdas */
+.cell-play-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-min-width: 30px;
+    -fx-min-height: 30px;
+    -fx-padding: 0;
+    -fx-border: none;
+}
+
+.cell-play-button:hover {
+    -fx-text-fill: #00aeef;
+    -fx-cursor: hand;
+}
+
+/* Estilo para el texto de la canción */
+.song-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: white;
+}
 
 .menu-button:hover {
     -fx-background-color: #00B4D8;

@@ -31,6 +31,7 @@
 
 
             <!-- Botones izquierda -->
+
             <Button fx:id="playButton" styleClass="round-button" text="▶"/>
             <Button fx:id="optionsButton" styleClass="round-button" text="⋮"/>
 
@@ -41,7 +42,7 @@
             <Button fx:id="orderButton" styleClass="round-button" text="⇅"/>
         </HBox>
 
-       
+
 
         <ListView fx:id="listaCanciones" prefHeight="400.0" prefWidth="870.0" styleClass="song-list"/>
     </VBox>

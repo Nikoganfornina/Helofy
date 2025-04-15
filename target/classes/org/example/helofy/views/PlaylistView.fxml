@@ -31,6 +31,7 @@
 
 
             <!-- Botones izquierda -->
+
             <Button fx:id="playButton" styleClass="round-button" text="▶"/>
             <Button fx:id="optionsButton" styleClass="round-button" text="⋮"/>
 
@@ -41,15 +42,7 @@
             <Button fx:id="orderButton" styleClass="round-button" text="⇅"/>
         </HBox>
 
-        <Region
-                style="-fx-background-color: white;
-           -fx-min-height: 1px;
-           -fx-pref-height: 1px;
-           -fx-max-height: 1px;
-           -fx-min-width: 100px;  
-           -fx-pref-width: 100px;
-           -fx-max-width: 100px;"
-        />
+
 
         <ListView fx:id="listaCanciones" prefHeight="400.0" prefWidth="870.0" styleClass="song-list"/>
     </VBox>

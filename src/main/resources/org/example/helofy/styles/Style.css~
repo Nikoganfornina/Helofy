@@ -50,7 +50,7 @@
 .round-button {
      -fx-background-color: transparent;
      -fx-text-fill: white;
-     -fx-font-size: 20px; /* Base para escalado */
+     -fx-font-size: 14px; /* Base para escalado */
      -fx-min-width: 40px;
      -fx-min-height: 40px;
      -fx-padding: 0;

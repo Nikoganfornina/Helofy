@@ -37,6 +37,11 @@ public class MusicPlayer {
         stop();
         currentIndex = index;
         internalPlaySong();
+
+        // En el método playSong(int index), añade al final:
+        Platform.runLater(() -> {
+            if (onSongChanged != null) onSongChanged.accept(getCurrentSong());
+        });
     }
 
     private void internalPlaySong() {
@@ -150,6 +155,7 @@ public class MusicPlayer {
         this.currentIndex = -1;
         if (shuffle.get()) Collections.shuffle(this.playlist);
     }
+
 
     // Setters para listeners
     public void setOnProgressChanged(Consumer<Double> listener) { this.onProgressChanged = listener; }

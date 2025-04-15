@@ -59,12 +59,10 @@ public class PlaylistViewController {
                     setOnMouseClicked(e -> {
                         if (e.getClickCount() == 1) {
                             player.playSong(cancion);
-                            // Seleccionamos la canción visualmente
-                            listaCanciones.getSelectionModel().select(cancion);
-                            // Esto es importante para refrescar la selección visualmente en la lista
-                            listaCanciones.scrollTo(cancion);
+                            listaCanciones.refresh(); // Fuerza actualización visual
                         }
                     });
+
                 }
             }
 

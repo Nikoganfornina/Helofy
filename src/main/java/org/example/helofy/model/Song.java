@@ -1,5 +1,7 @@
 package org.example.helofy.model;
 
+import java.util.Objects;
+
 public class Song {
     private String title;
     private String filePath;
@@ -27,5 +29,19 @@ public class Song {
     public String toString() {
         return title;  // Retorna el título de la canción
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Song song = (Song) o;
+        return Objects.equals(filePath, song.filePath); // Compara por ruta del archivo
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(filePath);
+    }
+
 
 }

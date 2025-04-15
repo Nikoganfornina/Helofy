@@ -179,17 +179,12 @@ public class HelofyMainController {
         ListView<Song> listaCanciones = (ListView<Song>) currentContent.lookup("#listaCanciones");
 
         if (listaCanciones != null && currentSong != null) {
-            // Busca por filePath en lugar de por índice
-            for (int i = 0; i < listaCanciones.getItems().size(); i++) {
-                Song song = listaCanciones.getItems().get(i);
-                if (song.getFilePath().equals(currentSong.getFilePath())) {
-                    int finalIndex = i;
-                    Platform.runLater(() -> {
-                        listaCanciones.getSelectionModel().select(finalIndex);
-                        listaCanciones.scrollTo(finalIndex);
-                    });
-                    break;
-                }
+            int index = musicPlayer.getPlaylist().indexOf(currentSong);
+            if (index != -1) {
+                Platform.runLater(() -> {
+                    listaCanciones.getSelectionModel().select(index);
+                    listaCanciones.scrollTo(index);
+                });
             }
         }
     }
