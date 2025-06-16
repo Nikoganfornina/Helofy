@@ -8,13 +8,25 @@
       xmlns="http://javafx.com/javafx/17"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="org.example.helofy.controllers.PlaylistCardController"
-      stylesheets="@../styles/Style.css"
-      styleClass="playlist-card"
       spacing="10"
       alignment="CENTER"
-      onMouseClicked="#handleClick"
->
+      prefWidth="180"
+      prefHeight="220"
+      onMouseClicked="#handleClick">
 
-    <ImageView id="image-view"  fx:id="imgPortada" fitWidth="160" fitHeight="160"/>
-    <Label fx:id="lblNombre" styleClass="playlist-name" maxWidth="180"/>
+    <ImageView fx:id="imgPortada"
+               fitWidth="160"
+               fitHeight="160"
+               preserveRatio="true"
+               smooth="true"
+               cache="true" />
+
+    <Label fx:id="lblNombre"
+           id="lblNombre"
+           maxWidth="180"
+           alignment="CENTER"
+    />
+
+
+
 </VBox>

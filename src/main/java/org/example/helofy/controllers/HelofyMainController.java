@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Rectangle;
 import org.example.helofy.model.Song;
 import org.example.helofy.utils.ImageLoader;
 import org.example.helofy.utils.MusicPlayer;
@@ -29,6 +30,10 @@ public class HelofyMainController {
     @FXML private ImageView songImage;
     @FXML private Button shuffleButton;
     @FXML private ImageView headerImage;
+    @FXML private ImageView imagenBienvenida ;
+    @FXML private ImageView imagenBienvenida2 ;
+    @FXML private Button createPlaylistButton;
+
 
     private final MusicPlayer musicPlayer = new MusicPlayer();
     private boolean isDraggingProgress = false;
@@ -41,6 +46,37 @@ public class HelofyMainController {
 
         headerImage.setImage(ImageLoader.loadAppLogo2());
         Rounded.applyHeaderImageRoundness(headerImage); // Aplicar redondeado
+
+        ImagenBienvenida();
+
+    }
+
+    // Metodo para redondear las 2 Imagenes de la bienvenida
+
+    private void ImagenBienvenida() {
+        imagenBienvenida.setImage(new Image(getClass().getResource("/org/example/helofy/styles/logoapp.png").toExternalForm()));
+        imagenBienvenida2.setImage(new Image(getClass().getResource("/org/example/helofy/styles/nikologo.jpeg").toExternalForm()));
+
+
+        imagenBienvenida.setFitWidth(150);
+        imagenBienvenida.setFitHeight(150);
+        imagenBienvenida.setPreserveRatio(true);
+
+
+        imagenBienvenida2.setFitWidth(150);
+        imagenBienvenida2.setFitHeight(150);
+        imagenBienvenida2.setPreserveRatio(true);
+
+        Rectangle clip1 = new Rectangle(150, 150);
+        clip1.setArcWidth(30);
+        clip1.setArcHeight(30);
+        imagenBienvenida.setClip(clip1);
+
+        Rectangle clip2 = new Rectangle(150, 150);
+        clip2.setArcWidth(30);
+        clip2.setArcHeight(30);
+        imagenBienvenida2.setClip(clip2);
+
     }
 
     private void configureMusicPlayer() {
@@ -231,5 +267,20 @@ public class HelofyMainController {
     @FXML
     private void handleLibraryClick() {
         setCenterContent("/org/example/helofy/views/LibraryView.fxml");
+    }
+
+    @FXML
+    private void handleCreatePlaylistClick() {
+        setCenterContent("/org/example/helofy/views/CreatePlaylistView.fxml");
+    }
+    @FXML
+    private void handleEditPlaylistClick(){
+        setCenterContent("/org/example/helofy/views/EditPlaylistView.fxml");
+
+    }
+    @FXML
+    private void handleSuperPlayListlick() {
+
+        setCenterContent("/org/example/helofy/views/SuperPlayListView.fxml");
     }
 }

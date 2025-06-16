@@ -167,7 +167,7 @@
 
 .playlist-title {
     -fx-text-fill: #00aeef;
-    -fx-font-size: 24px;
+    -fx-font-size: 32px;
     -fx-font-weight: bold;
 }
 
@@ -239,6 +239,7 @@
     -fx-background-color: #1C1C1C;
 }
 /* Estilo de los cards */
+/* Estilo de los cards */
 .card {
     -fx-background-color: #ffffff; /* Fondo blanco para los cards */
     -fx-border-radius: 10px; /* Bordes redondeados */
@@ -288,6 +289,7 @@
     -fx-text-fill: #ffffff;
     -fx-font-size: 14px;
     -fx-wrap-text: true;
+    -fx-line-spacing: 5px;
 }
 
 .song-list {
@@ -487,4 +489,48 @@
 
 .playlist-view .corner {
     -fx-background-color: transparent; /* Elimina el borde de la esquina si está presente */
+}
+#lblNombre {
+    -fx-text-fill: #00B4D8;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-wrap-text: true;
+    -fx-text-alignment: center;
+}
+
+/* Título en azul */
+.titulo-texto {
+
+    -fx-font-size: 30px;
+    -fx-alignment: CENTER;
+    -fx-font-weight: bold;
+    -fx-text-fill: #00B4D8;
+    -fx-text-alignment: center;
+    -fx-line-spacing: 5px;
+    -fx-padding: 5px;
+}
+
+/* Texto adicional en blanco */
+.bienvenida-texto {
+
+
+    -fx-font-size: 16px;
+    -fx-text-fill: white;
+    -fx-alignment: CENTER;
+    -fx-line-spacing: 5px;
+    -fx-padding: 5px;
+
+}
+
+.bienvenida-texto2 {
+    -fx-font-size: 16px;
+    -fx-text-fill: white;
+    -fx-font-family: "Arial", sans-serif;
+    -fx-line-spacing: 5px; /* Espaciado entre líneas */
+    -fx-alignment: CENTER; /* Alineación del texto */
+    -fx-padding: 10px;
+    -fx-wrap-text: true; /* Habilitar el ajuste de texto */
+    -fx-text-alignment: center; /* Alineación del texto dentro de cada Text */
+    -fx-min-width: 300px; /* Anchura mínima para que el texto no se quede demasiado estrecho */
+    -fx-max-width: 600px; /* Anchura máxima para controlar el diseño */
 }

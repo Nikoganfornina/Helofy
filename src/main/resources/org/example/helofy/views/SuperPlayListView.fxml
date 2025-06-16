@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Label?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:id="superPlaylistRoot"
+            fx:controller="org.example.helofy.controllers.SuperPlaylistController"
+            prefWidth="870.0" prefHeight="532.0"
+            stylesheets="@../styles/superPlaylist.css" styleClass="super-playlist">
+
+    <!-- Título -->
+    <Label layoutX="320.0" layoutY="20.0" text="Crea tu Super Playlists" styleClass="main-title"/>
+
+    <!-- Slots -->
+    <HBox fx:id="slotBox" spacing="25.0" alignment="CENTER"
+          layoutX="105.0" layoutY="80.0" prefWidth="660.0">
+        <Label prefWidth="180" prefHeight="220" fx:id="slot1" text="Slot 1" styleClass="playlist-slot"/>
+        <Label prefWidth="180" prefHeight="220" fx:id="slot2" text="Slot 2" styleClass="playlist-slot"/>
+        <Label prefWidth="180" prefHeight="220" fx:id="slot3" text="Slot 3" styleClass="playlist-slot"/>
+    </HBox>
+
+    <!-- Scroll de playlists -->
+    <ScrollPane fx:id="scrollPane" fitToHeight="false" fitToWidth="true"
+                hbarPolicy="ALWAYS" vbarPolicy="NEVER"
+                layoutX="30.0" layoutY="330.0" prefHeight="170.0" prefWidth="810.0"
+                styleClass="playlist-scroll">
+        <HBox fx:id="playlistCardContainer" spacing="15.0" />
+    </ScrollPane>
+
+</AnchorPane>

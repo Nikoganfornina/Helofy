@@ -1,0 +1,62 @@
+/* 🎵 Fondo oscuro general del AnchorPane raíz */
+.super-playlist {
+    -fx-background-color: #1C1C1C;
+}
+
+/* Título principal */
+.main-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-alignment: center;
+}
+
+/* 🎵 Slots cuadrados visibles */
+.playlist-slot {
+    -fx-background-color: #2A2A2A;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-background-radius: 15px;
+    -fx-border-color: #00B4D8;
+    -fx-border-radius: 15px;
+    -fx-border-width: 2px;
+}
+
+/* ScrollPane transparente */
+.playlist-scroll {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.playlist-scroll .viewport {
+    -fx-background-color: transparent;
+}
+
+/* Scroll horizontal */
+.scroll-pane .scroll-bar:horizontal {
+    -fx-background-color: transparent;
+    -fx-pref-height: 12px;
+}
+
+.scroll-pane .scroll-bar:horizontal .thumb {
+    -fx-background-color: #00B4D8;
+    -fx-background-radius: 6px;
+}
+
+.scroll-pane .scroll-bar:horizontal:hover .thumb {
+    -fx-background-color: #30D8FF;
+}
+
+/* 🎴 Cards dentro del scroll */
+.card {
+    -fx-background-color: #2A2A2A;
+    -fx-background-radius: 10;
+    -fx-padding: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 8, 0.4, 0, 1.5);
+    -fx-min-width: 140px;
+    -fx-max-width: 140px;
+    -fx-alignment: center;
+    -fx-border-width: 0;
+}

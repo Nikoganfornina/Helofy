@@ -8,7 +8,7 @@
 
     <content>
         <VBox>
-            <Label prefHeight="25.0" prefWidth="873.0" styleClass="playlist-title-library" text="Mis Playlists" />
+            <Label prefHeight="25.0" prefWidth="2000" styleClass="playlist-title-library" text="Mis Playlists" />
 
             <TilePane fx:id="tilePane" hgap="15" prefTileHeight="200" prefTileWidth="180" styleClass="tile-pane" vgap="35" />
         </VBox>

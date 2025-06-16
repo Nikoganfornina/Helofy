@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.stage.*?>
+
+<AnchorPane prefHeight="446.0" prefWidth="809.0" stylesheets="@../styles/StyleCreate.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.helofy.controllers.CreatePlaylistController">
+
+    <VBox alignment="BASELINE_CENTER" spacing="20.0" styleClass="main-container">
+
+        <!-- Título -->
+        <Label prefHeight="77.0" prefWidth="269.0" styleClass="playlist-title-library" text="Crear Playlist" />
+
+        <!-- Contenido principal en dos columnas -->
+        <HBox alignment="TOP_CENTER" prefHeight="452.0" prefWidth="809.0" spacing="30.0">
+
+            <!-- Columna izquierda: Imagen -->
+            <VBox alignment="TOP_CENTER" prefHeight="408.0" prefWidth="318.0" spacing="15.0">
+                <ImageView fx:id="playlistImage" fitHeight="180.0" fitWidth="180.0" preserveRatio="true" />
+                <Button fx:id="changeImageButton" styleClass="blue-button" text="Cambiar Imagen" onAction="#cambiarImagen"/>
+            </VBox>
+
+            <!-- Columna derecha: Datos -->
+            <VBox alignment="TOP_LEFT" prefHeight="420.0" prefWidth="401.0" spacing="15.0">
+                <TextField fx:id="playlistNameField" promptText="Nombre de la playlist" styleClass="text-field" />
+
+                <!-- Descripción sin rectángulo interno -->
+                <TextField fx:id="playlistDescriptionArea" promptText="Descripción" styleClass="text-area" />
+
+                <Button styleClass="blue-button" text="Añadir Canciones" onAction="#añadirCanciones"/>
+
+                <!-- ListView con placeholder -->
+                <ListView fx:id="songListView" prefHeight="150.0" styleClass="list-view" />
+                <Button styleClass="blue-button" text="Crear Playlist" onAction="#crearPlaylist" />
+            </VBox>
+
+        </HBox>
+
+    </VBox>
+</AnchorPane>

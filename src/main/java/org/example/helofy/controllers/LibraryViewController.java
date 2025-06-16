@@ -9,6 +9,7 @@ import org.example.helofy.model.Playlist;
 import org.example.helofy.utils.PlaylistLoader;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public class LibraryViewController {
 
@@ -27,9 +28,18 @@ public class LibraryViewController {
     }
 
     private void cargarPlaylists() {
-        File directorio = new File(System.getProperty("user.dir")).getParentFile();
-        directorio = new File(directorio, "HeloPlayList");
+        // Partimos del directorio del proyecto
+        File raizProyecto = new File(System.getProperty("user.dir")).getParentFile();
 
+        // Construimos la ruta relativa desde ahí
+        File directorio = new File(raizProyecto, "musicapp/HeloPlayList");
+
+        if (!directorio.exists() || !directorio.isDirectory()) {
+            System.err.println("No se encontró el directorio de playlists en: " + directorio.getAbsolutePath());
+            return;
+        }
+
+        // Cargar playlists
         for (Playlist playlist : PlaylistLoader.loadPlaylists(directorio.getAbsolutePath())) {
             try {
                 Node tarjeta = crearTarjetaPlaylist(playlist);
@@ -39,6 +49,8 @@ public class LibraryViewController {
             }
         }
     }
+
+
 
     private Node crearTarjetaPlaylist(Playlist playlist) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/helofy/views/PlaylistCard.fxml"));
