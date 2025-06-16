@@ -6,6 +6,9 @@ Actualmente se encuentra en fase de desarrollo, pero ya cuenta con un núcleo s�
 
 ---
 
+![Banner Niko](HelofyLogo.png)
+
+
 ## 🚀 Características implementadas
 
 ### ✅ Reproductor funcional
