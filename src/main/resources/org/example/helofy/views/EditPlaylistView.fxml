@@ -4,7 +4,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="446.0" prefWidth="809.0" stylesheets="@../styles/StyleEdit.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.12" fx:controller="org.example.helofy.controllers.EditPlaylistController">
+<AnchorPane prefHeight="532.0" prefWidth="870.0" stylesheets="@../styles/StyleEdit.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.12" fx:controller="org.example.helofy.controllers.EditPlaylistController">
     <HBox layoutX="20" layoutY="20" spacing="20">
         <!-- Columna 1 -->
         <VBox alignment="CENTER_LEFT" prefWidth="380" spacing="15">
@@ -36,7 +36,7 @@
                 <Label text="Nombre:" />
                 <TextField fx:id="playlistNameField" prefWidth="300" styleClass="text-field" />
             </HBox>
-
+            
             <!-- Campo Descripción -->
             <HBox alignment="CENTER_LEFT" spacing="10">
                 <Label text="Descripción:" />

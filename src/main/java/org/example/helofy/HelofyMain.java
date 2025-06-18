@@ -19,9 +19,11 @@ public class HelofyMain extends Application {
         primaryStage.getIcons().add(ImageLoader.loadAppLogo());
         primaryStage.setTitle("Helofy Music Player");
 
+        primaryStage.setResizable(false);
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
+
     }
 
     public static void main(String[] args) {

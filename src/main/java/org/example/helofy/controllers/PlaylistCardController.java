@@ -54,7 +54,7 @@ public class PlaylistCardController {
         }
 
         // Redondear imagen
-        new Rounded(imgPortada).applyRoundedClip(10);
+        Rounded.applyRoundedClip(imgPortada, 10.0); // ✅
 
         // Guardar la acción para cuando se haga click
         this.alHacerClick = accionClick;

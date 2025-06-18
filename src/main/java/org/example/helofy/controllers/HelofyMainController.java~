@@ -131,7 +131,8 @@ public class HelofyMainController {
 
     private void setupVolumePersistente() {
         volumeSlider.setValue(musicPlayer.getVolume());
-        Rounded.applyRoundedClip(songImage, 10.0); // ✅
+        Rounded rounded = new Rounded(songImage);
+        rounded.applyRoundedClip(10.0); // ✅
     }
 
     public void setCenterContent(String fxmlPath) {

@@ -15,20 +15,13 @@ import java.util.*;
 
 public class EditPlaylistController {
 
-    @FXML
-    private ComboBox<String> playlistSelector;
-    @FXML
-    private TextField playlistNameField;
-    @FXML
-    private TextField playlistDescriptionField;
-    @FXML
-    private ImageView playlistImage;
-    @FXML
-    private ListView<String> songListView;
-    @FXML
-    private Button addSongsButton, removeSongButton, changeImageButton, saveChangesButton, deletePlaylistButton;
-    @FXML
-    private GridPane mainLayout;
+    @FXML private ComboBox<String> playlistSelector;
+    @FXML private TextField playlistNameField;
+    @FXML private TextField playlistDescriptionField;
+    @FXML private ImageView playlistImage;
+    @FXML private ListView<String> songListView;
+    @FXML private Button addSongsButton, removeSongButton, changeImageButton, saveChangesButton, deletePlaylistButton;
+    @FXML private GridPane mainLayout;
 
     // ✅ Ruta corregida según tu estructura real
     private final Path basePath = Paths.get("D:/REPOSITORIO/musicapp/HeloPlayList");
@@ -43,10 +36,6 @@ public class EditPlaylistController {
         applyRoundedImageClip();
 
         playlistSelector.setOnAction(e -> loadSelectedPlaylist());
-
-
-        playlistImage.setImage(new Image(getClass().getResource("/org/example/helofy/styles/defaultImage.png").toExternalForm()));
-
 
         addSongsButton.setOnAction(e -> addSongs());
         removeSongButton.setOnAction(e -> removeSelectedSong());

@@ -1,43 +1,41 @@
 package org.example.helofy.utils;
 
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 
 public class Rounded {
-    private ImageView songImage;
 
-    public Rounded(ImageView songImage) {
-        this.songImage = songImage;
-    }
+    /**
+     * Aplica un recorte redondeado al ImageView si ya tiene una imagen y dimensiones definidas.
+     */
+    public static void applyRoundedClip(ImageView imageView, double borderRadius) {
+        Image img = imageView.getImage();
+        if (img != null) {
+            double width = imageView.getFitWidth() > 0 ? imageView.getFitWidth() : img.getWidth();
+            double height = imageView.getFitHeight() > 0 ? imageView.getFitHeight() : img.getHeight();
 
-    public void applyRoundedClip(double borderRadius) {
-        if (songImage.getImage() != null) {
-            // Verificar si la imagen tiene dimensiones válidas
-            double width = songImage.getFitWidth();
-            double height = songImage.getFitHeight();
-            if (width > 0 && height > 0) {
-                Rectangle clip = new Rectangle(width, height);
-                clip.setArcWidth(borderRadius);
-                clip.setArcHeight(borderRadius);
-                songImage.setClip(clip);
-            }
+            Rectangle clip = new Rectangle(width, height);
+            clip.setArcWidth(borderRadius * 2);
+            clip.setArcHeight(borderRadius * 2);
+            imageView.setClip(clip);
         }
     }
-    public static void applyHeaderImageRoundness(ImageView headerImageView) {
-        double borderRadius = 15.0; // Ajusta este valor según necesites
 
-        headerImageView.imageProperty().addListener((obs, oldImg, newImg) -> {
+    /**
+     * Aplica el recorte redondeado cuando la imagen se cargue de forma asíncrona o diferida.
+     * Útil para evitar problemas cuando el ImageView aún no tiene dimensiones o imagen.
+     */
+    public static void applyHeaderImageRoundness(ImageView imageView, double borderRadius) {
+        imageView.imageProperty().addListener((obs, oldImg, newImg) -> {
             if (newImg != null) {
-                // Usar las dimensiones del ImageView o de la imagen
-                double width = headerImageView.getFitWidth() > 0 ?
-                        headerImageView.getFitWidth() : newImg.getWidth();
-                double height = headerImageView.getFitHeight() > 0 ?
-                        headerImageView.getFitHeight() : newImg.getHeight();
+                double width = imageView.getFitWidth() > 0 ? imageView.getFitWidth() : newImg.getWidth();
+                double height = imageView.getFitHeight() > 0 ? imageView.getFitHeight() : newImg.getHeight();
 
                 Rectangle clip = new Rectangle(width, height);
-                clip.setArcWidth(borderRadius);
-                clip.setArcHeight(borderRadius);
-                headerImageView.setClip(clip);
+                clip.setArcWidth(borderRadius * 2);
+                clip.setArcHeight(borderRadius * 2);
+                imageView.setClip(clip);
             }
         });
     }

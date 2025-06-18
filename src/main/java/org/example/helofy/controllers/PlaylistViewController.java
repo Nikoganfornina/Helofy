@@ -24,6 +24,7 @@ public class PlaylistViewController {
     @FXML private Label lblTitulo;
     @FXML private Label lblDescripcion;
 
+
     public void configurarPlaylist(Playlist playlist, MusicPlayer player) {
         final String DEFAULT_COVER_PATH = "/org/example/helofy/styles/default_cover.png";
         lblTitulo.setText(playlist.getName());
@@ -41,7 +42,7 @@ public class PlaylistViewController {
             imgPortada.setImage(new Image(Objects.requireNonNull(getClass().getResource(DEFAULT_COVER_PATH)).toString()));
         }
 
-        new Rounded(imgPortada).applyRoundedClip(10);
+        Rounded.applyRoundedClip(imgPortada, 10.0); // ✅
 
 
         listaCanciones.getItems().setAll(playlist.getSongs());

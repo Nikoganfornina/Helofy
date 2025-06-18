@@ -1,54 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.helofy.controllers.EditPlaylistController" prefHeight="446.0" prefWidth="809.0" stylesheets="@../styles/StyleEdit.css">
-    <HBox spacing="20" layoutX="20" layoutY="20">
+<AnchorPane prefHeight="532.0" prefWidth="870.0" stylesheets="@../styles/StyleEdit.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.12" fx:controller="org.example.helofy.controllers.EditPlaylistController">
+    <HBox layoutX="20" layoutY="20" spacing="20">
         <!-- Columna 1 -->
-        <VBox spacing="15" alignment="CENTER_LEFT" prefWidth="380">
-            <Label text="Editar Playlist" styleClass="title-label"/>
+        <VBox alignment="CENTER_LEFT" prefWidth="380" spacing="15">
+            <Label styleClass="title-label" text="Editar Playlist" />
 
-            <!-- Playlist Selector y Eliminar Playlist -->
-            <HBox spacing="10" alignment="CENTER_LEFT">
-                <Label text="Seleccionar playlist:"/>
-                <ComboBox fx:id="playlistSelector" prefWidth="200"/>
-                <Button fx:id="deletePlaylistButton" text="Eliminar Playlist" styleClass="blue-button"/>
+            <!-- Selector de Playlist -->
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label text="Seleccionar playlist:" />
+                <ComboBox fx:id="playlistSelector" prefWidth="200" />
             </HBox>
 
-            <!-- Imagen de la Playlist -->
-            <ImageView fx:id="playlistImage" fitWidth="200" fitHeight="200" styleClass="playlist-image"/>
-
-            <!-- Botón para cambiar la imagen -->
-            <Button fx:id="changeImageButton" text="Cambiar imagen" styleClass="blue-button"/>
-
-            <!-- Nombre de la Playlist -->
-            <HBox spacing="10" alignment="CENTER_LEFT">
-                <Label text="Nombre:"/>
-                <TextField fx:id="playlistNameField" prefWidth="300" styleClass="text-field"/>
+            <!-- Botón Eliminar Playlist -->
+            <HBox alignment="CENTER_LEFT">
+                <Button fx:id="deletePlaylistButton" styleClass="blue-button" text="Eliminar Playlist" prefWidth="200"/>
             </HBox>
 
-            <!-- Descripción de la Playlist -->
-            <HBox spacing="10" alignment="CENTER_LEFT">
-                <Label text="Descripción:"/>
-                <TextField fx:id="playlistDescriptionField" prefWidth="300" styleClass="text-field"/>
+            <!-- Imagen Playlist -->
+            <HBox alignment="CENTER">
+                <ImageView fx:id="playlistImage" fitHeight="200" fitWidth="200" styleClass="playlist-image" />
+            </HBox>
+
+            <!-- Botón Cambiar Imagen -->
+            <HBox alignment="CENTER">
+                <Button fx:id="changeImageButton" styleClass="blue-button" text="Cambiar imagen" prefWidth="200"/>
+            </HBox>
+
+            <!-- Campo Nombre -->
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label text="Nombre:" />
+                <TextField fx:id="playlistNameField" prefWidth="300" styleClass="text-field" />
+            </HBox>
+            
+            <!-- Campo Descripción -->
+            <HBox alignment="CENTER_LEFT" spacing="10">
+                <Label text="Descripción:" />
+                <TextField fx:id="playlistDescriptionField" prefWidth="300" styleClass="text-field" />
             </HBox>
         </VBox>
 
+
         <!-- Columna 2 -->
-        <VBox spacing="15" alignment="CENTER_LEFT" prefWidth="380">
-            <Label text="Canciones en la playlist:" styleClass="songs-label"/>
-            <ListView fx:id="songListView" prefHeight="150" prefWidth="400" styleClass="list-view"/>
+        <VBox alignment="TOP_LEFT" prefWidth="380" spacing="5">
+            <Label styleClass="songs-label" text="Canciones en la playlist:" />
+
+            <ListView fx:id="songListView" prefHeight="235.0" prefWidth="340.0" styleClass="list-view" />
 
             <!-- Botones de gestión de canciones -->
-            <HBox spacing="15" alignment="CENTER_LEFT">
-                <Button fx:id="addSongsButton" text="Añadir canciones" styleClass="blue-button"/>
-                <Button fx:id="removeSongButton" text="Eliminar canción seleccionada" styleClass="blue-button"/>
+            <HBox alignment="CENTER" spacing="15">
+                <Button fx:id="addSongsButton" styleClass="blue-button" text="Añadir canciones" />
             </HBox>
 
-            <!-- Botón para guardar cambios -->
-            <Button fx:id="saveChangesButton" text="Guardar cambios" styleClass="blue-button"/>
+
+
+
+            <HBox alignment="CENTER" spacing="15">
+                <Button fx:id="saveChangesButton" styleClass="blue-button" text="Guardar cambios" />
+            </HBox>
+
+            <HBox alignment="CENTER" spacing="15">
+                <Button fx:id="removeSongButton" styleClass="blue-button" text="Eliminar canción seleccionada" />
+            </HBox>
+
+
+
         </VBox>
     </HBox>
 </AnchorPane>
