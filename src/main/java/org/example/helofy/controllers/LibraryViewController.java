@@ -1,12 +1,18 @@
 package org.example.helofy.controllers;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.TilePane;
+import javafx.util.Duration;
 import org.example.helofy.model.Playlist;
 import org.example.helofy.utils.PlaylistLoader;
+import javafx.scene.control.ScrollPane;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -14,17 +20,20 @@ import java.util.List;
 public class LibraryViewController {
 
     @FXML private TilePane tilePane;
-
+    @FXML private ScrollPane scroll;
+    private double scrollVelocity = 0;
+    private Timeline inertiaTimeline;
     private HelofyMainController mainController;
 
     // Esta nueva función debe ser llamada cuando se cargue el controlador principal.
     public void setMainController(HelofyMainController controller) {
         this.mainController = controller;
     }
-
     @FXML
     public void initialize() {
         cargarPlaylists();
+
+
     }
 
     private void cargarPlaylists() {

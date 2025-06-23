@@ -1,48 +1,41 @@
 package org.example.helofy.controllers;
 
-import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.input.ScrollEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.TilePane;
+import javafx.util.Duration;
 import org.example.helofy.model.Playlist;
 import org.example.helofy.utils.PlaylistLoader;
+import javafx.scene.control.ScrollPane;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public class LibraryViewController {
 
     @FXML private TilePane tilePane;
-
-    private HelofyMainController mainController;
-
-    // Velocidad vertical para inercia del scroll
+    @FXML private ScrollPane scroll;
     private double scrollVelocity = 0;
-    // Coeficiente de fricción (ajustable)
-    private static final double FRICTION = 0.92;
-
-    private ScrollPane scrollPane;
+    private Timeline inertiaTimeline;
+    private HelofyMainController mainController;
 
     // Esta nueva función debe ser llamada cuando se cargue el controlador principal.
     public void setMainController(HelofyMainController controller) {
         this.mainController = controller;
     }
-
     @FXML
     public void initialize() {
         cargarPlaylists();
 
-        // Buscar ScrollPane padre que contenga tilePane
-        scrollPane = findScrollPane(tilePane);
-        if (scrollPane == null) {
-            System.err.println("No se encontró un ScrollPane padre para tilePane. Scroll suave no activado.");
-            return;
-        }
-
-        setupSmoothScroll();
+        scroll.setOnScroll(event -> {
+            System.out.println("Scroll capturado: deltaY = " + event.getDeltaY());
+        });
     }
 
     private void cargarPlaylists() {
@@ -68,6 +61,8 @@ public class LibraryViewController {
         }
     }
 
+
+
     private Node crearTarjetaPlaylist(Playlist playlist) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/helofy/views/PlaylistCard.fxml"));
         Node tarjeta = loader.load();
@@ -75,6 +70,7 @@ public class LibraryViewController {
         PlaylistCardController controller = loader.getController();
         controller.configurar(playlist, () -> {
             if (mainController != null) {
+                // Cambié 'cargarPlaylist' por 'loadPlaylistView'
                 mainController.loadPlaylistView(playlist);
             } else {
                 System.err.println("Error: mainController no está inicializado.");
@@ -82,54 +78,5 @@ public class LibraryViewController {
         });
 
         return tarjeta;
-    }
-
-    /**
-     * Busca recursivamente el ScrollPane padre que contiene el nodo dado.
-     */
-    private ScrollPane findScrollPane(Node node) {
-        Node parent = node.getParent();
-        while (parent != null) {
-            if (parent instanceof ScrollPane) {
-                return (ScrollPane) parent;
-            }
-            parent = parent.getParent();
-        }
-        return null;
-    }
-
-    /**
-     * Configura el scroll suave con inercia para el ScrollPane que contiene el TilePane.
-     */
-    private void setupSmoothScroll() {
-        // Interceptar evento de scroll y acumular velocidad
-        scrollPane.addEventFilter(ScrollEvent.SCROLL, event -> {
-            // event.getDeltaY() > 0 significa scroll hacia arriba, invertimos para que coincida con scroll value
-            scrollVelocity -= event.getDeltaY() * 0.0025; // Ajusta factor para sensibilidad
-            event.consume(); // Consumimos para que no haga scroll estándar
-        });
-
-        // AnimationTimer para aplicar la inercia
-        AnimationTimer timer = new AnimationTimer() {
-            @Override
-            public void handle(long now) {
-                if (Math.abs(scrollVelocity) > 0.0001) {
-                    double newValue = scrollPane.getVvalue() + scrollVelocity;
-                    newValue = clamp(newValue, 0, 1);
-                    scrollPane.setVvalue(newValue);
-                    scrollVelocity *= FRICTION;
-                }
-            }
-        };
-        timer.start();
-    }
-
-    /**
-     * Limita un valor entre min y max.
-     */
-    private double clamp(double value, double min, double max) {
-        if (value < min) return min;
-        if (value > max) return max;
-        return value;
     }
 }

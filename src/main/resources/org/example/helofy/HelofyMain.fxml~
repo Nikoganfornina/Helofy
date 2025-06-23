@@ -62,7 +62,7 @@
 
 
 
-                    <ImageView  fx:id="imagenBienvenida" fitHeight="350.0" fitWidth="750.0"/>
+                    <ImageView  fx:id="imagenBienvenida" fitHeight="400.0" fitWidth="800.0"/>
 
 
 

@@ -3,6 +3,7 @@ module org.example.helofy {
     requires javafx.fxml;
     requires javafx.media;
     requires com.fasterxml.jackson.databind;
+    requires java.desktop;
 
     opens org.example.helofy to javafx.fxml;
     opens org.example.helofy.controllers to javafx.fxml;

@@ -1,24 +1,63 @@
+/* Fondo principal negro */
 .root {
     -fx-background-color: #0A0A0A;
 }
 
-/* Header Styles */
-.header {
-    -fx-background-color: #1A1A1A;
+/* Contenedores principales con bordes redondeados y fondo gris translúcido */
+.header,
+.side-menu,
+.footer,
+.content-area {
+    -fx-background-color: rgba(40, 40, 40, 0.85);
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-padding: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0.3, 1, 1);
+    -fx-spacing: 5;
+    -fx-margin: 5;
+}
+
+/* Zona central ligeramente más clara para destacar contenido */
+.content-area {
+    -fx-background-color: rgba(30, 30, 30, 0.85);
     -fx-padding: 15;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
 }
 
-.logo {
-    -fx-text-fill: #00B4D8; /* Azul Solán de Cabras */
-    -fx-font-size: 24px;
-    -fx-font-weight: bold;
+/* Menús laterales */
+.side-menu {
+    -fx-background-color: #1A1A1A;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
 }
 
+/* Header específico */
+.header {
+    -fx-alignment: center;
+}
+
+/* Footer */
+.footer {
+    -fx-background-color: #1A1A1A;
+    -fx-padding: 10;
+    -fx-spacing: 5;
+    -fx-alignment: center;
+}
+
+/* Cards y elementos visuales tipo playlist */
+.card,
+.playlist-card {
+    -fx-background-color: rgba(50, 50, 50, 0.95);
+    -fx-background-radius: 10;
+    -fx-padding: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 6, 0.2, 1, 1);
+    -fx-margin: 5;
+}
+
+/* Zona de búsqueda */
 .search-container {
     -fx-background-color: #2D2D2D;
-    -fx-background-radius: 20;
-    -fx-padding: 5 15 5 15;
+    -fx-background-radius: 15;
+    -fx-padding: 5 10;
 }
 
 .search-field {
@@ -32,64 +71,24 @@
     -fx-text-fill: #00B4D8;
 }
 
-/* Side Menu Styles */
-.side-menu {
-    -fx-background-color: #1A1A1A;
-    -fx-spacing: 15;
-    -fx-padding: 20 15 20 15;
-}
-
-.menu-button {
-    -fx-background-color: transparent;
-    -fx-text-fill: #FFFFFF;
-    -fx-font-size: 16;
-    -fx-alignment: CENTER_LEFT;
-    -fx-padding: 10 20;
-}
-
-.round-button {
-     -fx-background-color: transparent;
-     -fx-text-fill: white;
-     -fx-font-size: 14px; /* Base para escalado */
-     -fx-min-width: 40px;
-     -fx-min-height: 40px;
-     -fx-padding: 0;
-     -fx-background-radius: 50%;
-     -fx-border-color: transparent !important; /* Bordes siempre ocultos */
- }
-
- /* Escalar el texto SIN afectar el tamaño del botón */
- .round-button .text {
-     -fx-scale-x: 2.5; /* 2.5x el tamaño base (14px → ~35px) */
-     -fx-scale-y: 2.5;
- }
-
- /* Efecto hover redondo y color #00B4D8 */
- .round-button:hover {
-     -fx-background-color: #00B4D8 !important;
-     -fx-cursor: hand;
- }
-
-/* Estilos para el botón de play en las celdas */
-.cell-play-button {
+/* Botones y botones redondos que no son reutilizados */
+.menu-button,
+.player-button,
+#empezar,
+#previousButton,
+#playPauseButton,
+#nextButton,
+#shuffleButton,
+.playlist-button {
     -fx-background-color: transparent;
     -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-min-width: 30px;
-    -fx-min-height: 30px;
-    -fx-padding: 0;
-    -fx-border: none;
-}
-
-.cell-play-button:hover {
-    -fx-text-fill: #00aeef;
     -fx-cursor: hand;
 }
 
-/* Estilo para el texto de la canción */
-.song-label {
-    -fx-font-size: 14px;
-    -fx-text-fill: white;
+.menu-button {
+    -fx-font-size: 18;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 8 15;
 }
 
 .menu-button:hover {
@@ -97,359 +96,8 @@
     -fx-text-fill: #000000;
 }
 
-.playlist-button {
-    -fx-background-color: #2D2D2D;
-    -fx-text-fill: #FFFFFF;
-    -fx-background-radius: 5;
-}
-
-.playlist-button:hover {
-    -fx-background-color: #00B4D8;
-}
-
-.separator {
-    -fx-background-color: #333;
-}
-
-/* Content Area */
-.content-area {
-    -fx-background-color: #0A0A0A;
-}
-
-/* Footer Styles */
-.footer {
-    -fx-background-color: #1A1A1A;
-    -fx-padding: 15;
-}
-
-.album-art {
-    -fx-fit-width: 50;
-    -fx-fit-height: 50;
-    -fx-background-radius: 5;
-}
-
-.song-title {
-    -fx-text-fill: #FFFFFF;
-    -fx-font-size: 18;
-}
-
 .player-button {
-    -fx-background-color: transparent;
-    -fx-text-fill: #00B4D8;
-    -fx-font-size: 24;
-}
-
-.player-button:hover {
-    -fx-text-fill: #FFFFFF;
-}
-
-.progress-slider .track {
- -fx-background-color: #404040; /* Color de fondo de la barra */
-    -fx-background-radius: 5px;}
-
-.progress-slider .thumb {
-    -fx-background-color: #00B4D8;
-}
-
-.volume-slider .track {
-    -fx-pref-height: 5;
-    -fx-background-color: #333;
-}
-
-.volume-slider .thumb {
-    -fx-background-color: #00B4D8;
-}
-
-.playlist-header {
-    -fx-padding: 20px;
-    -fx-background-color: #1a1a1a;
-}
-
-.playlist-title {
-    -fx-text-fill: #00aeef;
-    -fx-font-size: 32px;
-    -fx-font-weight: bold;
-}
-
-#image-view {
-    -fx-border-color: #333;
-    -fx-border-width: 1;
-    -fx-border-radius: 5;
-    -fx-padding: 5;
-}
-
-/* Botones de control principales */
-#previousButton,
-#playPauseButton,
-#nextButton,
-#shuffleButton {
-    -fx-background-color: #00aeef;
-    -fx-text-fill: white;
-    -fx-background-radius: 50%;
-    -fx-min-width: 40px;
-    -fx-min-height: 40px;
-    -fx-font-size: 16px;
-    -fx-border-radius: 50%;
-    -fx-border-color: transparent;
-    -fx-cursor: hand;
-}
-
-/* Efecto hover */
-#previousButton:hover,
-#playPauseButton:hover,
-#nextButton:hover,
-#shuffleButton:hover {
-    -fx-background-color: #0099d6;
-    -fx-scale-x: 1.1;
-    -fx-scale-y: 1.1;
-}
-
-/* Barra de progreso */
-.progress-slider .track {
-    -fx-background-color: #404040;
-    -fx-background-radius: 5;
-}
-
-.progress-slider .thumb {
-    -fx-background-color: #00aeef;
-    -fx-pref-height: 12px;
-    -fx-pref-width: 12px;
-    -fx-background-radius: 6px;
-}
-
-
-/* Estilo para la vista de la biblioteca (LibraryView) */
-.library-view {
-    -fx-border-width: 0; /* Quitar borde negro */
-    -fx-padding: 0;       /* Quitar padding extra */
-    -fx-background-color: blue; /* Fondo azul para el ScrollPane */
-}
-
-.tile-pane {
-    -fx-padding: 10px; /* Padding alrededor del TilePane */
-    -fx-background-color: #1C1C1C;
-
-}
-.playlist-title-library{
-
-    -fx-text-fill: #00aeef;
-    -fx-font-size: 26px;
-    -fx-font-weight: bold;
-    -fx-padding: 10px;
-    -fx-background-color: #1C1C1C;
-}
-/* Estilo de los cards */
-/* Estilo de los cards */
-.card {
-    -fx-background-color: #ffffff; /* Fondo blanco para los cards */
-    -fx-border-radius: 10px; /* Bordes redondeados */
-    -fx-padding: 15px; /* Espacio interno dentro del card */
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 10, 0.5, 0, 2); /* Efecto de sombra suave */
-    -fx-min-width: 250px; /* Ancho mínimo de los cards */
-    -fx-max-width: 250px; /* Ancho máximo de los cards */
-    -fx-alignment: CENTER; /* Centra el contenido dentro del card */
-    -fx-border-width: 0; /* Elimina el borde negro */
-}
-
-/* Estilo para los títulos de los cards */
-.card-title {
-    -fx-font-size: 16px; /* Tamaño de fuente */
-    -fx-font-weight: bold; /* Negrita */
-    -fx-text-fill: #333333; /* Color de texto gris oscuro */
-    -fx-padding-bottom: 10px; /* Espacio debajo del título */
-}
-
-/* Estilo para el contenido de los cards */
-.card-content {
-    -fx-font-size: 14px; /* Tamaño de fuente para el contenido */
-    -fx-text-fill: #666666; /* Color de texto gris medio */
-    -fx-line-spacing: 5px; /* Espacio entre líneas del contenido */
-}
-
-/* Estilo del contenedor de los cards (para espacio entre ellos) */
-.card-container {
-    -fx-spacing: 30px; /* Más espacio entre los cards */
-    -fx-alignment: CENTER; /* Centra los cards dentro del contenedor */
-    -fx-wrap-text: true; /* Permite que el texto dentro de los cards se ajuste si es necesario */
-}
-
-/* Si se usa un GridPane para los cards */
-.library-view grid-pane {
-    -fx-hgap: 20px; /* Espacio horizontal entre las celdas */
-    -fx-vgap: 20px; /* Espacio vertical entre las celdas */
-}
-
-.playlist-title2 {
-    -fx-text-fill: #00aeef;
-    -fx-font-size: 16px;
-    -fx-font-weight: bold;
-}
-
-.playlist-description {
-    -fx-text-fill: #ffffff;
-    -fx-font-size: 14px;
-    -fx-wrap-text: true;
-    -fx-line-spacing: 5px;
-}
-
-.song-list {
-    -fx-background-color: transparent;
-}
-
-/* Para las celdas de la playlist (lista de canciones) */
-.song-list .list-cell {
-    -fx-background-color: #2a2a2a;
-    -fx-text-fill: white;
-    -fx-padding: 15px;
-    -fx-border-color: #1a1a1a;
-}
-
-/* Efecto hover: gris clarito casi tenue */
-.song-list .list-cell:hover {
-    -fx-background-color: #f2f2f2;  /* Gris clarito */
-    -fx-text-fill: black;
-}
-
-.playlist-container {
-    -fx-spacing: 10px;
-    -fx-padding: 0 15px;
-}
-
-.playlist-button {
-    -fx-background-color: #2A2A2A;
-    -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-padding: 10px;
-    -fx-border-radius: 5px;
-    -fx-background-radius: 5px;
-    -fx-alignment: CENTER_LEFT;
-}
-
-.playlist-button:hover {
-    -fx-background-color: #3A3A3A;
-    -fx-cursor: hand;
-}
-
-#empezar {
-    -fx-background-color: #00B4D8;
-    -fx-text-fill: white;
-    -fx-font-size: 16px;
-    -fx-padding: 10px 20px;
-    -fx-background-radius: 15px;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 2);
-}
-
-#empezar:hover {
-    -fx-background-color: #1ED760;
-    -fx-cursor: hand;
-}
-
-/* Sliders */
-.progress-slider .thumb {
-    -fx-background-color: #00aeef !important; /* Color azul de tu app */
-    -fx-pref-height: 12px;
-    -fx-pref-width: 12px;
-    -fx-background-radius: 6px;
-}
-
-.volume-slider .track {
-    -fx-background-color: #404040;
-}
-
-.volume-slider .thumb {
-    -fx-background-color: white;
-}
-
-/* Botones */
-.player-button {
-    -fx-background-color: transparent;
-    -fx-text-fill: white;
-    -fx-font-size: 24px;
-    -fx-cursor: hand;
-}
-
-/* Vista de Biblioteca */
-.library-view {
-    -fx-background-color: #1A1A1A;
-
-}
-
-.library-view .scroll-pane {
-    -fx-background-color: transparent;
-}
-
-/* Tarjetas de Playlist */
-.playlist-card {
-    -fx-background-color: #2A2A2A;
-    -fx-background-radius: 10;
-    -fx-padding: 10;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);
-}
-
-.playlist-card:hover {
-    -fx-background-color: #3A3A3A;
-    -fx-cursor: hand;
-}
-
-/* Scrollbar invisible */
-.scroll-pane .scroll-bar:vertical {
-    -fx-opacity: 0;
-    -fx-pref-width: 0;
-}
-
-/* Tamaño compacto para la barra de progreso */
-.progress-slider {
-    -fx-pref-width: 250px;
-    -fx-pref-height: 8px;
-}
-
-/* Efecto hover para tarjetas */
-.playlist-card:hover {
-    -fx-scale-x: 1.02;
-    -fx-scale-y: 1.02;
-    -fx-cursor: hand;
-}
-
-.playlist-image {
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 10, 0, 0, 0);
-}
-
-.playlist-name {
-    -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
-    -fx-wrap-text: true;
-    -fx-text-alignment: center;
-}
-
-/* Scrollbar Invisible */
-.scroll-pane .scroll-bar:vertical,
-.scroll-pane .scroll-bar:horizontal {
-    -fx-opacity: 0;
-    -fx-pref-width: 0;
-    -fx-pref-height: 0;
-}
-
-/* Estilo para la tarjeta de cada playlist */
-.playlist-card {
-    -fx-background-color: #2D2D2D;
-    -fx-background-radius: 10;
-    -fx-padding: 10;
-    -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 5, 0, 0, 2);
-}
-
-/* La imagen de la playlist */
-.playlist-image {
-    -fx-background-radius: 10;
-}
-
-/* El nombre de la playlist */
-.playlist-name {
-    -fx-text-fill: white;
-    -fx-font-size: 16px;
-    -fx-font-weight: bold;
-    -fx-alignment: CENTER;
+    -fx-font-size: 20;
 }
 
 .player-button:hover {
@@ -458,79 +106,111 @@
 
 #empezar {
     -fx-background-color: #1DB954;
-    -fx-text-fill: white;
-    -fx-font-size: 18px;
-    -fx-padding: 12px 24px;
-    -fx-background-radius: 25px;
+    -fx-font-size: 16px;
+    -fx-padding: 10px 20px;
+    -fx-background-radius: 20px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 2);
 }
 
 #empezar:hover {
     -fx-background-color: #1ED760;
 }
 
-.playlist-view {
-    -fx-border-width: 0; /* Elimina cualquier borde */
-    -fx-background-color: transparent; /* Elimina el fondo */
-}
-
-.playlist-view .viewport {
-    -fx-background-color: transparent; /* Asegura que el fondo dentro del ScrollPane sea transparente */
-}
-
-.playlist-view .image-view {
-    -fx-shape: "M 0,0 L 1,0 L 1,1 L 0,1 Z";
-    -fx-background-radius: 20px;  /* Ajusta el valor según el grado de redondeo que desees */
-    -fx-clip: "M 0,0 A 20,20 0 1,0 20,0 L 20,20 L 0,20 Z";  /* Esto también redondea las esquinas */
-}
-
-.playlist-view .scroll-bar {
-    -fx-background-color: transparent; /* Elimina el fondo del ScrollBar */
-}
-
-.playlist-view .corner {
-    -fx-background-color: transparent; /* Elimina el borde de la esquina si está presente */
-}
-#lblNombre {
-    -fx-text-fill: #00B4D8;
-    -fx-font-size: 18px;
-    -fx-font-weight: bold;
-    -fx-wrap-text: true;
-    -fx-text-alignment: center;
-}
-
-/* Título en azul */
-.titulo-texto {
-
-    -fx-font-size: 30px;
-    -fx-alignment: CENTER;
-    -fx-font-weight: bold;
-    -fx-text-fill: #00B4D8;
-    -fx-text-alignment: center;
-    -fx-line-spacing: 5px;
-    -fx-padding: 5px;
-}
-
-/* Texto adicional en blanco */
-.bienvenida-texto {
-
-
+#previousButton,
+#playPauseButton,
+#nextButton,
+#shuffleButton {
     -fx-font-size: 16px;
-    -fx-text-fill: white;
-    -fx-alignment: CENTER;
-    -fx-line-spacing: 5px;
-    -fx-padding: 5px;
+}
 
+/* Botón dentro de celdas de lista (no usado en vistas anteriores) */
+.cell-play-button {
+    -fx-font-size: 12px;
+    -fx-min-width: 25px;
+    -fx-min-height: 25px;
+    -fx-padding: 0;
+    -fx-border: none;
+}
+
+.cell-play-button:hover {
+    -fx-text-fill: #00aeef;
+}
+
+/* Sliders */
+.progress-slider {
+    -fx-pref-width: 200px;
+    -fx-pref-height: 6px;
+}
+
+.progress-slider .track {
+    -fx-background-color: #404040;
+    -fx-background-radius: 4;
+}
+
+.progress-slider .thumb {
+    -fx-background-color: #00aeef !important;
+    -fx-pref-height: 10px;
+    -fx-pref-width: 10px;
+    -fx-background-radius: 5px;
+}
+
+.volume-slider .track {
+    -fx-pref-height: 4;
+    -fx-background-color: #333;
+}
+
+.volume-slider .thumb {
+    -fx-background-color: #00B4D8;
+}
+
+/* Estilos de texto */
+#lblNombre,
+.titulo-texto {
+    -fx-text-fill: #00B4D8;
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+    -fx-wrap-text: true;
+}
+
+#lblNombre {
+    -fx-font-size: 16px;
+}
+
+.titulo-texto {
+    -fx-font-size: 26px;
+    -fx-alignment: CENTER;
+    -fx-line-spacing: 4px;
+    -fx-padding: 5px;
+}
+
+.bienvenida-texto,
+.bienvenida-texto2 {
+    -fx-font-size: 14px;
+    -fx-text-fill: white;
+    -fx-line-spacing: 4px;
+    -fx-padding: 4px;
+    -fx-alignment: CENTER;
 }
 
 .bienvenida-texto2 {
-    -fx-font-size: 16px;
-    -fx-text-fill: white;
     -fx-font-family: "Arial", sans-serif;
-    -fx-line-spacing: 5px; /* Espaciado entre líneas */
-    -fx-alignment: CENTER; /* Alineación del texto */
-    -fx-padding: 10px;
-    -fx-wrap-text: true; /* Habilitar el ajuste de texto */
-    -fx-text-alignment: center; /* Alineación del texto dentro de cada Text */
-    -fx-min-width: 300px; /* Anchura mínima para que el texto no se quede demasiado estrecho */
-    -fx-max-width: 600px; /* Anchura máxima para controlar el diseño */
+    -fx-min-width: 280px;
+    -fx-max-width: 500px;
+}
+
+.separator {
+    -fx-background-color: #333;
+}
+
+.album-art {
+    -fx-fit-width: 45;
+    -fx-fit-height: 45;
+    -fx-background-radius: 5;
+}
+
+#image-view {
+    -fx-border-color: #333;
+    -fx-border-width: 1;
+    -fx-border-radius: 5;
+    -fx-padding: 5;
 }

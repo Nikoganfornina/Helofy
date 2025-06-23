@@ -7,7 +7,12 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.example.helofy.utils.ImageLoader;
-
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.control.ScrollPane;
+import javafx.util.Duration;
 public class HelofyMain extends Application {
 
     @Override
@@ -19,12 +24,14 @@ public class HelofyMain extends Application {
         primaryStage.getIcons().add(ImageLoader.loadAppLogo());
         primaryStage.setTitle("Helofy Music Player");
 
+
         primaryStage.setResizable(false);
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
 
     }
+
 
     public static void main(String[] args) {
         launch(args);

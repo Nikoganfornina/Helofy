@@ -107,7 +107,7 @@ public class EditPlaylistController {
     }
 
     private void applyRoundedImageClip() {
-        Rectangle clip = new Rectangle(200, 200);
+        Rectangle clip = new Rectangle(150, 150);
         clip.setArcWidth(30);
         clip.setArcHeight(30);
         playlistImage.setClip(clip);

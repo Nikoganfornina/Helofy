@@ -31,7 +31,6 @@ public class HelofyMainController {
     @FXML private Button shuffleButton;
     @FXML private ImageView headerImage;
     @FXML private ImageView imagenBienvenida ;
-    @FXML private ImageView imagenBienvenida2 ;
     @FXML private Button createPlaylistButton;
 
 
@@ -54,30 +53,21 @@ public class HelofyMainController {
     // Metodo para redondear las 2 Imagenes de la bienvenida
 
     private void ImagenBienvenida() {
-        imagenBienvenida.setImage(new Image(getClass().getResource("/org/example/helofy/styles/logoapp.png").toExternalForm()));
-        imagenBienvenida2.setImage(new Image(getClass().getResource("/org/example/helofy/styles/nikologo.jpeg").toExternalForm()));
+        imagenBienvenida.setImage(new Image(getClass().getResource("/org/example/helofy/styles/welcome.png").toExternalForm()));
 
+        // Ajustar ancho fijo y mantener proporción (alto se ajusta solo)
 
-        imagenBienvenida.setFitWidth(150);
-        imagenBienvenida.setFitHeight(150);
         imagenBienvenida.setPreserveRatio(true);
 
+        // Como el alto varía según la proporción, obtenemos el alto real mostrado:
+        imagenBienvenida.layoutBoundsProperty().addListener((obs, oldVal, newVal) -> {
+            double width = newVal.getWidth();
+            double height = newVal.getHeight();
 
-        imagenBienvenida2.setFitWidth(150);
-        imagenBienvenida2.setFitHeight(150);
-        imagenBienvenida2.setPreserveRatio(true);
 
-        Rectangle clip1 = new Rectangle(150, 150);
-        clip1.setArcWidth(30);
-        clip1.setArcHeight(30);
-        imagenBienvenida.setClip(clip1);
-
-        Rectangle clip2 = new Rectangle(150, 150);
-        clip2.setArcWidth(30);
-        clip2.setArcHeight(30);
-        imagenBienvenida2.setClip(clip2);
-
+        });
     }
+
 
     private void configureMusicPlayer() {
         musicPlayer.setOnSongChanged(song -> {

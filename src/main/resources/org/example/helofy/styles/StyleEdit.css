@@ -11,8 +11,51 @@ body {
 
 /* Fondo general */
 AnchorPane {
-    -fx-background-color: #121212;
+    -fx-background-color:  #1C1C1C;
 }
+
+
+/* Scrollbar vertical */
+.scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 12px; /* ancho scrollbar */
+}
+
+.scroll-bar:vertical .track {
+    -fx-background-color: #222; /* fondo track */
+    -fx-background-radius: 6px;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #00B4D8;
+    -fx-background-radius: 6px;
+}
+
+/* Efecto hover para la thumb */
+.scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #008bbd;
+}
+
+/* Scrollbar horizontal */
+.scroll-bar:horizontal {
+    -fx-background-color: transparent;
+    -fx-pref-height: 12px; /* alto scrollbar */
+}
+
+.scroll-bar:horizontal .track {
+    -fx-background-color: #222;
+    -fx-background-radius: 6px;
+}
+
+.scroll-bar:horizontal .thumb {
+    -fx-background-color: #00B4D8;
+    -fx-background-radius: 6px;
+}
+
+.scroll-bar:horizontal .thumb:hover {
+    -fx-background-color: #008bbd;
+}
+
 
 /* Título */
 .title-label {

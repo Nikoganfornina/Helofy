@@ -4,66 +4,66 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="532.0" prefWidth="870.0" stylesheets="@../styles/StyleEdit.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.12" fx:controller="org.example.helofy.controllers.EditPlaylistController">
-    <HBox layoutX="20" layoutY="20" spacing="20">
+<AnchorPane prefHeight="561.0" prefWidth="845.0" stylesheets="@../styles/StyleEdit.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.helofy.controllers.EditPlaylistController">
+    <HBox layoutX="20.0" prefHeight="557.0" prefWidth="815.0">
         <!-- Columna 1 -->
-        <VBox alignment="CENTER_LEFT" prefWidth="380" spacing="15">
+        <VBox alignment="TOP_LEFT" prefHeight="607.0" prefWidth="346.0">
             <Label styleClass="title-label" text="Editar Playlist" />
 
             <!-- Selector de Playlist -->
-            <HBox alignment="CENTER_LEFT" spacing="10">
+            <HBox alignment="CENTER_LEFT">
                 <Label text="Seleccionar playlist:" />
                 <ComboBox fx:id="playlistSelector" prefWidth="200" />
             </HBox>
 
             <!-- Botón Eliminar Playlist -->
             <HBox alignment="CENTER_LEFT">
-                <Button fx:id="deletePlaylistButton" styleClass="blue-button" text="Eliminar Playlist" prefWidth="200"/>
+                <Button fx:id="deletePlaylistButton" prefHeight="40.0" prefWidth="348.0" styleClass="blue-button" text="Eliminar Playlist" />
             </HBox>
 
             <!-- Imagen Playlist -->
             <HBox alignment="CENTER">
-                <ImageView fx:id="playlistImage" fitHeight="200" fitWidth="200" styleClass="playlist-image" />
+                <ImageView fx:id="playlistImage" fitHeight="150.0" fitWidth="150.0" styleClass="playlist-image" />
             </HBox>
 
             <!-- Botón Cambiar Imagen -->
             <HBox alignment="CENTER">
-                <Button fx:id="changeImageButton" styleClass="blue-button" text="Cambiar imagen" prefWidth="200"/>
+                <Button fx:id="changeImageButton" prefHeight="40.0" prefWidth="340.0" styleClass="blue-button" text="Cambiar imagen" />
             </HBox>
 
             <!-- Campo Nombre -->
-            <HBox alignment="CENTER_LEFT" spacing="10">
-                <Label text="Nombre:" />
+            <HBox alignment="CENTER_LEFT">
+                <Label prefHeight="17.0" prefWidth="106.0" text="Nombre:" />
                 <TextField fx:id="playlistNameField" prefWidth="300" styleClass="text-field" />
             </HBox>
             
             <!-- Campo Descripción -->
-            <HBox alignment="CENTER_LEFT" spacing="10">
-                <Label text="Descripción:" />
+            <HBox alignment="CENTER_LEFT">
+                <Label prefHeight="17.0" prefWidth="110.0" text="Descripción:" />
                 <TextField fx:id="playlistDescriptionField" prefWidth="300" styleClass="text-field" />
             </HBox>
         </VBox>
 
 
         <!-- Columna 2 -->
-        <VBox alignment="TOP_LEFT" prefWidth="380" spacing="5">
+        <VBox alignment="TOP_LEFT" prefHeight="557.0" prefWidth="485.0">
             <Label styleClass="songs-label" text="Canciones en la playlist:" />
 
-            <ListView fx:id="songListView" prefHeight="235.0" prefWidth="340.0" styleClass="list-view" />
+            <ListView fx:id="songListView" prefHeight="165.0" prefWidth="400.0" styleClass="list-view" />
 
             <!-- Botones de gestión de canciones -->
-            <HBox alignment="CENTER" spacing="15">
+            <HBox alignment="CENTER">
                 <Button fx:id="addSongsButton" styleClass="blue-button" text="Añadir canciones" />
             </HBox>
 
 
 
 
-            <HBox alignment="CENTER" spacing="15">
+            <HBox alignment="CENTER">
                 <Button fx:id="saveChangesButton" styleClass="blue-button" text="Guardar cambios" />
             </HBox>
 
-            <HBox alignment="CENTER" spacing="15">
+            <HBox alignment="CENTER">
                 <Button fx:id="removeSongButton" styleClass="blue-button" text="Eliminar canción seleccionada" />
             </HBox>
 

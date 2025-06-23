@@ -8,7 +8,7 @@
       xmlns:fx="http://javafx.com/fxml/1"
       spacing="10"
       styleClass="song-item"
-      stylesheets="@../styles/Style.css"
+      stylesheets="@../styles/StyleSongItem.css"
 >
 
     <Label fx:id="songTitle" styleClass="song-title"/>

@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<ScrollPane  fx:id="scroll"  fitToWidth="true" hbarPolicy="NEVER"  prefHeight="532.0" prefWidth="870.0" styleClass="library-view" stylesheets="@../styles/StyleLibrary.css" vbarPolicy="AS_NEEDED" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.helofy.controllers.LibraryViewController">
+<ScrollPane   fitToWidth="true" hbarPolicy="NEVER"  prefHeight="532.0" prefWidth="870.0" styleClass="library-view" stylesheets="@../styles/StyleLibrary.css" vbarPolicy="AS_NEEDED" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.helofy.controllers.LibraryViewController">
 
 
     <content>

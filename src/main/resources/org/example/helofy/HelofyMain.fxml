@@ -4,7 +4,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="rootPane" prefHeight="700" prefWidth="1200" stylesheets="@styles/Style.css"
+<BorderPane fx:id="rootPane" prefHeight="750" prefWidth="1300" stylesheets="@styles/Style.css"
             xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="org.example.helofy.controllers.HelofyMainController">
 
@@ -38,13 +38,13 @@
     <!-- Menú lateral derecho -->
     <right>
         <VBox prefHeight="118.0" prefWidth="200.0" styleClass="side-menu">
-            <Button fx:id="createPlaylistButton" mnemonicParsing="false" styleClass="menu-button" text="Crear Playlist"
-                    onAction="#handleCreatePlaylistClick"/>
+            <Button fx:id="createPlaylistButton" mnemonicParsing="false" onAction="#handleCreatePlaylistClick"
+                    styleClass="menu-button" text="Crear Playlist"/>
             <Separator styleClass="separator"/>
-            <Button fx:id="editPlaylistButton" mnemonicParsing="false" styleClass="menu-button" text="Editar Playlist"
-                    onAction="#handleEditPlaylistClick"/>
+            <Button fx:id="editPlaylistButton" mnemonicParsing="false" onAction="#handleEditPlaylistClick"
+                    styleClass="menu-button" text="Editar Playlist"/>
             <Separator styleClass="separator"/>
-            <Button fx:id="createSuperPlaylistButton" onAction="#handleSuperPlayListlick" mnemonicParsing="false"
+            <Button fx:id="createSuperPlaylistButton" mnemonicParsing="false" onAction="#handleSuperPlayListlick"
                     styleClass="menu-button" text="Super PlayList"/>
             <Separator styleClass="separator"/>
             <Button fx:id="settingsButton" mnemonicParsing="false" styleClass="menu-button" text="Ajustes"/>
@@ -58,41 +58,19 @@
         <StackPane fx:id="contentArea" styleClass="content-area">
 
             <!-- Contenedor vertical para el título, imagen y texto -->
-            <VBox alignment="BASELINE_CENTER" prefHeight="446.0" prefWidth="809.0">
+            <VBox alignment="CENTER" prefHeight="446.0" prefWidth="809.0" spacing="15">
 
-                <!-- Título azul -->
-                <Label prefHeight="56.0" prefWidth="682.0" styleClass="titulo-texto">
-                    Bienvenido a Helofy !
-                </Label>
 
-                <Label styleClass="bienvenida-texto">
-                    La app de música para DJs definitiva
-                </Label>
-                <Label prefHeight="38.0" prefWidth="292.0" styleClass="bienvenida-texto">
-                    Personaliza tus playlist de manera local
-                </Label>
-                <Label prefHeight="38.0" prefWidth="244.0" styleClass="bienvenida-texto">
-                    tus propias imágenes de portada
-                </Label>
-                <Label prefHeight="37.0" prefWidth="198.0" styleClass="bienvenida-texto">
-                    todo personalizable para ti
-                </Label>
-                <Label prefHeight="41.0" prefWidth="359.0" styleClass="bienvenida-texto">
-                    Playlists, SuperPlaylists y mucho más con Helofy
-                </Label>
 
-                <HBox alignment="CENTER" prefHeight="205.0" prefWidth="809.0" spacing="20">
-                    <!-- Imagen centrada -->
-                    <ImageView fx:id="imagenBienvenida" fitHeight="150" fitWidth="150"/>
+                    <ImageView  fx:id="imagenBienvenida" fitHeight="350.0" fitWidth="750.0"/>
 
-                    <ImageView fx:id="imagenBienvenida2" fitHeight="150" fitWidth="150"/>
 
-                </HBox>
 
                 <Label styleClass="bienvenida-texto">
-                    Sígueme Instagram y GitHub: @nikoganfornina
+                    Follow me on Instagram and GitHub: @nikoganfornina
                 </Label>
             </VBox>
+
 
         </StackPane>
     </center>

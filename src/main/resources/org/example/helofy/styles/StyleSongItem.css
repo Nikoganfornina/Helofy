@@ -1,0 +1,16 @@
+.song-title {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 16;
+}
+
+.song-duration {
+    -fx-text-fill: #CCCCCC;
+    -fx-font-size: 12px;
+    -fx-alignment: center-right;
+}
+
+.song-item {
+    -fx-padding: 5px;
+    -fx-background-color: transparent;
+    -fx-alignment: center-left;
+}

@@ -11,7 +11,7 @@ body {
 
 /* Fondo general */
 AnchorPane {
-    -fx-background-color: #121212;
+    -fx-background-color:  #1C1C1C;
 }
 
 /* Título */
@@ -78,6 +78,7 @@ ListView {
     -fx-font-size: 18px;
     -fx-text-fill: white;
     -fx-padding: 10px;
+    -fx-padding: 10px;
 }
 
 /* Alineación de los VBox y HBox */
@@ -96,7 +97,7 @@ HBox {
     -fx-border-radius: 8px;
     -fx-border-color: #333;
     -fx-border-width: 2px;
-    -fx-background-color: #2c2c2c;
+    -fx-background-color: white;
     -fx-padding: 10px;
 }
 

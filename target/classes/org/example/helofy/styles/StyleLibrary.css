@@ -1,0 +1,26 @@
+.library-view {
+    -fx-background-color: #1A1A1A;
+    -fx-border-width: 0;
+    -fx-padding: 0;
+}
+
+.playlist-title-library {
+    -fx-font-size: 30px;
+    -fx-text-fill: #00aeef;
+    -fx-font-weight: bold;
+    -fx-padding: 8px;
+    -fx-background-color: #1C1C1C;
+}
+
+.tile-pane {
+    -fx-padding: 8px;
+    -fx-background-color: #1C1C1C;
+    -fx-alignment: center; /* <- añade esto */
+}
+
+.scroll-pane .scroll-bar:vertical,
+.scroll-pane .scroll-bar:horizontal {
+    -fx-opacity: 0;
+    -fx-pref-width: 0;
+    -fx-pref-height: 0;
+}
