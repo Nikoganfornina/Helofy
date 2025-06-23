@@ -8,12 +8,12 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Rectangle;
 import org.example.helofy.model.Song;
 import org.example.helofy.utils.ImageLoader;
 import org.example.helofy.utils.MusicPlayer;
 import org.example.helofy.model.Playlist;
 import org.example.helofy.utils.Rounded;
+
 import java.io.IOException;
 import java.util.Objects;
 
@@ -30,12 +30,15 @@ public class HelofyMainController {
     @FXML private ImageView songImage;
     @FXML private Button shuffleButton;
     @FXML private ImageView headerImage;
-    @FXML private ImageView imagenBienvenida ;
+    @FXML private ImageView imagenBienvenida;
     @FXML private Button createPlaylistButton;
 
+    @FXML private Label lblTiempoTranscurrido;
+    @FXML private Label lblTiempoRestante;
 
     private final MusicPlayer musicPlayer = new MusicPlayer();
     private boolean isDraggingProgress = false;
+    private double duracionTotalSegundos = 0;
 
     @FXML
     public void initialize() {
@@ -43,31 +46,15 @@ public class HelofyMainController {
         setupControls();
         setupVolumePersistente();
 
-
         headerImage.setImage(ImageLoader.loadAppLogo2());
-        Rounded.applyRoundedClip(headerImage, 15.0); // ✅ Forma correcta
+        Rounded.applyRoundedClip(headerImage, 15.0);
         ImagenBienvenida();
-
     }
-
-    // Metodo para redondear las 2 Imagenes de la bienvenida
 
     private void ImagenBienvenida() {
         imagenBienvenida.setImage(new Image(getClass().getResource("/org/example/helofy/styles/welcome.png").toExternalForm()));
-
-        // Ajustar ancho fijo y mantener proporción (alto se ajusta solo)
-
         imagenBienvenida.setPreserveRatio(true);
-
-        // Como el alto varía según la proporción, obtenemos el alto real mostrado:
-        imagenBienvenida.layoutBoundsProperty().addListener((obs, oldVal, newVal) -> {
-            double width = newVal.getWidth();
-            double height = newVal.getHeight();
-
-
-        });
     }
-
 
     private void configureMusicPlayer() {
         musicPlayer.setOnSongChanged(song -> {
@@ -76,41 +63,63 @@ public class HelofyMainController {
                     songName.setText(song.getTitle());
                     songArtist.setText(musicPlayer.getCurrentPlaylistName());
                     loadSongCover(song);
+
+                    // Ya no seteamos duracionTotalSegundos aquí
+                    // ni max slider, porque lo hacemos en onDurationChanged
+                    lblTiempoTranscurrido.setText("0:00");
+                    lblTiempoRestante.setText("-0:00");
+
                     selectCurrentSongInListView(song);
                 } else {
                     resetSongInfo();
+                    duracionTotalSegundos = 0;
+                    progressSlider.setMax(1);
+                    lblTiempoTranscurrido.setText("0:00");
+                    lblTiempoRestante.setText("-0:00");
                 }
+            });
+        });
+
+        musicPlayer.setOnDurationChanged(duracion -> {
+            Platform.runLater(() -> {
+                duracionTotalSegundos = duracion;
+                progressSlider.setMax(duracionTotalSegundos);
+                lblTiempoRestante.setText("-" + formatearTiempo(duracionTotalSegundos));
             });
         });
 
         musicPlayer.setOnProgressChanged(progress -> {
             Platform.runLater(() -> {
-                if (!isDraggingProgress) {
-                    progressSlider.setValue(progress * 100);
+                if (!isDraggingProgress && duracionTotalSegundos > 0) {
+                    double tiempoActual = progress * duracionTotalSegundos;
+                    if (tiempoActual > duracionTotalSegundos) tiempoActual = duracionTotalSegundos;
+
+                    progressSlider.setValue(tiempoActual);
+                    lblTiempoTranscurrido.setText(formatearTiempo(tiempoActual));
+                    lblTiempoRestante.setText("-" + formatearTiempo(duracionTotalSegundos - tiempoActual));
                 }
             });
         });
 
-        musicPlayer.setOnSongFinished(() -> {
-            Platform.runLater(() -> musicPlayer.nextSong());
-        });
+        musicPlayer.setOnSongFinished(() -> Platform.runLater(() -> musicPlayer.nextSong()));
 
-        musicPlayer.setOnPlayingStatusChanged(isPlaying -> {
-            Platform.runLater(() -> playPauseButton.setText(isPlaying ? "⏸" : "▶"));
-        });
+        musicPlayer.setOnPlayingStatusChanged(isPlaying -> Platform.runLater(() -> playPauseButton.setText(isPlaying ? "⏸" : "▶")));
     }
 
     private void setupControls() {
-        volumeSlider.valueProperty().addListener((obs, oldVal, newVal) ->
-                musicPlayer.setVolume(newVal.doubleValue())
-        );
+        volumeSlider.valueProperty().addListener((obs, oldVal, newVal) -> musicPlayer.setVolume(newVal.doubleValue()));
 
         progressSlider.setOnMousePressed(e -> isDraggingProgress = true);
+
         progressSlider.setOnMouseDragged(e -> {
             if (musicPlayer.getCurrentSong() != null) {
-                musicPlayer.seek(progressSlider.getValue() / 100);
+                double valor = progressSlider.getValue();
+                lblTiempoTranscurrido.setText(formatearTiempo(valor));
+                lblTiempoRestante.setText("-" + formatearTiempo(duracionTotalSegundos - valor));
+                musicPlayer.seek(valor / duracionTotalSegundos);
             }
         });
+
         progressSlider.setOnMouseReleased(e -> isDraggingProgress = false);
 
         playPauseButton.setOnAction(e -> togglePlayback());
@@ -121,7 +130,7 @@ public class HelofyMainController {
 
     private void setupVolumePersistente() {
         volumeSlider.setValue(musicPlayer.getVolume());
-        Rounded.applyRoundedClip(songImage, 10.0); // ✅
+        Rounded.applyRoundedClip(songImage, 10.0);
     }
 
     public void setCenterContent(String fxmlPath) {
@@ -129,9 +138,12 @@ public class HelofyMainController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent content = loader.load();
 
-            if (fxmlPath.contains("LibraryView")) {
-                LibraryViewController controller = loader.getController();
-                controller.setMainController(this);
+            Object controller = loader.getController();
+
+            if (controller instanceof LibraryViewController) {
+                ((LibraryViewController) controller).setMainController(this);
+            } else if (controller instanceof SuperPlaylistController) {
+                ((SuperPlaylistController) controller).setMainController(this);
             }
 
             contentArea.getChildren().setAll(content);
@@ -205,7 +217,6 @@ public class HelofyMainController {
         ListView<Song> listaCanciones = (ListView<Song>) currentContent.lookup("#listaCanciones");
 
         if (listaCanciones != null && currentSong != null) {
-            // Busca por filePath en lugar de por índice
             for (int i = 0; i < listaCanciones.getItems().size(); i++) {
                 Song song = listaCanciones.getItems().get(i);
                 if (song.getFilePath().equals(currentSong.getFilePath())) {
@@ -220,10 +231,10 @@ public class HelofyMainController {
         }
     }
 
-    private void updateProgress(double progress) {
-        Platform.runLater(() -> {
-            if (!isDraggingProgress) progressSlider.setValue(progress * 100);
-        });
+    private String formatearTiempo(double segundos) {
+        int mins = (int) segundos / 60;
+        int segs = (int) segundos % 60;
+        return String.format("%d:%02d", mins, segs);
     }
 
     @FXML
@@ -263,14 +274,14 @@ public class HelofyMainController {
     private void handleCreatePlaylistClick() {
         setCenterContent("/org/example/helofy/views/CreatePlaylistView.fxml");
     }
-    @FXML
-    private void handleEditPlaylistClick(){
-        setCenterContent("/org/example/helofy/views/EditPlaylistView.fxml");
 
+    @FXML
+    private void handleEditPlaylistClick() {
+        setCenterContent("/org/example/helofy/views/EditPlaylistView.fxml");
     }
+
     @FXML
     private void handleSuperPlayListlick() {
-
         setCenterContent("/org/example/helofy/views/SuperPlayListView.fxml");
     }
 }

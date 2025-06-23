@@ -136,11 +136,7 @@
     -fx-text-fill: #00aeef;
 }
 
-/* Sliders */
-.progress-slider {
-    -fx-pref-width: 200px;
-    -fx-pref-height: 6px;
-}
+
 
 .progress-slider .track {
     -fx-background-color: #404040;

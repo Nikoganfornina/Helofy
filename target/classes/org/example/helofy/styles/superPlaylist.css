@@ -23,6 +23,18 @@
     -fx-border-radius: 15px;
     -fx-border-width: 2px;
 }
+.super-button {
+    -fx-background-color: #00B4D8;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20px;
+    -fx-padding: 8 20;
+    -fx-font-size: 14px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 6, 0.3, 0, 1.5);
+}
+.super-button:hover {
+    -fx-background-color: #30D8FF;
+}
 
 /* ScrollPane transparente */
 .playlist-scroll {

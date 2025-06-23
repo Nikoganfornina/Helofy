@@ -173,7 +173,6 @@ public class SuperPlaylistController {
         );
         superPlaylist.getSongs().addAll(p2.getSongs());
         superPlaylist.getSongs().addAll(p3.getSongs());
-        superPlaylist.setIsSuperPlaylist(true); // Marcamos que es superplaylist
 
         if (mainController != null) {
             mainController.loadPlaylistView(superPlaylist);

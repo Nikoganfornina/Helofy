@@ -37,6 +37,11 @@ public class MusicPlayer {
         stop();
         currentIndex = index;
         internalPlaySong();
+
+        // En el método playSong(int index), añade al final:
+        Platform.runLater(() -> {
+            if (onSongChanged != null) onSongChanged.accept(getCurrentSong());
+        });
     }
 
     private void internalPlaySong() {

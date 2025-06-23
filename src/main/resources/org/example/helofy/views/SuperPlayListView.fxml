@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="superPlaylistRoot" prefHeight="532.0" prefWidth="870.0" styleClass="super-playlist" stylesheets="@../styles/superPlaylist.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.12" fx:controller="org.example.helofy.controllers.SuperPlaylistController">
+<AnchorPane fx:id="superPlaylistRoot" prefHeight="532.0" prefWidth="870.0" styleClass="super-playlist" stylesheets="@../styles/superPlaylist.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.helofy.controllers.SuperPlaylistController">
 
     <!-- Título -->
     <Label layoutX="320.0" layoutY="20.0" styleClass="main-title" text="Crea tu Super Playlists" />
@@ -20,4 +20,5 @@
         <HBox fx:id="playlistCardContainer" spacing="15.0" />
     </ScrollPane>
 
+    <Button fx:id="createButton" layoutX="375.0" layoutY="523.0" onAction="#crearSuperPlaylist" prefHeight="35.0" prefWidth="101.0" styleClass="super-button" text="Crear" />
 </AnchorPane>

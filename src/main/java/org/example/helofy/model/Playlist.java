@@ -8,6 +8,7 @@ public class Playlist {
     private String description ;
     private String coverPath;
     private List<Song> songs;
+    private Boolean isSuperPlaylist ;
 
     // Constructor actualizado
     public Playlist(String name, boolean favorite, String description, String coverPath, List<Song> songs) {
@@ -16,8 +17,16 @@ public class Playlist {
         this.description = description;
         this.coverPath = coverPath;
         this.songs = songs;
+        this.isSuperPlaylist = false;
     }
 
+    public Playlist(String name, boolean favorite, String description, List<Song> songs) {
+        this.name = name;
+        this.favorite = favorite;
+        this.description = description;
+        this.songs = songs;
+        this.isSuperPlaylist = false;
+    }
 
 
     // Getters
@@ -39,6 +48,14 @@ public class Playlist {
 
     public List<Song> getSongs() {
         return songs;
+    }
+
+    public Boolean getIsSuperPlaylist() {
+        return isSuperPlaylist;
+    }
+
+    public void setIsSuperPlaylist(Boolean isSuperPlaylist) {
+        this.isSuperPlaylist = isSuperPlaylist;
     }
 
     // Setters

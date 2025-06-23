@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 
 <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" prefHeight="532.0" prefWidth="870.0" styleClass="playlist-view" stylesheets="@../styles/StylePlaylistView.css" vbarPolicy="AS_NEEDED" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.helofy.controllers.PlaylistViewController">
-    <VBox fx:id="vboxContainer" prefHeight="675.0" prefWidth="870.0" spacing="20" styleClass="playlist-view">
+    <VBox fx:id="vboxContainer" prefHeight="583.0" prefWidth="870.0" spacing="20" styleClass="playlist-view">
         <!-- Ajustamos la altura del primer HBox para hacerlo más pequeño -->
         <Label prefHeight="20.0" prefWidth="30.0" />
 
@@ -39,6 +39,6 @@
 
 
 
-        <ListView fx:id="listaCanciones" prefHeight="400.0" prefWidth="870.0" styleClass="song-list" />
+        <ListView fx:id="listaCanciones" prefHeight="267.0" prefWidth="870.0" styleClass="song-list" />
     </VBox>
 </ScrollPane>

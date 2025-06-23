@@ -10,6 +10,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import org.example.helofy.model.Playlist;
 import org.example.helofy.model.Song;
+
 import java.io.File;
 import java.util.*;
 import java.util.function.Consumer;
@@ -25,6 +26,7 @@ public class MusicPlayer {
     private Consumer<Double> onProgressChanged;
     private Consumer<Song> onSongChanged;
     private Runnable onSongFinished;
+    private Consumer<Double> onDurationChanged;  // <-- NUEVO
     private double lastVolume = 1.0;
 
     public void playSong(Song song) {
@@ -38,7 +40,6 @@ public class MusicPlayer {
         currentIndex = index;
         internalPlaySong();
 
-        // En el método playSong(int index), añade al final:
         Platform.runLater(() -> {
             if (onSongChanged != null) onSongChanged.accept(getCurrentSong());
         });
@@ -55,10 +56,15 @@ public class MusicPlayer {
             mediaPlayer.setVolume(lastVolume);
 
             mediaPlayer.setOnReady(() -> {
-                mediaPlayer.play();
-                playing.set(true);
-                startProgressTracking();
-                if (onSongChanged != null) Platform.runLater(() -> onSongChanged.accept(song));
+                Platform.runLater(() -> {
+                    double duracion = mediaPlayer.getMedia().getDuration().toSeconds();
+                    if (onDurationChanged != null) onDurationChanged.accept(duracion);
+
+                    mediaPlayer.play();
+                    playing.set(true);
+                    startProgressTracking();
+                    if (onSongChanged != null) onSongChanged.accept(song);
+                });
             });
 
             mediaPlayer.setOnEndOfMedia(() -> {
@@ -132,7 +138,9 @@ public class MusicPlayer {
 
     private void updateProgress() {
         if (mediaPlayer != null && onProgressChanged != null) {
-            double progress = mediaPlayer.getCurrentTime().toSeconds() / mediaPlayer.getMedia().getDuration().toSeconds();
+            double durationSeconds = mediaPlayer.getMedia().getDuration().toSeconds();
+            if (durationSeconds <= 0) return;
+            double progress = mediaPlayer.getCurrentTime().toSeconds() / durationSeconds;
             Platform.runLater(() -> onProgressChanged.accept(progress));
         }
     }
@@ -156,7 +164,6 @@ public class MusicPlayer {
         if (shuffle.get()) Collections.shuffle(this.playlist);
     }
 
-
     // Setters para listeners
     public void setOnProgressChanged(Consumer<Double> listener) { this.onProgressChanged = listener; }
     public void setOnSongChanged(Consumer<Song> listener) { this.onSongChanged = listener; }
@@ -164,6 +171,7 @@ public class MusicPlayer {
     public void setOnPlayingStatusChanged(Consumer<Boolean> listener) {
         playing.addListener((obs, oldVal, newVal) -> listener.accept(newVal));
     }
+    public void setOnDurationChanged(Consumer<Double> listener) { this.onDurationChanged = listener; }  // <-- NUEVO
 
     // ======================== SEEK ========================
     public void seek(double position) {
@@ -174,8 +182,7 @@ public class MusicPlayer {
         }
     }
 
-
-    // Getters
+    // Getters y setters
     public double getVolume() { return mediaPlayer != null ? mediaPlayer.getVolume() : lastVolume; }
     public void setVolume(double volume) {
         lastVolume = volume;
