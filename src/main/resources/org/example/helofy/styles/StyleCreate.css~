@@ -85,10 +85,10 @@
 }
 .text-area {
     -fx-background-color: #1f1f1f;
+    -fx-border-color: #333333;
     -fx-padding: 10;
-    -fx-prompt-text-fill: #888888;
+    -fx-prompt-text-fill: white;
     -fx-font-size: 14px;
-    -fx-text-fill: white;
 }
 
 .text-area .content {

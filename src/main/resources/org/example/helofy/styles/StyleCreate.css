@@ -39,16 +39,7 @@
     -fx-font-size: 14px;
 }
 
-.text-area {
-    -fx-background-color: #1f1f1f;
-    -fx-background-radius: 10;
-    -fx-border-radius: 10;
-    -fx-border-color: #333333;
-    -fx-border-width: 1;
-    -fx-padding: 10;
-    -fx-prompt-text-fill: #888888;
-    -fx-font-size: 14px;
-}
+
 
 .add-button, .create-button {
     -fx-background-color: #4285f4; /* Azul */
@@ -92,3 +83,16 @@
     -fx-alignment: center;
     -fx-font-size: 13px;
 }
+.text-area {
+    -fx-background-color: #1f1f1f;
+    -fx-padding: 10;
+    -fx-prompt-text-fill: #888888;
+    -fx-font-size: 14px;
+    -fx-text-fill: white;
+}
+
+.text-area .content {
+    -fx-background-color: #1f1f1f;
+
+}
+

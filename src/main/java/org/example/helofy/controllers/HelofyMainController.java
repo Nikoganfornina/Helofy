@@ -40,7 +40,7 @@ public class HelofyMainController {
     @FXML private Label lblTiempoTranscurrido;
     @FXML private Label lblTiempoRestante;
     @FXML private StackPane songNameContainer;
-
+    @FXML private ImageView userImage;
     private final MusicPlayer musicPlayer = new MusicPlayer();
     private boolean isDraggingProgress = false;
     private double duracionTotalSegundos = 0;
@@ -52,15 +52,16 @@ public class HelofyMainController {
         setupControls();
         setupVolumePersistente();
 
-        headerImage.setImage(ImageLoader.loadAppLogo2());
+        headerImage.setImage(new Image(getClass().getResource("/org/example/helofy/styles/logoapp2.png").toExternalForm()));
         Rounded.applyRoundedClip(headerImage, 15.0);
-        imagenBienvenida();
-    }
-
-    private void imagenBienvenida() {
+        userImage.setImage(new Image(getClass().getResource("/org/example/helofy/styles/defaultImage.png").toExternalForm()));
+        userImage.setPreserveRatio(true);
         imagenBienvenida.setImage(new Image(getClass().getResource("/org/example/helofy/styles/welcome.png").toExternalForm()));
         imagenBienvenida.setPreserveRatio(true);
+        Rounded.applyRoundedClip(userImage, 10.0);
+
     }
+
 
     private void configureMusicPlayer() {
         musicPlayer.setOnSongChanged(song -> {
@@ -328,5 +329,9 @@ public class HelofyMainController {
 
     @FXML private void handleSuperPlayListlick() {
         setCenterContent("/org/example/helofy/views/SuperPlayListView.fxml");
+    }
+
+    @FXML private void handleUserClick() {
+        setCenterContent("/org/example/helofy/views/usuario/PerfilUsuario.fxml");
     }
 }

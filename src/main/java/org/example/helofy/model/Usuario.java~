@@ -1,0 +1,4 @@
+package org.example.helofy.model;
+
+public class Usuario {
+}

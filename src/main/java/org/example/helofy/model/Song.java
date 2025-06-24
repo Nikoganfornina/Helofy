@@ -24,7 +24,7 @@ public class Song {
     public String getTitle() { return title; }
     public String getFilePath() { return filePath; }
     public double getDuration() { return duration; }
-
+    public double setDuration(double duration) { return this.duration = duration; }
     @Override
     public String toString() {
         return title;  // Retorna el título de la canción

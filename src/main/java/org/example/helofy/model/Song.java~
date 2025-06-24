@@ -35,7 +35,7 @@ public class Song {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Song song = (Song) o;
-        return Objects.equals(filePath, song.filePath); // Usar campo único
+        return Objects.equals(filePath, song.filePath); // Compara por ruta del archivo
     }
 
     @Override

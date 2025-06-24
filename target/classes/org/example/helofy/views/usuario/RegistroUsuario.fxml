@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="710.0" prefWidth="1260.0" stylesheets="@estiloUsuario.css" styleClass="bienvenida-root" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.helofy.controllers.RegistroUsuarioController">
+    <VBox alignment="CENTER" spacing="30.0" layoutX="200" layoutY="100">
+        <ImageView fx:id="logoImage" fitWidth="300.0" fitHeight="100.0" />
+        <Label text="Bienvenido a Helofy" styleClass="bienvenida-title"/>
+        <Label text="Parece que no tienes cuenta. Ingresa tu nombre:" styleClass="bienvenida-subtitle"/>
+        <TextField fx:id="nombreField" promptText="Tu nombre..." maxWidth="300"/>
+        <Button fx:id="crearBtn" text="Crear cuenta" styleClass="boton-crear"/>
+    </VBox>
+</AnchorPane>

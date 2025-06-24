@@ -24,17 +24,17 @@
 
 .playlist-description {
     -fx-text-fill: #ffffff;
-    -fx-font-size: 16px;
+    -fx-font-size: 18px;
     -fx-wrap-text: true;
     -fx-line-spacing: 4px;
 }
+
 .playlist-description2 {
     -fx-text-fill: #ffffff;
-    -fx-font-size: 28px;
+    -fx-font-size: 20px;
     -fx-wrap-text: true;
     -fx-line-spacing: 4px;
     -fx-font-weight: bold;
-
 }
 
 .round-button {
@@ -70,6 +70,12 @@
 }
 
 .song-list .list-cell:hover {
-    -fx-background-color: #f2f2f2;
-    -fx-text-fill: black;
+    -fx-background-color: #353535; /* gris muy tenue */
+    -fx-text-fill: white;
+}
+
+.song-list .list-cell:filled:selected,
+.song-list .list-cell:selected {
+    -fx-background-color: #2a6ebb; /* mantengo azul para selected */
+    -fx-text-fill: white;
 }

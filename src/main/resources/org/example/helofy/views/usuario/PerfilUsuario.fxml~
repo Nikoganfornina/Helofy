@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="perfilPane" prefHeight="583.0" prefWidth="870.0" styleClass="perfil-root" stylesheets="@estiloUsuario.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.helofy.controllers.PerfilUsuarioController">
+
+    <VBox alignment="TOP_CENTER" layoutX="183.0" layoutY="30" prefHeight="433.0" prefWidth="521.0" spacing="20">
+        <StackPane fx:id="fotoStack" prefHeight="120" prefWidth="120">
+            <ImageView fx:id="fotoUsuario" fitHeight="120" fitWidth="120" preserveRatio="true" />
+            <Pane fx:id="overlayFoto" onMouseClicked="#cambiarFoto" styleClass="overlay" visible="false">
+                <Label styleClass="overlay-text" text="Cambiar foto" />
+            </Pane>
+        </StackPane>
+
+        <Label fx:id="nombreUsuario" styleClass="perfil-nombre" />
+        <Label fx:id="numPlaylists" styleClass="perfil-info" />
+        <Label fx:id="tiempoMusica" styleClass="perfil-info" />
+        <Label fx:id="playlistFavorita" styleClass="perfil-info" />
+    </VBox>
+</AnchorPane>

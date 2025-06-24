@@ -40,7 +40,7 @@ public class HelofyMainController {
     @FXML private Label lblTiempoTranscurrido;
     @FXML private Label lblTiempoRestante;
     @FXML private StackPane songNameContainer;
-
+    @FXML private ImageView userImage;
     private final MusicPlayer musicPlayer = new MusicPlayer();
     private boolean isDraggingProgress = false;
     private double duracionTotalSegundos = 0;
@@ -52,15 +52,16 @@ public class HelofyMainController {
         setupControls();
         setupVolumePersistente();
 
-        headerImage.setImage(ImageLoader.loadAppLogo2());
+        headerImage.setImage(new Image(getClass().getResource("/org/example/helofy/styles/logoapp2.png").toExternalForm()));
         Rounded.applyRoundedClip(headerImage, 15.0);
-        imagenBienvenida();
-    }
-
-    private void imagenBienvenida() {
+        userImage.setImage(new Image(getClass().getResource("/org/example/helofy/styles/defaultImage.png").toExternalForm()));
+        userImage.setPreserveRatio(true);
         imagenBienvenida.setImage(new Image(getClass().getResource("/org/example/helofy/styles/welcome.png").toExternalForm()));
         imagenBienvenida.setPreserveRatio(true);
+        Rounded.applyRoundedClip(userImage, 10.0);
+
     }
+
 
     private void configureMusicPlayer() {
         musicPlayer.setOnSongChanged(song -> {
@@ -117,28 +118,32 @@ public class HelofyMainController {
 
     private void setupSongNameMarquee() {
         Platform.runLater(() -> {
-            // Desactivar puntos suspensivos y permitir que el texto se recorte con clip
+            // Desactivar puntos suspensivos y wrap
             songName.setEllipsisString("");
             songName.setTextOverrun(OverrunStyle.CLIP);
             songName.setWrapText(false);
 
+            // Parar animación anterior y resetear posición
             if (marqueeAnimation != null) {
                 marqueeAnimation.stop();
+                marqueeAnimation = null;
                 songName.setTranslateX(0);
             }
 
+            // Forzar cálculo del tamaño real del texto y contenedor
             songName.applyCss();
             songName.layout();
             songNameContainer.applyCss();
             songNameContainer.layout();
 
-            double labelWidth = songName.getLayoutBounds().getWidth();
+            double labelWidth = songName.getWidth();
             double containerWidth = songNameContainer.getWidth();
 
-            // Clip visual para que no se salga de su contenedor
+            // Crear clip para limitar visibilidad dentro del contenedor
             Rectangle clip = new Rectangle(containerWidth, songNameContainer.getHeight());
             songNameContainer.setClip(clip);
 
+            // Si el texto es más ancho que el contenedor, creamos la animación
             if (labelWidth > containerWidth) {
                 double distance = labelWidth - containerWidth;
 
@@ -324,5 +329,9 @@ public class HelofyMainController {
 
     @FXML private void handleSuperPlayListlick() {
         setCenterContent("/org/example/helofy/views/SuperPlayListView.fxml");
+    }
+
+    @FXML private void handleUserClick() {
+        setCenterContent("/org/example/helofy/views/usuario/RegistroUsuario.fxml");
     }
 }
