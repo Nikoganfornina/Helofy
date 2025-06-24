@@ -3,15 +3,25 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<ScrollPane  fx:id="scroll"  fitToWidth="true" hbarPolicy="NEVER"  prefHeight="532.0" prefWidth="870.0" styleClass="library-view" stylesheets="@../styles/StyleLibrary.css" vbarPolicy="AS_NEEDED" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.helofy.controllers.LibraryViewController">
-
+<ScrollPane fx:id="scroll" fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED"
+            prefHeight="532.0" prefWidth="870.0"
+            styleClass="library-view"
+            stylesheets="@../styles/StyleLibrary.css"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.helofy.controllers.LibraryViewController">
 
     <content>
-        <VBox alignment="CENTER">
-            <Label prefHeight="25.0" prefWidth="2000" styleClass="playlist-title-library" text="Mis Playlists" />
+        <VBox alignment="CENTER" styleClass="library-content">
+            <Label prefHeight="25.0" prefWidth="2000"
+                   styleClass="playlist-title-library"
+                   text="Mis Playlists" />
 
-            <TilePane fx:id="tilePane" hgap="15" prefTileHeight="200" prefTileWidth="180" styleClass="tile-pane" vgap="35" />
+            <TilePane fx:id="tilePane"
+                      hgap="15" vgap="35"
+                      prefTileHeight="200"
+                      prefTileWidth="180"
+                      styleClass="tile-pane" />
         </VBox>
     </content>
-
 </ScrollPane>

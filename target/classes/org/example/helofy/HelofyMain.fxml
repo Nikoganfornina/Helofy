@@ -4,115 +4,97 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="rootPane" prefHeight="750" prefWidth="1300" stylesheets="@styles/Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.helofy.controllers.HelofyMainController">
+<StackPane style="-fx-background-color: #0A0A0A; -fx-padding: 20;" stylesheets="@styles/Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.helofy.controllers.HelofyMainController">
 
-    <!-- Header -->
-    <top>
-        <VBox alignment="CENTER" styleClass="header">
+    <!-- BorderPane principal flotando con margen negro alrededor -->
+    <BorderPane fx:id="rootPane" prefHeight="710" prefWidth="1260">
 
-            <ImageView fx:id="headerImage" fitHeight="45.0" fitWidth="154.0">
-                <image>
-                    <Image url="@../helofy/styles/logoapp2.png" />
-                </image>
-            </ImageView>
-
-
-        </VBox>
-    </top>
-
-    <!-- Menú lateral izquierdo -->
-    <left>
-        <VBox prefHeight="532.0" prefWidth="191.0" styleClass="side-menu">
-            <Button onAction="#handleLibraryClick" styleClass="menu-button" text="Mi Biblioteca" />
-            <Separator styleClass="separator" />
-            <VBox prefHeight="25.0" prefWidth="240.0" styleClass="playlist-container">
-                <Label prefHeight="25.0" prefWidth="220.0" styleClass="playlist-title2" text="Playlist favoritas" />
-                <!-- Aquí puedes agregar botones o elementos estáticos de las playlists -->
-
+        <!-- Header -->
+        <top>
+            <VBox alignment="CENTER" styleClass="header">
+                <ImageView fx:id="headerImage" fitHeight="45.0" fitWidth="154.0">
+                    <image>
+                        <Image url="@../helofy/styles/logoapp2.png" />
+                    </image>
+                </ImageView>
             </VBox>
-        </VBox>
-    </left>
+        </top>
 
-    <!-- Menú lateral derecho -->
-    <right>
-        <VBox prefHeight="118.0" prefWidth="200.0" styleClass="side-menu">
-            <Button fx:id="createPlaylistButton" mnemonicParsing="false" onAction="#handleCreatePlaylistClick" styleClass="menu-button" text="Crear Playlist" />
-            <Separator styleClass="separator" />
-            <Button fx:id="editPlaylistButton" mnemonicParsing="false" onAction="#handleEditPlaylistClick" styleClass="menu-button" text="Editar Playlist" />
-            <Separator styleClass="separator" />
-            <Button fx:id="createSuperPlaylistButton" mnemonicParsing="false" onAction="#handleSuperPlayListlick" styleClass="menu-button" text="Super PlayList" />
-            <Separator styleClass="separator" />
-            <Button fx:id="settingsButton" mnemonicParsing="false" styleClass="menu-button" text="Ajustes" />
-
-
-        </VBox>
-    </right>
-
-    <!-- Contenido principal -->
-    <center>
-        <StackPane fx:id="contentArea" styleClass="content-area">
-
-            <!-- Contenedor vertical para el título, imagen y texto -->
-            <VBox alignment="CENTER" prefHeight="446.0" prefWidth="809.0" spacing="15">
-
-
-
-                    <ImageView fx:id="imagenBienvenida" fitHeight="350.0" fitWidth="750.0" />
-
-
-
-                <Label styleClass="bienvenida-texto">
-                    Follow me on Instagram and GitHub: @nikoganfornina
-                </Label>
-            </VBox>
-
-
-        </StackPane>
-    </center>
-
-
-    <!-- Footer -->
-    <bottom>
-        <BorderPane styleClass="footer">
-            <!-- Sección de información de canción (imagen, título y artista) -->
-            <left>
-                <HBox alignment="CENTER_LEFT" prefHeight="62.0" prefWidth="263.0" spacing="10">
-                    <ImageView id="image-view" fx:id="songImage" fitHeight="40" fitWidth="40" styleClass="album-art" />
-                    <VBox alignment="CENTER_LEFT" prefHeight="62.0" prefWidth="217.0" spacing="5">
-                        <Label fx:id="songName" prefHeight="15.0" prefWidth="236.0" styleClass="song-title" text="No hay canción en reproducción" />
-                        <Label fx:id="songArtist" styleClass="song-artist" text="Artista desconocido" />
-                    </VBox>
-                </HBox>
-            </left>
-
-            <!-- Sección central: botones de control y barra de progreso -->
-            <center>
-                <VBox alignment="CENTER" prefWidth="400" spacing="10">
-                    <HBox alignment="CENTER" prefHeight="27.0" prefWidth="380.0" spacing="40">
-                        <Button fx:id="previousButton" text="⏮" />
-                        <Button fx:id="playPauseButton" text="⏯" />
-                        <Button fx:id="nextButton" text="⏭" />
-                        <Button fx:id="shuffleButton" text="🔀" />
-                    </HBox>
-                    <!-- Barra de progreso más pequeña y centrada -->
-
-                    <HBox prefWidth="400" spacing="10">
-                        <Label fx:id="lblTiempoTranscurrido" minWidth="35" style="-fx-text-fill: white;" text="0:00" />
-                        <Slider fx:id="progressSlider" prefHeight="16.0" prefWidth="643.0" styleClass="progress-slider" />
-                        <Label fx:id="lblTiempoRestante" minWidth="35" style="-fx-text-fill: white; -fx-alignment: center-right;" text="-0:00" />
-                    </HBox>
-
+        <!-- Menú lateral izquierdo -->
+        <left>
+            <VBox prefWidth="180.0" styleClass="side-menu">
+                <Button onAction="#handleLibraryClick" styleClass="menu-button" text="Mi Biblioteca" />
+                <Separator styleClass="separator" />
+                <VBox styleClass="playlist-container">
+                    <Label styleClass="playlist-title2" text="Playlist favoritas" />
+                    <!-- Aquí puedes agregar botones o elementos estáticos -->
                 </VBox>
-            </center>
+            </VBox>
+        </left>
 
-            <!-- Sección derecha: control de volumen -->
-            <right>
-                <HBox alignment="CENTER_RIGHT" prefHeight="62.0" prefWidth="191.0" spacing="10">
-                    <Label styleClass="volume-icon" text="🔊" />
-                    <Slider fx:id="volumeSlider" max="1" min="0" styleClass="volume-slider" value="0.5" />
-                </HBox>
-            </right>
-        </BorderPane>
-    </bottom>
+        <!-- Menú lateral derecho -->
+        <right>
+            <VBox prefWidth="180.0" styleClass="side-menu">
+                <Button fx:id="createPlaylistButton" onAction="#handleCreatePlaylistClick" styleClass="menu-button" text="Crear Playlist" />
+                <Separator styleClass="separator" />
+                <Button fx:id="editPlaylistButton" onAction="#handleEditPlaylistClick" styleClass="menu-button" text="Editar Playlist" />
+                <Separator styleClass="separator" />
+                <Button fx:id="createSuperPlaylistButton" onAction="#handleSuperPlayListlick" styleClass="menu-button" text="Super PlayList" />
+                <Separator styleClass="separator" />
+                <Button fx:id="settingsButton" styleClass="menu-button" text="Ajustes" />
+            </VBox>
+        </right>
 
-</BorderPane>
+        <!-- Contenido principal -->
+        <center>
+            <StackPane fx:id="contentArea" styleClass="content-area">
+                <VBox alignment="CENTER" prefWidth="850">
+                    <ImageView fx:id="imagenBienvenida" fitHeight="350.0" fitWidth="750.0" />
+                    <Label styleClass="bienvenida-texto" text="Follow me on Instagram and GitHub: @nikoganfornina" />
+                </VBox>
+            </StackPane>
+        </center>
+
+        <!-- Footer -->
+        <bottom>
+            <BorderPane styleClass="footer">
+                <!-- Info canción -->
+                <left>
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <ImageView fx:id="songImage" fitHeight="40" fitWidth="40" styleClass="album-art" />
+                        <VBox alignment="CENTER_LEFT" spacing="5">
+                            <Label fx:id="songName" styleClass="song-title" text="No hay canción en reproducción" />
+                            <Label fx:id="songArtist" styleClass="song-artist" text="Artista desconocido" />
+                        </VBox>
+                    </HBox>
+                </left>
+
+                <!-- Controles -->
+                <center>
+                    <VBox alignment="CENTER" spacing="10">
+                        <HBox alignment="CENTER" spacing="40">
+                            <Button fx:id="previousButton" text="⏮" />
+                            <Button fx:id="playPauseButton" text="⏯" />
+                            <Button fx:id="nextButton" text="⏭" />
+                            <Button fx:id="shuffleButton" text="🔀" />
+                        </HBox>
+                        <HBox spacing="10">
+                            <Label fx:id="lblTiempoTranscurrido" minWidth="35" style="-fx-text-fill: white;" text="0:00" />
+                            <Slider fx:id="progressSlider" prefHeight="4.0" prefWidth="729.0" styleClass="progress-slider" />
+                            <Label fx:id="lblTiempoRestante" minWidth="35" style="-fx-text-fill: white;" text="-0:00" />
+                        </HBox>
+                    </VBox>
+                </center>
+
+                <!-- Volumen -->
+                <right>
+                    <HBox alignment="CENTER_RIGHT" spacing="10">
+                        <Label styleClass="volume-icon" text="🔊" />
+                        <Slider fx:id="volumeSlider" max="1" min="0" styleClass="volume-slider" value="0.5" />
+                    </HBox>
+                </right>
+            </BorderPane>
+        </bottom>
+
+    </BorderPane>
+</StackPane>

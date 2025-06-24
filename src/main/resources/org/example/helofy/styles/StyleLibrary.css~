@@ -1,0 +1,34 @@
+.library-view {
+    -fx-background-color: transparent; /* ScrollPane no pinta fondo blanco */
+    -fx-border-width: 0;
+    -fx-padding: 0;
+}
+
+/* Este es el VBox interno que contiene la biblioteca */
+.library-content {
+    -fx-background-color: transparent; /* transparente para que se vea el fondo negro general */
+    -fx-padding: 20; /* si quieres un poco de espacio interno */
+}
+
+/* Si quieres que el texto tenga color azul neón */
+.playlist-title-library {
+    -fx-font-size: 30px;
+    -fx-text-fill: #00aeef;
+    -fx-font-weight: bold;
+    -fx-padding: 8px;
+    -fx-background-color: transparent;
+}
+
+/* El TilePane queda transparente también */
+.tile-pane {
+    -fx-padding: 8px;
+    -fx-background-color: transparent;
+    -fx-alignment: center;
+}
+
+.scroll-pane .scroll-bar:vertical,
+.scroll-pane .scroll-bar:horizontal {
+    -fx-opacity: 0;
+    -fx-pref-width: 0;
+    -fx-pref-height: 0;
+}

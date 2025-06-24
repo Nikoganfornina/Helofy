@@ -1,7 +1,12 @@
 .library-view {
-    -fx-background-color: #1A1A1A;
+    -fx-background-color: #0A0A0A; /* fondo negro absoluto */
     -fx-border-width: 0;
     -fx-padding: 0;
+}
+
+.library-content {
+    -fx-background-color: #0A0A0A; /* también negro absoluto */
+    -fx-padding: 20;
 }
 
 .playlist-title-library {
@@ -9,13 +14,13 @@
     -fx-text-fill: #00aeef;
     -fx-font-weight: bold;
     -fx-padding: 8px;
-    -fx-background-color: #1C1C1C;
+    -fx-background-color: #0A0A0A; /* negro absoluto */
 }
 
 .tile-pane {
     -fx-padding: 8px;
-    -fx-background-color: #1C1C1C;
-    -fx-alignment: center; /* <- añade esto */
+    -fx-background-color: #0A0A0A; /* negro absoluto */
+    -fx-alignment: center;
 }
 
 .scroll-pane .scroll-bar:vertical,

@@ -1,5 +1,6 @@
 package org.example.helofy.controllers;
 
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -36,11 +37,16 @@ public class HelofyMainController {
     @FXML private Label lblTiempoTranscurrido;
     @FXML private Label lblTiempoRestante;
 
+
+    @FXML private StackPane songNameContainer;
+
+    private TranslateTransition marqueeAnimation;
+
+
+
     private final MusicPlayer musicPlayer = new MusicPlayer();
     private boolean isDraggingProgress = false;
-
-    // Duración total de la canción en segundos (mínimo 1 para evitar errores)
-    private double duracionTotalSegundos = 1;
+    private double duracionTotalSegundos = 0;
 
     @FXML
     public void initialize() {
@@ -66,24 +72,27 @@ public class HelofyMainController {
                     songArtist.setText(musicPlayer.getCurrentPlaylistName());
                     loadSongCover(song);
 
-                    duracionTotalSegundos = song.getDuration();
-                    if (duracionTotalSegundos <= 0) duracionTotalSegundos = 1;
-
-                    progressSlider.setMax(duracionTotalSegundos);
-                    progressSlider.setValue(0);
-
+                    // Ya no seteamos duracionTotalSegundos aquí
+                    // ni max slider, porque lo hacemos en onDurationChanged
                     lblTiempoTranscurrido.setText("0:00");
-                    lblTiempoRestante.setText("-" + formatearTiempo(duracionTotalSegundos));
+                    lblTiempoRestante.setText("-0:00");
 
                     selectCurrentSongInListView(song);
                 } else {
                     resetSongInfo();
-                    duracionTotalSegundos = 1;
-                    progressSlider.setMax(duracionTotalSegundos);
-                    progressSlider.setValue(0);
+                    duracionTotalSegundos = 0;
+                    progressSlider.setMax(1);
                     lblTiempoTranscurrido.setText("0:00");
                     lblTiempoRestante.setText("-0:00");
                 }
+            });
+        });
+
+        musicPlayer.setOnDurationChanged(duracion -> {
+            Platform.runLater(() -> {
+                duracionTotalSegundos = duracion;
+                progressSlider.setMax(duracionTotalSegundos);
+                lblTiempoRestante.setText("-" + formatearTiempo(duracionTotalSegundos));
             });
         });
 
@@ -95,8 +104,7 @@ public class HelofyMainController {
 
                     progressSlider.setValue(tiempoActual);
                     lblTiempoTranscurrido.setText(formatearTiempo(tiempoActual));
-                    double tiempoRestante = duracionTotalSegundos - tiempoActual;
-                    lblTiempoRestante.setText("-" + formatearTiempo(tiempoRestante));
+                    lblTiempoRestante.setText("-" + formatearTiempo(duracionTotalSegundos - tiempoActual));
                 }
             });
         });
@@ -112,11 +120,8 @@ public class HelofyMainController {
         progressSlider.setOnMousePressed(e -> isDraggingProgress = true);
 
         progressSlider.setOnMouseDragged(e -> {
-            if (musicPlayer.getCurrentSong() != null && duracionTotalSegundos > 0) {
+            if (musicPlayer.getCurrentSong() != null) {
                 double valor = progressSlider.getValue();
-                if (valor < 0) valor = 0;
-                if (valor > duracionTotalSegundos) valor = duracionTotalSegundos;
-
                 lblTiempoTranscurrido.setText(formatearTiempo(valor));
                 lblTiempoRestante.setText("-" + formatearTiempo(duracionTotalSegundos - valor));
                 musicPlayer.seek(valor / duracionTotalSegundos);

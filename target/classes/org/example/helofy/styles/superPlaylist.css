@@ -1,6 +1,6 @@
 /* 🎵 Fondo oscuro general del AnchorPane raíz */
 .super-playlist {
-    -fx-background-color: #1C1C1C;
+    -fx-background-color: #0A0A0A; /* fondo negro absoluto */
 }
 
 /* Título principal */

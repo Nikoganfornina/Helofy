@@ -1,13 +1,17 @@
 package org.example.helofy.controllers;
 
+import javafx.animation.Animation;
+import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
 import org.example.helofy.model.Song;
 import org.example.helofy.utils.ImageLoader;
 import org.example.helofy.utils.MusicPlayer;
@@ -19,22 +23,44 @@ import java.util.Objects;
 
 public class HelofyMainController {
 
-    @FXML private StackPane contentArea;
-    @FXML private Slider volumeSlider;
-    @FXML private Button playPauseButton;
-    @FXML private Button previousButton;
-    @FXML private Button nextButton;
-    @FXML private Slider progressSlider;
-    @FXML private Label songName;
-    @FXML private Label songArtist;
-    @FXML private ImageView songImage;
-    @FXML private Button shuffleButton;
-    @FXML private ImageView headerImage;
-    @FXML private ImageView imagenBienvenida;
-    @FXML private Button createPlaylistButton;
+    @FXML
+    private StackPane contentArea;
+    @FXML
+    private Slider volumeSlider;
+    @FXML
+    private Button playPauseButton;
+    @FXML
+    private Button previousButton;
+    @FXML
+    private Button nextButton;
+    @FXML
+    private Slider progressSlider;
+    @FXML
+    private Label songName;
+    @FXML
+    private Label songArtist;
+    @FXML
+    private ImageView songImage;
+    @FXML
+    private Button shuffleButton;
+    @FXML
+    private ImageView headerImage;
+    @FXML
+    private ImageView imagenBienvenida;
+    @FXML
+    private Button createPlaylistButton;
 
-    @FXML private Label lblTiempoTranscurrido;
-    @FXML private Label lblTiempoRestante;
+    @FXML
+    private Label lblTiempoTranscurrido;
+    @FXML
+    private Label lblTiempoRestante;
+
+
+    @FXML
+    private StackPane songNameContainer;
+
+    private TranslateTransition marqueeAnimation;
+
 
     private final MusicPlayer musicPlayer = new MusicPlayer();
     private boolean isDraggingProgress = false;
@@ -50,6 +76,56 @@ public class HelofyMainController {
         Rounded.applyRoundedClip(headerImage, 15.0);
         ImagenBienvenida();
     }
+
+    // Método para iniciar el marquee si el texto es más ancho que el contenedor
+    private void setupSongNameMarquee() {
+        Platform.runLater(() -> {
+            // Cancelar animación previa si existe
+            if (marqueeAnimation != null) {
+                marqueeAnimation.stop();
+                songName.setTranslateX(0);
+            }
+
+            Bounds labelBounds = songName.getBoundsInLocal();
+            Bounds containerBounds = songNameContainer.getBoundsInLocal();
+
+            double labelWidth = labelBounds.getWidth();
+            double containerWidth = containerBounds.getWidth();
+
+            if (labelWidth > containerWidth) {
+                double distance = labelWidth - containerWidth;
+
+                marqueeAnimation = new TranslateTransition(Duration.seconds(8), songName);
+                marqueeAnimation.setFromX(0);
+                marqueeAnimation.setToX(-distance);
+                marqueeAnimation.setCycleCount(Animation.INDEFINITE);
+                marqueeAnimation.setAutoReverse(true);
+                marqueeAnimation.play();
+            }
+        });
+    }
+
+    // Llama a este método cada vez que cambies el texto
+    private void updateSongName(String text) {
+        songName.setText(text);
+        setupSongNameMarquee();
+    }
+
+    // Ejemplo en tu setOnSongChanged
+    musicPlayer.setOnSongChanged(song ->
+
+    {
+        Platform.runLater(() -> {
+            if (song != null) {
+                updateSongName(song.getTitle());
+                // resto de código...
+            } else {
+                updateSongName("No hay canción en reproducción");
+                // resto de código...
+            }
+        });
+    });
+
 
     private void ImagenBienvenida() {
         imagenBienvenida.setImage(new Image(getClass().getResource("/org/example/helofy/styles/welcome.png").toExternalForm()));

@@ -3,44 +3,24 @@
     -fx-background-color: #0A0A0A;
 }
 
-/* Contenedores principales con bordes redondeados y fondo gris translúcido */
-.header,
-.side-menu,
-.footer,
-.content-area {
-    -fx-background-color: rgba(40, 40, 40, 0.85);
-    -fx-background-radius: 15;
-    -fx-border-radius: 15;
-    -fx-padding: 10;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0.3, 1, 1);
-    -fx-spacing: 5;
-    -fx-margin: 5;
-}
-
-/* Zona central ligeramente más clara para destacar contenido */
-.content-area {
-    -fx-background-color: rgba(30, 30, 30, 0.85);
-    -fx-padding: 15;
-}
-
-/* Menús laterales */
+/* SOLO los laterales flotan */
 .side-menu {
     -fx-background-color: #1A1A1A;
     -fx-background-radius: 15;
     -fx-border-radius: 15;
-}
-
-/* Header específico */
-.header {
-    -fx-alignment: center;
-}
-
-/* Footer */
-.footer {
-    -fx-background-color: #1A1A1A;
     -fx-padding: 10;
-    -fx-spacing: 5;
-    -fx-alignment: center;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 10, 0.3, 1, 1);
+}
+
+/* Header, Content y Footer se funden con el fondo */
+.header,
+.footer,
+.content-area {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-padding: 0;
+    -fx-effect: none;
 }
 
 /* Cards y elementos visuales tipo playlist */
@@ -71,7 +51,7 @@
     -fx-text-fill: #00B4D8;
 }
 
-/* Botones y botones redondos que no son reutilizados */
+/* Botones */
 .menu-button,
 .player-button,
 #empezar,
@@ -123,7 +103,7 @@
     -fx-font-size: 16px;
 }
 
-/* Botón dentro de celdas de lista (no usado en vistas anteriores) */
+/* Botón dentro de listas */
 .cell-play-button {
     -fx-font-size: 12px;
     -fx-min-width: 25px;
@@ -136,8 +116,7 @@
     -fx-text-fill: #00aeef;
 }
 
-
-
+/* Sliders */
 .progress-slider .track {
     -fx-background-color: #404040;
     -fx-background-radius: 4;
@@ -159,7 +138,7 @@
     -fx-background-color: #00B4D8;
 }
 
-/* Estilos de texto */
+/* Textos */
 #lblNombre,
 .titulo-texto {
     -fx-text-fill: #00B4D8;
