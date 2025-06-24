@@ -21,33 +21,30 @@ public class PlaylistViewController {
     @FXML private ImageView imgPortada;
     @FXML private Label lblTitulo;
     @FXML private Label lblDescripcion;
+    @FXML private Label lblNumeroCanciones;
 
     public void configurarPlaylist(Playlist playlist, MusicPlayer player) {
         lblTitulo.setText(playlist.getName());
 
-        // Cargar la descripción (desde archivo solo si no es superplaylist)
+        // Cargar descripción (solo si no es superplaylist)
         String descripcion = "";
         if (playlist.getIsSuperPlaylist() != null && playlist.getIsSuperPlaylist()) {
-            // Para superplaylist usamos la descripción que ya trae
             descripcion = playlist.getDescription();
         } else {
-            // Para playlists normales leemos el archivo descripcion.txt si existe
             File carpetaPlaylist = new File(playlist.getCoverPath()).getParentFile();
             descripcion = cargarDescripcionDesdeArchivo(carpetaPlaylist);
             playlist.setDescription(descripcion);
         }
         lblDescripcion.setText(descripcion);
 
-        // Cargar la imagen del cover (recurso o archivo disco)
+        // Cargar imagen portada
         try {
             String coverPath = playlist.getCoverPath();
             Image img;
             if (coverPath != null && !coverPath.isBlank()) {
                 if (coverPath.startsWith("/")) {
-                    // Ruta recurso dentro del JAR
                     img = new Image(Objects.requireNonNull(getClass().getResourceAsStream(coverPath)));
                 } else {
-                    // Ruta archivo disco
                     File coverFile = new File(coverPath);
                     if (coverFile.exists()) {
                         img = new Image(coverFile.toURI().toString());
@@ -66,10 +63,28 @@ public class PlaylistViewController {
             imgPortada.setImage(getDefaultCoverImage());
         }
 
-        Rounded.applyRoundedClip(imgPortada, 10.0); // Bordes redondeados
+        Rounded.applyRoundedClip(imgPortada, 10.0);
 
         listaCanciones.getItems().setAll(playlist.getSongs());
 
+        // Contar canciones y sumar duración total
+        int numCanciones = playlist.getSongs().size();
+        double duracionTotalSegundos = 0;
+        for (Song song : playlist.getSongs()) {
+            duracionTotalSegundos += song.getDuration();
+        }
+
+        String duracionFormateada = formatearDuracion(duracionTotalSegundos);
+
+        lblNumeroCanciones.setText(
+                String.format("Esta Playlist contiene %d canción%s, duración total %s",
+                        numCanciones,
+                        (numCanciones == 1) ? "" : "es",
+                        duracionFormateada
+                )
+        );
+
+        // Configurar celda para mostrar título y destacar canción actual
         listaCanciones.setCellFactory(lv -> new javafx.scene.control.ListCell<Song>() {
             @Override
             protected void updateItem(Song cancion, boolean vacio) {
@@ -81,14 +96,12 @@ public class PlaylistViewController {
                 } else {
                     setText(cancion.getTitle());
 
-                    // Resaltar la canción actual que se está reproduciendo
                     if (cancion.equals(player.getCurrentSong())) {
                         setStyle("-fx-text-fill: #00aeef; -fx-font-weight: bold;");
                     } else {
                         setStyle("");
                     }
 
-                    // Click para reproducir canción
                     setOnMouseClicked(e -> {
                         if (e.getClickCount() == 1) {
                             player.playSong(cancion);
@@ -144,6 +157,20 @@ public class PlaylistViewController {
         } catch (Exception e) {
             System.out.println("Error cargando imagen por defecto: " + e.getMessage());
             return null;
+        }
+    }
+
+    // Formatear duración de segundos a formato hh:mm:ss o mm:ss
+    private String formatearDuracion(double totalSegundos) {
+        int totalSegsInt = (int) Math.round(totalSegundos);
+        int horas = totalSegsInt / 3600;
+        int minutos = (totalSegsInt % 3600) / 60;
+        int segundos = totalSegsInt % 60;
+
+        if (horas > 0) {
+            return String.format("%d:%02d:%02d", horas, minutos, segundos);
+        } else {
+            return String.format("%d:%02d", minutos, segundos);
         }
     }
 }

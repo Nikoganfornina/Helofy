@@ -33,8 +33,6 @@
     -fx-font-size: 28px;
     -fx-wrap-text: true;
     -fx-line-spacing: 4px;
-    -fx-font-weight: bold;
-
 }
 
 .round-button {

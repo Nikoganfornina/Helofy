@@ -24,9 +24,17 @@
 
 .playlist-description {
     -fx-text-fill: #ffffff;
-    -fx-font-size: 12px;
+    -fx-font-size: 16px;
     -fx-wrap-text: true;
     -fx-line-spacing: 4px;
+}
+.playlist-description2 {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 28px;
+    -fx-wrap-text: true;
+    -fx-line-spacing: 4px;
+    -fx-font-weight: bold;
+
 }
 
 .round-button {

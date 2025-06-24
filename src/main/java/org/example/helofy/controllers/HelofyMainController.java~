@@ -1,18 +1,22 @@
 package org.example.helofy.controllers;
 
+import javafx.animation.Animation;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 import org.example.helofy.model.Song;
+import org.example.helofy.model.Playlist;
 import org.example.helofy.utils.ImageLoader;
 import org.example.helofy.utils.MusicPlayer;
-import org.example.helofy.model.Playlist;
 import org.example.helofy.utils.Rounded;
 
 import java.io.IOException;
@@ -33,20 +37,14 @@ public class HelofyMainController {
     @FXML private ImageView headerImage;
     @FXML private ImageView imagenBienvenida;
     @FXML private Button createPlaylistButton;
-
     @FXML private Label lblTiempoTranscurrido;
     @FXML private Label lblTiempoRestante;
-
-
     @FXML private StackPane songNameContainer;
-
-    private TranslateTransition marqueeAnimation;
-
-
 
     private final MusicPlayer musicPlayer = new MusicPlayer();
     private boolean isDraggingProgress = false;
     private double duracionTotalSegundos = 0;
+    private TranslateTransition marqueeAnimation;
 
     @FXML
     public void initialize() {
@@ -56,10 +54,10 @@ public class HelofyMainController {
 
         headerImage.setImage(ImageLoader.loadAppLogo2());
         Rounded.applyRoundedClip(headerImage, 15.0);
-        ImagenBienvenida();
+        imagenBienvenida();
     }
 
-    private void ImagenBienvenida() {
+    private void imagenBienvenida() {
         imagenBienvenida.setImage(new Image(getClass().getResource("/org/example/helofy/styles/welcome.png").toExternalForm()));
         imagenBienvenida.setPreserveRatio(true);
     }
@@ -68,18 +66,16 @@ public class HelofyMainController {
         musicPlayer.setOnSongChanged(song -> {
             Platform.runLater(() -> {
                 if (song != null) {
-                    songName.setText(song.getTitle());
+                    updateSongName(song.getTitle());
                     songArtist.setText(musicPlayer.getCurrentPlaylistName());
                     loadSongCover(song);
-
-                    // Ya no seteamos duracionTotalSegundos aquí
-                    // ni max slider, porque lo hacemos en onDurationChanged
                     lblTiempoTranscurrido.setText("0:00");
                     lblTiempoRestante.setText("-0:00");
-
                     selectCurrentSongInListView(song);
                 } else {
-                    resetSongInfo();
+                    updateSongName("No hay canción en reproducción");
+                    songArtist.setText("Artista desconocido");
+                    loadDefaultCover();
                     duracionTotalSegundos = 0;
                     progressSlider.setMax(1);
                     lblTiempoTranscurrido.setText("0:00");
@@ -101,7 +97,6 @@ public class HelofyMainController {
                 if (!isDraggingProgress && duracionTotalSegundos > 0) {
                     double tiempoActual = progress * duracionTotalSegundos;
                     if (tiempoActual > duracionTotalSegundos) tiempoActual = duracionTotalSegundos;
-
                     progressSlider.setValue(tiempoActual);
                     lblTiempoTranscurrido.setText(formatearTiempo(tiempoActual));
                     lblTiempoRestante.setText("-" + formatearTiempo(duracionTotalSegundos - tiempoActual));
@@ -109,10 +104,54 @@ public class HelofyMainController {
             });
         });
 
-        musicPlayer.setOnSongFinished(() -> Platform.runLater(() -> musicPlayer.nextSong()));
-
-        musicPlayer.setOnPlayingStatusChanged(isPlaying -> Platform.runLater(() -> playPauseButton.setText(isPlaying ? "⏸" : "▶")));
+        musicPlayer.setOnSongFinished(() -> Platform.runLater(musicPlayer::nextSong));
+        musicPlayer.setOnPlayingStatusChanged(isPlaying ->
+                Platform.runLater(() -> playPauseButton.setText(isPlaying ? "⏸" : "▶"))
+        );
     }
+
+    private void updateSongName(String text) {
+        songName.setText(text);
+        setupSongNameMarquee();
+    }
+
+    private void setupSongNameMarquee() {
+        Platform.runLater(() -> {
+            // Desactivar puntos suspensivos y permitir que el texto se recorte con clip
+            songName.setEllipsisString("");
+            songName.setTextOverrun(OverrunStyle.CLIP);
+            songName.setWrapText(false);
+
+            if (marqueeAnimation != null) {
+                marqueeAnimation.stop();
+                songName.setTranslateX(0);
+            }
+
+            songName.applyCss();
+            songName.layout();
+            songNameContainer.applyCss();
+            songNameContainer.layout();
+
+            double labelWidth = songName.getLayoutBounds().getWidth();
+            double containerWidth = songNameContainer.getWidth();
+
+            // Clip visual para que no se salga de su contenedor
+            Rectangle clip = new Rectangle(containerWidth, songNameContainer.getHeight());
+            songNameContainer.setClip(clip);
+
+            if (labelWidth > containerWidth) {
+                double distance = labelWidth - containerWidth;
+
+                marqueeAnimation = new TranslateTransition(Duration.seconds(8), songName);
+                marqueeAnimation.setFromX(0);
+                marqueeAnimation.setToX(-distance);
+                marqueeAnimation.setCycleCount(Animation.INDEFINITE);
+                marqueeAnimation.setAutoReverse(true);
+                marqueeAnimation.play();
+            }
+        });
+    }
+
 
     private void setupControls() {
         volumeSlider.valueProperty().addListener((obs, oldVal, newVal) -> musicPlayer.setVolume(newVal.doubleValue()));
@@ -147,7 +186,6 @@ public class HelofyMainController {
             Parent content = loader.load();
 
             Object controller = loader.getController();
-
             if (controller instanceof LibraryViewController) {
                 ((LibraryViewController) controller).setMainController(this);
             } else if (controller instanceof SuperPlaylistController) {
@@ -202,7 +240,7 @@ public class HelofyMainController {
     }
 
     private void resetSongInfo() {
-        songName.setText("Sin canción");
+        updateSongName("Sin canción");
         songArtist.setText("Artista desconocido");
         loadDefaultCover();
     }
@@ -253,10 +291,9 @@ public class HelofyMainController {
 
     private void updateShuffleButton() {
         shuffleButton.setText(musicPlayer.isShuffle() ? "🔀" : "🔁");
-        shuffleButton.setStyle(musicPlayer.isShuffle() ?
-                "-fx-text-fill: #1DB954; -fx-font-weight: bold;" :
-                "-fx-text-fill: white;"
-        );
+        shuffleButton.setStyle(musicPlayer.isShuffle()
+                ? "-fx-text-fill: #1DB954; -fx-font-weight: bold;"
+                : "-fx-text-fill: white;");
     }
 
     public void onSongSelected(Song song) {
@@ -273,23 +310,19 @@ public class HelofyMainController {
         });
     }
 
-    @FXML
-    private void handleLibraryClick() {
+    @FXML private void handleLibraryClick() {
         setCenterContent("/org/example/helofy/views/LibraryView.fxml");
     }
 
-    @FXML
-    private void handleCreatePlaylistClick() {
+    @FXML private void handleCreatePlaylistClick() {
         setCenterContent("/org/example/helofy/views/CreatePlaylistView.fxml");
     }
 
-    @FXML
-    private void handleEditPlaylistClick() {
+    @FXML private void handleEditPlaylistClick() {
         setCenterContent("/org/example/helofy/views/EditPlaylistView.fxml");
     }
 
-    @FXML
-    private void handleSuperPlayListlick() {
+    @FXML private void handleSuperPlayListlick() {
         setCenterContent("/org/example/helofy/views/SuperPlayListView.fxml");
     }
 }

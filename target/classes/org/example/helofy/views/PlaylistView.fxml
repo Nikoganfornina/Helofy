@@ -10,14 +10,16 @@
         <Label prefHeight="20.0" prefWidth="30.0" />
 
         <!-- Hacemos la sección superior más pequeña (imagen y texto) -->
-        <HBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="870.0" spacing="20">
+        <HBox alignment="TOP_LEFT" spacing="20" prefHeight="200.0" prefWidth="870.0">
             <Label prefHeight="20.0" prefWidth="30.0" />
             <!-- Aumentamos el tamaño de la imagen -->
             <ImageView id="image-view" fx:id="imgPortada" fitHeight="200.0" fitWidth="200.0" layoutX="80.0" style="-fx-margin-left: 10;" />
-            <VBox prefHeight="200.0" prefWidth="510.0" spacing="10" style="-fx-margin: 10;">
+            <VBox prefHeight="200.0" prefWidth="510.0" style="-fx-margin: 10;">
                 <!-- Reducimos las alturas de las etiquetas -->
-                <Label fx:id="lblTitulo" prefHeight="50.0" prefWidth="496.0" styleClass="playlist-title" />
-                <Label fx:id="lblDescripcion" prefHeight="133.0" prefWidth="505.0" styleClass="playlist-description" text="Descripción de prueba" />
+                <Label fx:id="lblTitulo" prefHeight="35.0" prefWidth="496.0" styleClass="playlist-title" />
+                <Label fx:id="lblDescripcion" prefHeight="103.0" prefWidth="505.0" styleClass="playlist-description" text="Descripción de prueba" />
+                <Label fx:id="lblNumeroCanciones" prefHeight="103.0" prefWidth="505.0" styleClass="playlist-description2 " text="Descripción de prueba" />
+
             </VBox>
         </HBox>
 
