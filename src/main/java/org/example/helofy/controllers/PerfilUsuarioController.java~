@@ -69,12 +69,19 @@ public class PerfilUsuarioController {
     private void cargarFoto() {
         Image image;
         if (usuario.getImagenPath() != null && !usuario.getImagenPath().isBlank() && Files.exists(Path.of(usuario.getImagenPath()))) {
-            image = new Image("file:" + usuario.getImagenPath());
+            // Desactiva caché al cargar
+            image = new Image("file:" + usuario.getImagenPath(), false);
         } else {
             image = new Image(getClass().getResource(defaultImage).toExternalForm());
         }
         fotoUsuario.setImage(image);
-        Rounded.applyRoundedClip(fotoUsuario, 50.0);
+        Rounded.applyRoundedClip(fotoUsuario, 100.0);
+    }
+
+    private HelofyMainController mainController;
+
+    public void setMainController(HelofyMainController mainController) {
+        this.mainController = mainController;
     }
 
     @FXML

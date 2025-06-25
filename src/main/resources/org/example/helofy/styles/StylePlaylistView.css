@@ -59,7 +59,8 @@
 }
 
 .song-list {
-    -fx-background-color: transparent;
+    -fx-background-color: transparent
+
 }
 
 .song-list .list-cell {

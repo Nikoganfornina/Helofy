@@ -1,0 +1,9 @@
+package org.example.helofy.model;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+public class RutaUsuario {
+    public static final Path CARPETA_USUARIO = Paths.get("HeloPlayList");
+    public static final Path RUTA_JSON = CARPETA_USUARIO.resolve("usuario.json");
+}

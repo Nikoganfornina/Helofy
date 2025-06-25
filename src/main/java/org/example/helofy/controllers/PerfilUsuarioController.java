@@ -17,7 +17,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 public class PerfilUsuarioController {
@@ -31,6 +30,12 @@ public class PerfilUsuarioController {
     private final String defaultImage = "/org/example/helofy/styles/defaultImage.png";
 
     private Usuario usuario;
+
+    private HelofyMainController mainController;
+
+    public void setMainController(HelofyMainController mainController) {
+        this.mainController = mainController;
+    }
 
     @FXML
     public void initialize() {
@@ -69,7 +74,8 @@ public class PerfilUsuarioController {
     private void cargarFoto() {
         Image image;
         if (usuario.getImagenPath() != null && !usuario.getImagenPath().isBlank() && Files.exists(Path.of(usuario.getImagenPath()))) {
-            image = new Image("file:" + usuario.getImagenPath());
+            // Desactiva caché al cargar para que refresque imagen actualizada
+            image = new Image("file:" + usuario.getImagenPath(), false);
         } else {
             image = new Image(getClass().getResource(defaultImage).toExternalForm());
         }
@@ -95,10 +101,15 @@ public class PerfilUsuarioController {
                 mapper.writeValue(jsonPath.toFile(), usuario);
 
                 cargarFoto();
+
+                // Actualizar también en el menú principal si el controlador está seteado
+                if (mainController != null) {
+                    mainController.actualizarUsuario(usuario);
+                }
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
-
 }

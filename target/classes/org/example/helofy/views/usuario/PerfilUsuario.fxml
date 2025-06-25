@@ -9,9 +9,10 @@
     <VBox alignment="TOP_CENTER" layoutX="183.0" layoutY="92.0" prefHeight="371.0" prefWidth="521.0" spacing="20">
         <StackPane fx:id="fotoStack" prefHeight="120" prefWidth="120">
             <ImageView fx:id="fotoUsuario" fitHeight="120" fitWidth="120" preserveRatio="true" />
-            <Pane fx:id="overlayFoto" onMouseClicked="#cambiarFoto" styleClass="overlay" visible="false">
-                <Label styleClass="overlay-text" text="Cambiar foto" />
-            </Pane>
+
+            <StackPane fx:id="overlayFoto" onMouseClicked="#cambiarFoto" styleClass="overlay" visible="false">
+                <Label text="Cambiar foto" styleClass="overlay-text" />
+            </StackPane>
         </StackPane>
 
         <Label fx:id="nombreUsuario" styleClass="perfil-nombre" />

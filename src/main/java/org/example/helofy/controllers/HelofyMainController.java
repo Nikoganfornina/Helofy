@@ -1,65 +1,177 @@
 package org.example.helofy.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.animation.Animation;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Bounds;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.OverrunStyle;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.example.helofy.model.Song;
 import org.example.helofy.model.Playlist;
-import org.example.helofy.utils.ImageLoader;
+import org.example.helofy.model.RutaUsuario;
+import org.example.helofy.model.Song;
+import org.example.helofy.model.Usuario;
 import org.example.helofy.utils.MusicPlayer;
 import org.example.helofy.utils.Rounded;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Objects;
 
 public class HelofyMainController {
 
-    @FXML private StackPane contentArea;
-    @FXML private Slider volumeSlider;
-    @FXML private Button playPauseButton;
-    @FXML private Button previousButton;
-    @FXML private Button nextButton;
-    @FXML private Slider progressSlider;
-    @FXML private Label songName;
-    @FXML private Label songArtist;
-    @FXML private ImageView songImage;
-    @FXML private Button shuffleButton;
-    @FXML private ImageView headerImage;
-    @FXML private ImageView imagenBienvenida;
-    @FXML private Button createPlaylistButton;
-    @FXML private Label lblTiempoTranscurrido;
-    @FXML private Label lblTiempoRestante;
-    @FXML private StackPane songNameContainer;
-    @FXML private ImageView userImage;
+    @FXML
+    private StackPane contentArea;
+    @FXML
+    private Slider volumeSlider;
+    @FXML
+    private Button playPauseButton;
+    @FXML
+    private Button previousButton;
+    @FXML
+    private Button nextButton;
+    @FXML
+    private Slider progressSlider;
+    @FXML
+    private Label songName;
+    @FXML
+    private Label songArtist;
+    @FXML
+    private ImageView songImage;
+    @FXML
+    private Button shuffleButton;
+    @FXML
+    private ImageView headerImage;
+    @FXML
+    private ImageView imagenBienvenida;
+    @FXML
+    private Button createPlaylistButton;
+    @FXML
+    private Label lblTiempoTranscurrido;
+    @FXML
+    private Label lblTiempoRestante;
+    @FXML
+    private StackPane songNameContainer;
+    @FXML
+    private ImageView userImage;
+    @FXML
+    private Button userButton;
+    @FXML
+    private Button ExitButton;
+    @FXML
+    private HBox header;
+
     private final MusicPlayer musicPlayer = new MusicPlayer();
     private boolean isDraggingProgress = false;
     private double duracionTotalSegundos = 0;
     private TranslateTransition marqueeAnimation;
 
+    private double xOffset = 0;
+    private double yOffset = 0;
+
     @FXML
     public void initialize() {
+
+        header.setOnMousePressed(event -> {
+            xOffset = event.getSceneX();
+            yOffset = event.getSceneY();
+        });
+
+        header.setOnMouseDragged(event -> {
+            Stage stage = (Stage) header.getScene().getWindow();
+            stage.setX(event.getScreenX() - xOffset);
+            stage.setY(event.getScreenY() - yOffset);
+        });
         configureMusicPlayer();
         setupControls();
         setupVolumePersistente();
 
         headerImage.setImage(new Image(getClass().getResource("/org/example/helofy/styles/logoapp2.png").toExternalForm()));
         Rounded.applyRoundedClip(headerImage, 15.0);
-        userImage.setImage(new Image(getClass().getResource("/org/example/helofy/styles/defaultImage.png").toExternalForm()));
-        userImage.setPreserveRatio(true);
+
         imagenBienvenida.setImage(new Image(getClass().getResource("/org/example/helofy/styles/welcome.png").toExternalForm()));
         imagenBienvenida.setPreserveRatio(true);
-        Rounded.applyRoundedClip(userImage, 10.0);
 
+        System.out.println("Inicializando controlador...");
+
+        Usuario usuario = cargarUsuario();
+        if (usuario != null) {
+            System.out.println("Usuario cargado: " + usuario.getNombre());
+            userButton.setText(usuario.getNombre());
+            userImage.setImage(cargarImagenUsuario(usuario.getImagenPath()));
+        } else {
+            System.out.println("No se encontró usuario");
+            userButton.setText("Usuario");
+            userImage.setImage(new Image(getClass().getResource("/org/example/helofy/styles/defaultImage.png").toExternalForm()));
+        }
+        Rounded.applyRoundedClip(userImage, 10.0);
+    }
+
+    private Usuario cargarUsuario() {
+        try {
+            Path path = RutaUsuario.JSON_USUARIO;
+            System.out.println("Ruta usuario: " + path.toAbsolutePath());
+
+            if (!Files.exists(path)) {
+                System.out.println("No existe el JSON, abriendo registro");
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/helofy/views/usuario/RegistroUsuario.fxml"));
+                Parent registroRoot = loader.load();
+                Stage stage = new Stage();
+                stage.setScene(new Scene(registroRoot));
+                stage.setTitle("Registro de Usuario");
+                stage.setResizable(false);
+                stage.show();
+
+                Stage actual = (Stage) userButton.getScene().getWindow();
+                actual.close();
+
+                return null;
+            }
+
+            System.out.println("Archivo usuario existe, leyendo...");
+            ObjectMapper mapper = new ObjectMapper();
+            Usuario usuario = mapper.readValue(path.toFile(), Usuario.class);
+            System.out.println("Usuario cargado: " + usuario.getNombre());
+            return usuario;
+
+        } catch (Exception e) {
+            System.err.println("Error cargando usuario: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+
+    private Image cargarImagenUsuario(String path) {
+        if (path != null && !path.isBlank()) {
+            File archivo = new File(path);
+            if (archivo.exists()) {
+                return new Image(archivo.toURI().toString());
+            }
+        }
+        return new Image(getClass().getResource("/org/example/helofy/styles/defaultImage.png").toExternalForm());
+    }
+
+    public void actualizarUsuario(Usuario usuario) {
+        userButton.setText(usuario.getNombre());
+        if (usuario.getImagenPath() != null && !usuario.getImagenPath().isBlank()) {
+            userImage.setImage(new Image("file:" + usuario.getImagenPath(), false));
+        } else {
+            userImage.setImage(new Image(getClass().getResource("/org/example/helofy/styles/defaultImage.png").toExternalForm()));
+        }
+        Rounded.applyRoundedClip(userImage, 10.0);
     }
 
 
@@ -315,23 +427,33 @@ public class HelofyMainController {
         });
     }
 
-    @FXML private void handleLibraryClick() {
+    @FXML
+    private void handleLibraryClick() {
         setCenterContent("/org/example/helofy/views/LibraryView.fxml");
     }
 
-    @FXML private void handleCreatePlaylistClick() {
+    @FXML
+    private void handleCreatePlaylistClick() {
         setCenterContent("/org/example/helofy/views/CreatePlaylistView.fxml");
     }
 
-    @FXML private void handleEditPlaylistClick() {
+    @FXML
+    private void handleEditPlaylistClick() {
         setCenterContent("/org/example/helofy/views/EditPlaylistView.fxml");
     }
 
-    @FXML private void handleSuperPlayListlick() {
+    @FXML
+    private void handleSuperPlayListlick() {
         setCenterContent("/org/example/helofy/views/SuperPlayListView.fxml");
     }
 
-    @FXML private void handleUserClick() {
+    @FXML
+    private void handleUserClick() {
         setCenterContent("/org/example/helofy/views/usuario/PerfilUsuario.fxml");
+    }
+
+    @FXML
+    private void handleExitClick() {
+        Platform.exit();
     }
 }

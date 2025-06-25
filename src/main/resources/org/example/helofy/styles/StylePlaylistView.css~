@@ -28,13 +28,13 @@
     -fx-wrap-text: true;
     -fx-line-spacing: 4px;
 }
+
 .playlist-description2 {
     -fx-text-fill: #ffffff;
     -fx-font-size: 20px;
     -fx-wrap-text: true;
     -fx-line-spacing: 4px;
     -fx-font-weight: bold;
-
 }
 
 .round-button {
@@ -58,6 +58,10 @@
     -fx-background-color: #00B4D8 !important;
 }
 
+.song-list {
+    -fx-background-color: transparent
+   
+}
 
 .song-list .list-cell {
     -fx-background-color: #2a2a2a;
@@ -67,12 +71,12 @@
 }
 
 .song-list .list-cell:hover {
-    -fx-background-color: #3a3a3a; /* gris oscuro suave para hover */
+    -fx-background-color: #353535; /* gris muy tenue */
     -fx-text-fill: white;
 }
 
 .song-list .list-cell:filled:selected,
 .song-list .list-cell:selected {
-    -fx-background-color: #005f9e; /* azul para selección */
+    -fx-background-color: #2a6ebb; /* mantengo azul para selected */
     -fx-text-fill: white;
 }

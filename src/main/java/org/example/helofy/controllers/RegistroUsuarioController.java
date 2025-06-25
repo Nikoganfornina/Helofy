@@ -10,10 +10,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import org.example.helofy.model.RutaUsuario;
 import org.example.helofy.model.Usuario;
 import org.example.helofy.utils.Rounded;
 
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class RegistroUsuarioController {
 
@@ -21,11 +24,8 @@ public class RegistroUsuarioController {
     @FXML private Button crearBtn;
     @FXML private ImageView logoImage;
 
-    private static final String RUTA_JSON = "usuario.json";
-
     @FXML
     public void initialize() {
-        // Redondear el logo (como en header y portada)
         Rounded.applyRoundedClip(logoImage, 30.0);
 
         crearBtn.setOnAction(e -> {
@@ -34,22 +34,31 @@ public class RegistroUsuarioController {
             if (nombre.matches("[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ ]+")) {
                 Usuario usuario = new Usuario();
                 usuario.setNombre(nombre);
-                usuario.setImagenPath("/org/example/helofy/styles/default_user.png");
+                usuario.setImagenPath(""); // puedes poner una por defecto si quieres
                 usuario.setNumPlaylists(0);
                 usuario.setTiempoEscuchado(0);
                 usuario.setPlaylistFavorita("Ninguna");
 
                 try {
-                    ObjectMapper mapper = new ObjectMapper();
-                    mapper.writeValue(new File(RUTA_JSON), usuario);
+                    Path carpeta = RutaUsuario.JSON_USUARIO.getParent();
+                    if (carpeta != null && !Files.exists(carpeta)) {
+                        Files.createDirectories(carpeta);
+                    }
 
-                    // Cargar pantalla principal
+                    ObjectMapper mapper = new ObjectMapper();
+                    mapper.writeValue(RutaUsuario.JSON_USUARIO.toFile(), usuario);
+
+                    // Abrir vista principal
                     Stage stage = (Stage) crearBtn.getScene().getWindow();
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/helofy/views/HelofyMain.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/helofy/HelofyMain.fxml"));
                     Parent mainRoot = loader.load();
                     stage.setScene(new Scene(mainRoot));
-                } catch (Exception ex) {
+                    stage.setTitle("Helofy Music Player");
+                    stage.setResizable(false);
+
+                } catch (IOException ex) {
                     mostrarError("Error al guardar el usuario: " + ex.getMessage());
+                    ex.printStackTrace();
                 }
             } else {
                 mostrarError("El nombre solo puede contener letras.");
