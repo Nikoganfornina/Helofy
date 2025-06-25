@@ -84,6 +84,33 @@
     -fx-text-fill: #1DB954;
 }
 
+.playlist-list {
+    -fx-background-color: transparent;
+    -fx-control-inner-background: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.playlist-list .list-cell {
+    -fx-background-color: transparent;
+    -fx-padding: 5 0;
+     -fx-alignment: center;
+}
+
+.playlist-list .list-cell:filled:hover {
+    -fx-background-color: #00B4D8;
+}
+
+.playlist-list .list-cell:filled:selected {
+    -fx-background-color: #00B4D8;
+}
+
+
+
 #empezar {
     -fx-background-color: #1DB954;
     -fx-font-size: 16px;
@@ -157,6 +184,16 @@
     -fx-line-spacing: 4px;
     -fx-padding: 5px;
 }
+
+.titulo-texto2{
+
+     -fx-font-size: 16px;
+        -fx-alignment: CENTER;
+        -fx-line-spacing: 4px;
+        -fx-padding: 5px;
+}
+
+
 
 .bienvenida-texto,
 .bienvenida-texto2 {

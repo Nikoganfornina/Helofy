@@ -40,7 +40,8 @@
         </HBox>
 
 
-
-        <ListView fx:id="listaCanciones" prefHeight="267.0" prefWidth="870.0" styleClass="song-list" />
+        <HBox alignment="CENTER">
+            <ListView fx:id="listaCanciones" translateX="15" prefHeight="267.0" prefWidth="830.0" styleClass="song-list" />
+        </HBox>
     </VBox>
 </ScrollPane>

@@ -4,7 +4,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<StackPane style="-fx-background-color: #0A0A0A; -fx-padding: 20;" stylesheets="@styles/Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.helofy.controllers.HelofyMainController">
+<StackPane style="-fx-background-color: #0A0A0A; -fx-padding: 20; -fx-background-radius: 10; -fx-border-radius: 10; " stylesheets="@styles/Style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.helofy.controllers.HelofyMainController">
 
     <!-- BorderPane principal flotando con margen negro alrededor -->
     <BorderPane fx:id="rootPane" prefHeight="710" prefWidth="1260">
@@ -24,6 +24,7 @@
                     <ImageView fx:id="userImage" fitHeight="45.0" fitWidth="45.0" />
                     <Button fx:id="userButton" onAction="#handleUserClick" styleClass="menu-button" text="Usuario" />
                 </HBox>
+                <Button fx:id="MinimizeButton" onAction="#handleMinimizeClick" styleClass="menu-button" text="—" />
                 <Button fx:id="ExitButton" onAction="#handleExitClick" styleClass="menu-button" text="X" />
             </HBox>
         </top>
@@ -31,12 +32,17 @@
 
         <!-- Menú lateral izquierdo -->
         <left>
-            <VBox prefWidth="180.0" styleClass="side-menu">
+            <VBox  alignment="TOP_CENTER"  prefWidth="180.0" styleClass="side-menu" spacing="10">
                 <Button onAction="#handleLibraryClick" styleClass="menu-button" text="Mi Biblioteca" />
                 <Separator styleClass="separator" />
-                <VBox styleClass="playlist-container">
-                    <Label styleClass="playlist-title2" text="Playlist favoritas" />
+                <VBox styleClass="playlist-container" alignment="TOP_CENTER" spacing="5">
+                    <Label styleClass="bienvenida-texto" text="Playlist favoritas"  />
                     <!-- Aquí puedes agregar botones o elementos estáticos -->
+
+
+                    <Separator styleClass="separator" />
+
+                    <ListView fx:id="playlistListViewFavorites" prefHeight="267.0" prefWidth="180.0" styleClass="playlist-list" />
                 </VBox>
             </VBox>
         </left>

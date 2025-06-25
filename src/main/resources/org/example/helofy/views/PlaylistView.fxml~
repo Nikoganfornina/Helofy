@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" prefHeight="532.0" prefWidth="870.0" styleClass="playlist-view" stylesheets="@../styles/StylePlaylistView.css" vbarPolicy="AS_NEEDED" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.helofy.controllers.PlaylistViewController">
+    <VBox fx:id="vboxContainer" prefHeight="583.0" prefWidth="870.0" spacing="20" styleClass="playlist-view">
+        <!-- Ajustamos la altura del primer HBox para hacerlo más pequeño -->
+        <Label prefHeight="20.0" prefWidth="30.0" />
+
+        <!-- Hacemos la sección superior más pequeña (imagen y texto) -->
+        <HBox alignment="TOP_LEFT" prefHeight="200.0" prefWidth="870.0" spacing="20">
+            <Label prefHeight="20.0" prefWidth="30.0" />
+            <!-- Aumentamos el tamaño de la imagen -->
+            <ImageView id="image-view" fx:id="imgPortada" fitHeight="200.0" fitWidth="200.0" layoutX="80.0" style="-fx-margin-left: 10;" />
+            <VBox prefHeight="200.0" prefWidth="510.0" style="-fx-margin: 10;">
+                <!-- Reducimos las alturas de las etiquetas -->
+                <Label fx:id="lblTitulo" prefHeight="35.0" prefWidth="496.0" styleClass="playlist-title" />
+                <Label fx:id="lblDescripcion" prefHeight="129.0" prefWidth="505.0" styleClass="playlist-description" text="Descripción de prueba" />
+                <Label fx:id="lblNumeroCanciones" prefHeight="55.0" prefWidth="505.0" styleClass="playlist-description2 " text="Descripción de prueba" />
+
+            </VBox>
+        </HBox>
+
+
+        <HBox alignment="CENTER_LEFT" minHeight="40" prefHeight="40" prefWidth="900" style="-fx-padding: 0 30 0 50; -fx-spacing: 20; -fx-background-color: transparent;">
+
+
+            <!-- Botones izquierda -->
+
+            <Button fx:id="playButton" styleClass="round-button" text="▶" />
+            <Button fx:id="optionsButton" styleClass="round-button" text="⋮" />
+
+            <!-- Espaciador dinámico -->
+            <Pane prefHeight="19.0" prefWidth="472.0" />
+
+            <!-- Botón derecho (con margen derecho para que no se corte) -->
+            <Button fx:id="orderButton" styleClass="round-button" text="⇅" />
+        </HBox>
+
+
+        <HBox alignment="CENTER">
+            <ListView fx:id="listaCanciones" translateX="20" prefHeight="267.0" prefWidth="830.0" styleClass="song-list" />
+        </HBox>
+    </VBox>
+</ScrollPane>

@@ -6,6 +6,7 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -73,6 +74,9 @@ public class HelofyMainController {
     @FXML
     private HBox header;
 
+    @FXML
+    private ListView<String> playlistListViewFavorites;
+
     private final MusicPlayer musicPlayer = new MusicPlayer();
     private boolean isDraggingProgress = false;
     private double duracionTotalSegundos = 0;
@@ -83,6 +87,8 @@ public class HelofyMainController {
 
     @FXML
     public void initialize() {
+
+        inicializarListaFavoritas();
 
         header.setOnMousePressed(event -> {
             xOffset = event.getSceneX();
@@ -117,6 +123,35 @@ public class HelofyMainController {
             userImage.setImage(new Image(getClass().getResource("/org/example/helofy/styles/defaultImage.png").toExternalForm()));
         }
         Rounded.applyRoundedClip(userImage, 10.0);
+    }
+
+
+
+
+    private void inicializarListaFavoritas() {
+        playlistListViewFavorites.getItems().addAll("Lista 1", "Lista 2", "Lista 3");
+
+        playlistListViewFavorites.setCellFactory(list -> new ListCell<>() {
+            private final Button button = new Button();
+
+            {
+                button.getStyleClass().add("menu-button");
+                button.setMaxWidth(Double.MAX_VALUE);
+                button.setAlignment(Pos.CENTER);  // Centrar el texto dentro del botón
+            }
+
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setGraphic(null);
+                } else {
+                    button.setText(item);
+                    setGraphic(button);
+                    setAlignment(Pos.CENTER);  // Centrar el botón dentro de la celda
+                }
+            }
+        });
     }
 
     private Usuario cargarUsuario() {
@@ -455,5 +490,11 @@ public class HelofyMainController {
     @FXML
     private void handleExitClick() {
         Platform.exit();
+    }
+
+    @FXML
+    private void handleMinimizeClick() {
+        Stage stage = (Stage) header.getScene().getWindow();
+        stage.setIconified(true);
     }
 }
