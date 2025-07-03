@@ -355,6 +355,8 @@ public class HelofyMainController {
         }
     }
 
+
+
     private void loadDefaultCover() {
         try {
             Image defaultCover = new Image(

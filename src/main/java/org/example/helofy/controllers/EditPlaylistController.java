@@ -31,7 +31,7 @@ public class EditPlaylistController {
     private GridPane mainLayout;
 
     // ✅ Ruta corregida según tu estructura real
-    private final Path basePath = Paths.get("D:/REPOSITORIO/musicapp/HeloPlayList");
+    private final Path basePath = Paths.get("HeloPlayList");
 
     private final FileChooser fileChooser = new FileChooser();
     private Path currentPlaylistPath;

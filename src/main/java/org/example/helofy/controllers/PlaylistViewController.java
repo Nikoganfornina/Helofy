@@ -34,6 +34,11 @@ public class PlaylistViewController {
     @FXML private Button playButton;
     @FXML private Button orderButton;
 
+    @FXML
+    private Button botonCorazon;
+
+    private boolean esFavorita = false;
+
     private Playlist playlistActual;
     private MusicPlayer musicPlayer;
     private boolean ordenAscendente = true;
@@ -213,6 +218,21 @@ public class PlaylistViewController {
         }
     }
 
+    @FXML
+    private void handleToggleFavorito() {
+        esFavorita = !esFavorita;
+        actualizarIconoFavorito();
+    }
+
+    private void actualizarIconoFavorito() {
+        if (esFavorita) {
+            botonCorazon.setText("♥");
+            botonCorazon.setStyle("-fx-text-fill: #00aeef; -fx-font-size: 20px;");
+        } else {
+            botonCorazon.setText("♡");
+            botonCorazon.setStyle("-fx-text-fill: white; -fx-font-size: 20px;");
+        }
+    }
     private Image getDefaultCoverImage() {
         try {
             return new Image(Objects.requireNonNull(getClass().getResourceAsStream(String.valueOf(ImageLoader.loadDefaultFrontPage()))));

@@ -38,12 +38,7 @@
 }
 
 .round-button {
-    -fx-font-size: 10px;
-    -fx-min-width: 25px;
-    -fx-min-height:25px;
-    -fx-max-width: 25px;
-    -fx-max-height: 25px;
-    -fx-padding: 0;
+    -fx-font-size: 20px;
     -fx-background-radius: 50%;
     -fx-border-radius: 50%;
     -fx-cursor: hand;
@@ -54,31 +49,21 @@
     -fx-text-alignment: center;
     -fx-font-family: "Segoe UI Symbol", "Arial Unicode MS", sans-serif;
 }
-.round-button2 {
-    -fx-font-size: 18px;
-    -fx-min-width: 35px;
-    -fx-min-height:35px;
-    -fx-max-width: 35px;
-    -fx-max-height: 35px;
-    -fx-padding: 0;
-    -fx-background-radius: 50%;
-    -fx-border-radius: 50%;
-    -fx-cursor: hand;
-    -fx-text-fill: white;
-    -fx-background-color: transparent;
-    -fx-border-color: transparent;
-    -fx-alignment: center;
-    -fx-text-alignment: center;
-    -fx-font-family: "Segoe UI Symbol", "Arial Unicode MS", sans-serif;
-}
-
 .round-button .text {
     -fx-scale-x: 2;
     -fx-scale-y: 2;
 }
 
-.round-button:hover,round-button2 {
+.menu-buttons {
+-fx-padding: 0 30 0 50; -fx-spacing: 20; -fx-background-color: transparent;
+
+}
+.round-button:hover {
     -fx-background-color: #00B4D8 !important;
+    -fx-alignment: center;
+-fx-background-radius: 50%;
+    -fx-border-radius: 50%;
+
 }
 
 .song-list {
@@ -91,43 +76,6 @@
     -fx-padding: 10px;
     -fx-border-color: #1a1a1a;
 }
-
-/* Asegura tamaño fijo y área hover */
-.button.corazon-vacio, .button.corazon-lleno {
-    -fx-min-width: 35px;
-    -fx-min-height: 35px;
-    -fx-max-width: 35px;
-    -fx-max-height: 35px;
-}
-
-/* Corazón vacío - borde blanco, fondo transparente */
-.button.corazon-vacio {
-    -fx-background-color: transparent;
-    -fx-border-color: white;
-    -fx-border-width: 2;
-    -fx-text-fill: white;
-    -fx-border-radius: 50%;
-    -fx-content-display: text;
-}
-
-/* Corazón lleno - fondo y borde azul */
-.button.corazon-lleno {
-    -fx-background-color: #00B4D8;
-    -fx-border-color: #00B4D8;
-    -fx-border-width: 2;
-    -fx-text-fill: white;
-    -fx-border-radius: 50%;
-    -fx-content-display: text;
-}
-
-.button.corazon-vacio:hover {
-    -fx-border-color: #00B4D8;
-}
-
-.button.corazon-lleno:hover {
-    -fx-background-color: #1ED760;
-}
-
 .song-list .list-cell:hover {
     -fx-background-color: #353535; /* gris muy tenue */
     -fx-text-fill: white;
@@ -141,13 +89,11 @@
 .button.orden-ascendente {
     -fx-background-color: transparent;
     -fx-text-fill: white;
-    -fx-font-size: 18px;
     -fx-cursor: hand;
 }
 
 .button.orden-descendente {
     -fx-background-color: transparent;
     -fx-text-fill: #00B4D8;
-    -fx-font-size: 18px;
     -fx-cursor: hand;
 }
