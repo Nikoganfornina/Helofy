@@ -227,10 +227,10 @@ public class PlaylistViewController {
     private void actualizarIconoFavorito() {
         if (esFavorita) {
             botonCorazon.setText("♥");
-            botonCorazon.setStyle("-fx-text-fill: #00aeef; -fx-font-size: 20px;");
+            botonCorazon.setStyle("-fx-text-fill: #00aeef; -fx-font-size: 18px;");
         } else {
             botonCorazon.setText("♡");
-            botonCorazon.setStyle("-fx-text-fill: white; -fx-font-size: 20px;");
+            botonCorazon.setStyle("-fx-text-fill: white; -fx-font-size: 18px;");
         }
     }
     private Image getDefaultCoverImage() {

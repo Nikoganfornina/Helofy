@@ -36,7 +36,7 @@
 
             <!-- Botones izquierda -->
 
-            <Button fx:id="playButton" onAction="#reproducirPrimeraCancion" styleClass="round-button" text="▶"/>
+            <Button fx:id="playButton" onAction="#reproducirPrimeraCancion"  style="-fx-font-size: 16px" styleClass="round-button" text="▶"/>
             <Button fx:id="optionsButton" styleClass="round-button" text="⋮"/>
 
             <!-- Espaciador dinámico -->
