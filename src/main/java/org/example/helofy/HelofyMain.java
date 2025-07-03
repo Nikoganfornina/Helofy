@@ -4,26 +4,18 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.example.helofy.model.RutaUsuario;
 import org.example.helofy.utils.ImageLoader;
-
-import java.io.File;
 
 public class HelofyMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        File userFile = RutaUsuario.JSON_USUARIO.toFile();
-        FXMLLoader loader;
-        if (userFile.exists()) {
-            loader = new FXMLLoader(getClass().getResource("/org/example/helofy/HelofyMain.fxml"));
-        } else {
-            loader = new FXMLLoader(getClass().getResource("/org/example/helofy/views/usuario/RegistroUsuario.fxml"));
-        }
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/helofy/HelofyMain.fxml"));
+
 
         Parent root = loader.load();
 

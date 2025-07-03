@@ -95,6 +95,12 @@
     -fx-faint-focus-color: transparent;
 }
 
+.playlist-list .scroll-bar:horizontal {
+    -fx-opacity: 0;
+    -fx-max-height: 0;
+    -fx-min-height: 0;
+}
+
 .playlist-list .list-cell {
     -fx-background-color: transparent;
     -fx-padding: 5 0;

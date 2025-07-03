@@ -29,14 +29,16 @@
 
             <!-- Botones izquierda -->
 
-            <Button fx:id="playButton" styleClass="round-button" text="▶" />
+            <Button fx:id="playButton" onAction="#reproducirPrimeraCancion" styleClass="round-button" text="▶" />
             <Button fx:id="optionsButton" styleClass="round-button" text="⋮" />
 
             <!-- Espaciador dinámico -->
             <Pane prefHeight="19.0" prefWidth="472.0" />
 
             <!-- Botón derecho (con margen derecho para que no se corte) -->
-            <Button fx:id="orderButton" styleClass="round-button" text="⇅" />
+            <Button fx:id="orderButton"  onAction="#alternarOrden"  styleClass="round-button2" text="⇅" />
+            <Button fx:id="botonCorazon" styleClass="round-button2" text="♥" />
+
         </HBox>
 
 

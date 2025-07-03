@@ -22,7 +22,7 @@
                 <!-- Usuario alineado a la derecha -->
                 <HBox alignment="CENTER_RIGHT" spacing="10">
                     <ImageView fx:id="userImage" fitHeight="45.0" fitWidth="45.0" />
-                    <Button fx:id="userButton" onAction="#handleUserClick" styleClass="menu-button" text="Usuario" />
+                    <Button fx:id="userButton" onAction="#handleUserClick" styleClass="menu-button" text="Perfil" />
                 </HBox>
                 <Button fx:id="MinimizeButton" onAction="#handleMinimizeClick" styleClass="menu-button" text="—" />
                 <Button fx:id="ExitButton" onAction="#handleExitClick" styleClass="menu-button" text="X" />
@@ -54,7 +54,7 @@
                 <Separator styleClass="separator" />
                 <Button fx:id="editPlaylistButton" onAction="#handleEditPlaylistClick" styleClass="menu-button" text="Editar Playlist" />
                 <Separator styleClass="separator" />
-                <Button fx:id="createSuperPlaylistButton" onAction="#handleSuperPlayListlick" styleClass="menu-button" text="Super PlayList" />
+                <Button fx:id="createSuperPlaylistButton" onAction="#handleSuperPlayListClick" styleClass="menu-button" text="Super PlayList" />
                 <Separator styleClass="separator" />
                 <Button fx:id="settingsButton" styleClass="menu-button" text="Ajustes" />
             </VBox>

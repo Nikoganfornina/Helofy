@@ -1,5 +1,6 @@
 package org.example.helofy.controllers;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -11,13 +12,17 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import org.example.helofy.model.Playlist;
 import org.example.helofy.model.Song;
+import org.example.helofy.utils.ImageLoader;
 import org.example.helofy.utils.MusicPlayer;
 import org.example.helofy.utils.Rounded;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 public class PlaylistViewController {
 
@@ -26,22 +31,25 @@ public class PlaylistViewController {
     @FXML private Label lblTitulo;
     @FXML private Label lblDescripcion;
     @FXML private Label lblNumeroCanciones;
+    @FXML private Button playButton;
+    @FXML private Button orderButton;
 
+    private Playlist playlistActual;
+    private MusicPlayer musicPlayer;
+    private boolean ordenAscendente = true;
+
+    private HelofyMainController mainController;
+
+    public void setMainController(HelofyMainController mainController) {
+        this.mainController = mainController;
+    }
     public void configurarPlaylist(Playlist playlist, MusicPlayer player) {
+        this.playlistActual = playlist;
+        this.musicPlayer = player;
+
         lblTitulo.setText(playlist.getName());
+        lblDescripcion.setText(cargarDescripcionDesdeArchivo(new File(playlist.getCoverPath()).getParentFile()));
 
-        // Descripción
-        String descripcion = "";
-        if (playlist.getIsSuperPlaylist() != null && playlist.getIsSuperPlaylist()) {
-            descripcion = playlist.getDescription();
-        } else {
-            File carpetaPlaylist = new File(playlist.getCoverPath()).getParentFile();
-            descripcion = cargarDescripcionDesdeArchivo(carpetaPlaylist);
-            playlist.setDescription(descripcion);
-        }
-        lblDescripcion.setText(descripcion);
-
-        // Imagen portada
         try {
             String coverPath = playlist.getCoverPath();
             Image img;
@@ -61,33 +69,68 @@ public class PlaylistViewController {
         } catch (Exception e) {
             imgPortada.setImage(getDefaultCoverImage());
         }
-
         Rounded.applyRoundedClip(imgPortada, 10.0);
-        listaCanciones.getItems().setAll(playlist.getSongs());
 
-        // Formatear descripción con cantidad y duración
-        int numCanciones = playlist.getSongs().size();
-        actualizarDescripcionCanciones(numCanciones, calcularDuracionTotal(playlist));
+        precargarDuracionCanciones(() -> Platform.runLater(() -> {
+            ordenarCancionesPorNombre();
+            actualizarTextoBotonPlay();
+            actualizarEstadoOrden();
+        }));
+    }
 
-        // Obtener duración real si alguna es 0
-        for (Song song : playlist.getSongs()) {
+    // Precarga duración para todas las canciones y luego ejecuta el callback
+    private void precargarDuracionCanciones(Runnable callback) {
+        List<Song> canciones = playlistActual.getSongs();
+        if (canciones == null || canciones.isEmpty()) {
+            callback.run();
+            return;
+        }
+
+        AtomicInteger pendientes = new AtomicInteger(canciones.size());
+
+        for (Song song : canciones) {
+            // Solo precargar si duración <= 0
             if (song.getDuration() <= 0) {
                 try {
                     Media media = new Media(new File(song.getFilePath()).toURI().toString());
-                    MediaPlayer mediaPlayer = new MediaPlayer(media);
-                    mediaPlayer.setOnReady(() -> {
-                        double duracionReal = media.getDuration().toSeconds();
-                        song.setDuration(duracionReal);
-                        actualizarDescripcionCanciones(numCanciones, calcularDuracionTotal(playlist));
-                        listaCanciones.refresh();
+                    MediaPlayer mp = new MediaPlayer(media);
+                    mp.setOnReady(() -> {
+                        double duracion = media.getDuration().toSeconds();
+                        song.setDuration(duracion);
+                        mp.dispose();
+                        if (pendientes.decrementAndGet() == 0) callback.run();
+                    });
+                    mp.setOnError(() -> {
+                        song.setDuration(0);
+                        mp.dispose();
+                        if (pendientes.decrementAndGet() == 0) callback.run();
                     });
                 } catch (Exception e) {
-                    System.out.println("Error leyendo duración de: " + song.getTitle() + " → " + e.getMessage());
+                    song.setDuration(0);
+                    if (pendientes.decrementAndGet() == 0) callback.run();
                 }
+            } else {
+                // Ya tiene duración
+                if (pendientes.decrementAndGet() == 0) callback.run();
             }
         }
+    }
 
-        // Celdas personalizadas con duración a la derecha
+    private void ordenarCancionesPorNombre() {
+        if (playlistActual == null) return;
+
+        List<Song> cancionesOrdenadas = playlistActual.getSongs().stream()
+                .sorted((s1, s2) -> ordenAscendente
+                        ? s1.getTitle().compareToIgnoreCase(s2.getTitle())
+                        : s2.getTitle().compareToIgnoreCase(s1.getTitle()))
+                .collect(Collectors.toList());
+
+        listaCanciones.getItems().setAll(cancionesOrdenadas);
+
+        int numCanciones = cancionesOrdenadas.size();
+        double duracionTotal = cancionesOrdenadas.stream().mapToDouble(Song::getDuration).sum();
+        actualizarDescripcionCanciones(numCanciones, duracionTotal);
+
         listaCanciones.setCellFactory(lv -> new ListCell<>() {
             @Override
             protected void updateItem(Song cancion, boolean vacio) {
@@ -102,7 +145,7 @@ public class PlaylistViewController {
 
                     double duracion = cancion.getDuration();
                     String duracionStr = duracion > 0
-                            ? String.format("%d:%02d", (int)(duracion / 60), (int)(duracion % 60))
+                            ? String.format("%d:%02d", (int) (duracion / 60), (int) (duracion % 60))
                             : "--:--";
 
                     Label tiempo = new Label(duracionStr);
@@ -115,7 +158,7 @@ public class PlaylistViewController {
                     hbox.setSpacing(10);
                     hbox.setStyle("-fx-padding: 4 15 4 15;");
 
-                    if (cancion.equals(player.getCurrentSong())) {
+                    if (cancion.equals(musicPlayer.getCurrentSong())) {
                         nombreCancion.setStyle("-fx-text-fill: #00aeef; -fx-font-weight: bold;");
                     }
 
@@ -123,13 +166,16 @@ public class PlaylistViewController {
 
                     setOnMouseClicked(e -> {
                         if (e.getClickCount() == 1) {
-                            player.playSong(cancion);
+                            musicPlayer.playSong(cancion);
                             listaCanciones.refresh();
+                            actualizarTextoBotonPlay();
                         }
                     });
                 }
             }
         });
+
+        listaCanciones.refresh();
     }
 
     private void actualizarDescripcionCanciones(int numCanciones, double duracionTotalSegundos) {
@@ -140,12 +186,6 @@ public class PlaylistViewController {
                 + horas + " h " + minutos + " min";
 
         lblNumeroCanciones.setText(texto);
-    }
-
-    private double calcularDuracionTotal(Playlist playlist) {
-        return playlist.getSongs().stream()
-                .mapToDouble(Song::getDuration)
-                .sum();
     }
 
     private String cargarDescripcionDesdeArchivo(File carpetaPlaylist) {
@@ -174,11 +214,55 @@ public class PlaylistViewController {
     }
 
     private Image getDefaultCoverImage() {
-        final String DEFAULT_COVER_PATH = "/org/example/helofy/styles/default_cover.png";
         try {
-            return new Image(Objects.requireNonNull(getClass().getResourceAsStream(DEFAULT_COVER_PATH)));
+            return new Image(Objects.requireNonNull(getClass().getResourceAsStream(String.valueOf(ImageLoader.loadDefaultFrontPage()))));
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    @FXML
+    private void reproducirPrimeraCancion() {
+        if (musicPlayer == null || playlistActual == null) return;
+
+        Song cancionActual = musicPlayer.getCurrentSong();
+        if (cancionActual == null) {
+            Song primera = playlistActual.getSongs().stream().findFirst().orElse(null);
+            if (primera != null) {
+                musicPlayer.playSong(primera);
+            }
+        } else {
+            if (musicPlayer.isPlaying()) {
+                musicPlayer.pause();
+            } else {
+                musicPlayer.resume();
+            }
+        }
+        actualizarTextoBotonPlay();
+    }
+
+    private void actualizarTextoBotonPlay() {
+        if (musicPlayer != null && musicPlayer.isPlaying()) {
+            playButton.setText("⏸");
+        } else {
+            playButton.setText("▶");
+        }
+    }
+
+    @FXML
+    private void alternarOrden() {
+        ordenAscendente = !ordenAscendente;
+        actualizarEstadoOrden();
+        ordenarCancionesPorNombre();
+    }
+
+    private void actualizarEstadoOrden() {
+        if (ordenAscendente) {
+            orderButton.getStyleClass().setAll("round-button", "orden-ascendente");
+            orderButton.setText("⇅");
+        } else {
+            orderButton.getStyleClass().setAll("round-button", "orden-descendente");
+            orderButton.setText("⇵");
         }
     }
 }

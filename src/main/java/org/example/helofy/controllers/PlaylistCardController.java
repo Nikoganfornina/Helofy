@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import org.example.helofy.model.Playlist;
+import org.example.helofy.utils.ImageLoader;
 import org.example.helofy.utils.Rounded;
 
 import java.io.File;
@@ -61,10 +62,9 @@ public class PlaylistCardController {
     }
 
     private void cargarImagenPorDefecto() {
-        URL resource = getClass().getResource(DEFAULT_COVER_PATH);
-        if (resource != null) {
-            imgPortada.setImage(new Image(resource.toString()));
-        } else {
+        try{
+            imgPortada.setImage(ImageLoader.loadDefaultFrontPage());
+        } catch (NullPointerException e){
             System.out.println("Error: No se encontró la imagen por defecto en recursos.");
         }
     }

@@ -26,8 +26,9 @@ public class MusicPlayer {
     private Consumer<Double> onProgressChanged;
     private Consumer<Song> onSongChanged;
     private Runnable onSongFinished;
-    private Consumer<Double> onDurationChanged;  // <-- NUEVO
+    private Consumer<Double> onDurationChanged;
     private double lastVolume = 1.0;
+    private long starPlayback = 0;
 
     public void playSong(Song song) {
         int index = playlist.indexOf(song);
@@ -35,6 +36,8 @@ public class MusicPlayer {
     }
 
     public void playSong(int index) {
+        registrarTiempoEscuchado();
+
         if (index < 0 || index >= playlist.size()) return;
         stop();
         currentIndex = index;
@@ -43,6 +46,15 @@ public class MusicPlayer {
         Platform.runLater(() -> {
             if (onSongChanged != null) onSongChanged.accept(getCurrentSong());
         });
+    }
+
+    private void registrarTiempoEscuchado() {
+        if (starPlayback > 0) {
+            long ahora = System.currentTimeMillis();
+            long tiempoEscuchado = (ahora - starPlayback) / 1000;
+            UsuarioStorage.sumarTiempoEscuchado(tiempoEscuchado);
+            starPlayback = 0;
+        }
     }
 
     private void internalPlaySong() {
@@ -57,6 +69,7 @@ public class MusicPlayer {
 
             mediaPlayer.setOnReady(() -> {
                 Platform.runLater(() -> {
+                    starPlayback = System.currentTimeMillis();
                     double duracion = mediaPlayer.getMedia().getDuration().toSeconds();
                     if (onDurationChanged != null) onDurationChanged.accept(duracion);
 
@@ -78,7 +91,13 @@ public class MusicPlayer {
         }
     }
 
+    public List<Song> getPlaylistSongs() {
+        return Collections.unmodifiableList(playlist);
+    }
+
     public void stop() {
+        registrarTiempoEscuchado();
+
         if (mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.dispose();
@@ -88,6 +107,8 @@ public class MusicPlayer {
     }
 
     public void pause() {
+        registrarTiempoEscuchado();
+
         if (mediaPlayer != null) {
             mediaPlayer.pause();
             playing.set(false);
@@ -95,6 +116,8 @@ public class MusicPlayer {
     }
 
     public void resume() {
+        registrarTiempoEscuchado();
+
         if (mediaPlayer != null) {
             mediaPlayer.play();
             playing.set(true);
@@ -171,7 +194,7 @@ public class MusicPlayer {
     public void setOnPlayingStatusChanged(Consumer<Boolean> listener) {
         playing.addListener((obs, oldVal, newVal) -> listener.accept(newVal));
     }
-    public void setOnDurationChanged(Consumer<Double> listener) { this.onDurationChanged = listener; }  // <-- NUEVO
+    public void setOnDurationChanged(Consumer<Double> listener) { this.onDurationChanged = listener; }
 
     // ======================== SEEK ========================
     public void seek(double position) {

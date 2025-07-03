@@ -18,75 +18,60 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.example.helofy.model.Perfil;
 import org.example.helofy.model.Playlist;
-import org.example.helofy.model.RutaUsuario;
+import org.example.helofy.model.RutasPerfil;
 import org.example.helofy.model.Song;
-import org.example.helofy.model.Usuario;
 import org.example.helofy.utils.MusicPlayer;
 import org.example.helofy.utils.Rounded;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class HelofyMainController {
 
-    @FXML
-    private StackPane contentArea;
-    @FXML
-    private Slider volumeSlider;
-    @FXML
-    private Button playPauseButton;
-    @FXML
-    private Button previousButton;
-    @FXML
-    private Button nextButton;
-    @FXML
-    private Slider progressSlider;
-    @FXML
-    private Label songName;
-    @FXML
-    private Label songArtist;
-    @FXML
-    private ImageView songImage;
-    @FXML
-    private Button shuffleButton;
-    @FXML
-    private ImageView headerImage;
-    @FXML
-    private ImageView imagenBienvenida;
-    @FXML
-    private Button createPlaylistButton;
-    @FXML
-    private Label lblTiempoTranscurrido;
-    @FXML
-    private Label lblTiempoRestante;
-    @FXML
-    private StackPane songNameContainer;
-    @FXML
-    private ImageView userImage;
-    @FXML
-    private Button userButton;
-    @FXML
-    private Button ExitButton;
-    @FXML
-    private HBox header;
+    @FXML private StackPane contentArea;
+    @FXML private Slider volumeSlider;
+    @FXML private Button playPauseButton;
+    @FXML private Button previousButton;
+    @FXML private Button nextButton;
+    @FXML private Slider progressSlider;
+    @FXML private Label songName;
+    @FXML private Label songArtist;
+    @FXML private ImageView songImage;
+    @FXML private Button shuffleButton;
+    @FXML private ImageView headerImage;
+    @FXML private ImageView imagenBienvenida;
+    @FXML private Button createPlaylistButton;
+    @FXML private Label lblTiempoTranscurrido;
+    @FXML private Label lblTiempoRestante;
+    @FXML private StackPane songNameContainer;
+    @FXML private ImageView userImage;
+    @FXML private Button userButton;
+    @FXML private Button ExitButton;
+    @FXML private HBox header;
 
-    @FXML
-    private ListView<String> playlistListViewFavorites;
+    @FXML private ListView<String> playlistListViewFavorites;
 
     private final MusicPlayer musicPlayer = new MusicPlayer();
     private boolean isDraggingProgress = false;
     private double duracionTotalSegundos = 0;
     private TranslateTransition marqueeAnimation;
 
+    private Perfil perfil ;
     private double xOffset = 0;
     private double yOffset = 0;
 
+    // Aquí asigna tu lista global real de playlists (carga externa)
+    private List<Playlist> listasGlobales = new ArrayList<>();
+
     @FXML
     public void initialize() {
+        // TODO: Carga tus playlists globales reales aquí y asigna a listasGlobales
 
         inicializarListaFavoritas();
 
@@ -100,6 +85,7 @@ public class HelofyMainController {
             stage.setX(event.getScreenX() - xOffset);
             stage.setY(event.getScreenY() - yOffset);
         });
+
         configureMusicPlayer();
         setupControls();
         setupVolumePersistente();
@@ -111,25 +97,29 @@ public class HelofyMainController {
         imagenBienvenida.setPreserveRatio(true);
 
         System.out.println("Inicializando controlador...");
-
-        Usuario usuario = cargarUsuario();
-        if (usuario != null) {
-            System.out.println("Usuario cargado: " + usuario.getNombre());
-            userButton.setText(usuario.getNombre());
-            userImage.setImage(cargarImagenUsuario(usuario.getImagenPath()));
-        } else {
-            System.out.println("No se encontró usuario");
-            userButton.setText("Usuario");
-            userImage.setImage(new Image(getClass().getResource("/org/example/helofy/styles/defaultImage.png").toExternalForm()));
-        }
-        Rounded.applyRoundedClip(userImage, 10.0);
     }
 
-
-
-
+    // Inicializa la lista de favoritas en la UI
     private void inicializarListaFavoritas() {
-        playlistListViewFavorites.getItems().addAll("Lista 1", "Lista 2", "Lista 3");
+        playlistListViewFavorites.getItems().clear();
+
+        if (perfil != null && perfil.getPlaylistsFavoritas() != null && !perfil.getPlaylistsFavoritas().isEmpty()) {
+            List<String> favoritasValidas = new ArrayList<>();
+            for (String nombreFav : perfil.getPlaylistsFavoritas()) {
+                // Solo añadir si existe la playlist real en listasGlobales
+                if (buscarPlaylistPorNombre(nombreFav) != null) {
+                    favoritasValidas.add(nombreFav);
+                } else {
+                    System.out.println("Favorita no encontrada en listasGlobales: " + nombreFav);
+                }
+            }
+            if (favoritasValidas.isEmpty()) {
+                favoritasValidas.add("No hay favoritos");
+            }
+            playlistListViewFavorites.getItems().addAll(favoritasValidas);
+        } else {
+            playlistListViewFavorites.getItems().add("No hay favoritos");
+        }
 
         playlistListViewFavorites.setCellFactory(list -> new ListCell<>() {
             private final Button button = new Button();
@@ -137,7 +127,15 @@ public class HelofyMainController {
             {
                 button.getStyleClass().add("menu-button");
                 button.setMaxWidth(Double.MAX_VALUE);
-                button.setAlignment(Pos.CENTER);  // Centrar el texto dentro del botón
+                button.setAlignment(Pos.CENTER);
+                button.setOnAction(e -> {
+                    String playlistName = button.getText();
+                    if (playlistName.equals("No hay favoritos")) {
+                        return;
+                    }
+                    System.out.println("Botón playlist favorito pulsado: " + playlistName);
+                    cargarPlaylistPorNombre(playlistName);
+                });
             }
 
             @Override
@@ -148,67 +146,40 @@ public class HelofyMainController {
                 } else {
                     button.setText(item);
                     setGraphic(button);
-                    setAlignment(Pos.CENTER);  // Centrar el botón dentro de la celda
+                    setAlignment(Pos.CENTER);
                 }
             }
         });
     }
 
-    private Usuario cargarUsuario() {
-        try {
-            Path path = RutaUsuario.JSON_USUARIO;
-            System.out.println("Ruta usuario: " + path.toAbsolutePath());
-
-            if (!Files.exists(path)) {
-                System.out.println("No existe el JSON, abriendo registro");
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/helofy/views/usuario/RegistroUsuario.fxml"));
-                Parent registroRoot = loader.load();
-                Stage stage = new Stage();
-                stage.setScene(new Scene(registroRoot));
-                stage.setTitle("Registro de Usuario");
-                stage.setResizable(false);
-                stage.show();
-
-                Stage actual = (Stage) userButton.getScene().getWindow();
-                actual.close();
-
-                return null;
-            }
-
-            System.out.println("Archivo usuario existe, leyendo...");
-            ObjectMapper mapper = new ObjectMapper();
-            Usuario usuario = mapper.readValue(path.toFile(), Usuario.class);
-            System.out.println("Usuario cargado: " + usuario.getNombre());
-            return usuario;
-
-        } catch (Exception e) {
-            System.err.println("Error cargando usuario: " + e.getMessage());
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-
-    private Image cargarImagenUsuario(String path) {
-        if (path != null && !path.isBlank()) {
-            File archivo = new File(path);
-            if (archivo.exists()) {
-                return new Image(archivo.toURI().toString());
-            }
-        }
-        return new Image(getClass().getResource("/org/example/helofy/styles/defaultImage.png").toExternalForm());
-    }
-
-    public void actualizarUsuario(Usuario usuario) {
-        userButton.setText(usuario.getNombre());
-        if (usuario.getImagenPath() != null && !usuario.getImagenPath().isBlank()) {
-            userImage.setImage(new Image("file:" + usuario.getImagenPath(), false));
+    // Carga la playlist seleccionada por nombre
+    private void cargarPlaylistPorNombre(String nombre) {
+        Playlist playlist = buscarPlaylistPorNombre(nombre);
+        if (playlist != null) {
+            System.out.println("Cargando playlist: " + nombre);
+            loadPlaylistView(playlist);
         } else {
-            userImage.setImage(new Image(getClass().getResource("/org/example/helofy/styles/defaultImage.png").toExternalForm()));
+            System.out.println("Playlist no encontrada: " + nombre);
+            showError("Error", "No se encontró la playlist: " + nombre);
         }
-        Rounded.applyRoundedClip(userImage, 10.0);
     }
 
+    // Busca playlist en listasGlobales por nombre
+    private Playlist buscarPlaylistPorNombre(String nombre) {
+        if (listasGlobales == null) return null;
+        for (Playlist p : listasGlobales) {
+            if (p.getName().equalsIgnoreCase(nombre)) { // ignore case para evitar fallos
+                return p;
+            }
+        }
+        return null;
+    }
+
+    // Refresca la lista de favoritas en la UI (llamar tras añadir/quitar favoritos)
+    public void refrescarListaFavoritas() {
+        System.out.println("Refrescando lista de favoritas...");
+        inicializarListaFavoritas();
+    }
 
     private void configureMusicPlayer() {
         musicPlayer.setOnSongChanged(song -> {
@@ -265,19 +236,16 @@ public class HelofyMainController {
 
     private void setupSongNameMarquee() {
         Platform.runLater(() -> {
-            // Desactivar puntos suspensivos y wrap
             songName.setEllipsisString("");
             songName.setTextOverrun(OverrunStyle.CLIP);
             songName.setWrapText(false);
 
-            // Parar animación anterior y resetear posición
             if (marqueeAnimation != null) {
                 marqueeAnimation.stop();
                 marqueeAnimation = null;
                 songName.setTranslateX(0);
             }
 
-            // Forzar cálculo del tamaño real del texto y contenedor
             songName.applyCss();
             songName.layout();
             songNameContainer.applyCss();
@@ -286,11 +254,9 @@ public class HelofyMainController {
             double labelWidth = songName.getWidth();
             double containerWidth = songNameContainer.getWidth();
 
-            // Crear clip para limitar visibilidad dentro del contenedor
             Rectangle clip = new Rectangle(containerWidth, songNameContainer.getHeight());
             songNameContainer.setClip(clip);
 
-            // Si el texto es más ancho que el contenedor, creamos la animación
             if (labelWidth > containerWidth) {
                 double distance = labelWidth - containerWidth;
 
@@ -303,7 +269,6 @@ public class HelofyMainController {
             }
         });
     }
-
 
     private void setupControls() {
         volumeSlider.valueProperty().addListener((obs, oldVal, newVal) -> musicPlayer.setVolume(newVal.doubleValue()));
@@ -345,7 +310,7 @@ public class HelofyMainController {
             }
 
             contentArea.getChildren().setAll(content);
-        } catch (IOException e) {
+        } catch (Exception e) {
             showError("Error al cargar vista", e.getMessage());
         }
     }
@@ -356,30 +321,29 @@ public class HelofyMainController {
             Parent view = loader.load();
 
             PlaylistViewController controller = loader.getController();
+            controller.setMainController(this); // Asignamos controlador principal
             controller.configurarPlaylist(playlist, musicPlayer);
 
             contentArea.getChildren().setAll(view);
             musicPlayer.setPlaylist(playlist);
-        } catch (IOException e) {
+        } catch (Exception e) {
             showError("Error al cargar playlist", e.getMessage());
         }
     }
 
-    @FXML
-    private void togglePlayback() {
-        if (musicPlayer.getCurrentSong() == null) return;
+    @FXML private void togglePlayback() {
         if (musicPlayer.isPlaying()) musicPlayer.pause();
         else musicPlayer.resume();
     }
 
     @FXML
-    private void previousTrack() {
-        musicPlayer.previousSong();
+    private void nextTrack() {
+        musicPlayer.nextSong();
     }
 
     @FXML
-    private void nextTrack() {
-        musicPlayer.nextSong();
+    private void previousTrack() {
+        musicPlayer.previousSong();
     }
 
     private void loadSongCover(Song song) {
@@ -389,12 +353,6 @@ public class HelofyMainController {
         } catch (Exception e) {
             loadDefaultCover();
         }
-    }
-
-    private void resetSongInfo() {
-        updateSongName("Sin canción");
-        songArtist.setText("Artista desconocido");
-        loadDefaultCover();
     }
 
     private void loadDefaultCover() {
@@ -435,8 +393,7 @@ public class HelofyMainController {
         return String.format("%d:%02d", mins, segs);
     }
 
-    @FXML
-    private void handleShuffle() {
+    @FXML private void handleShuffle() {
         musicPlayer.toggleShuffle();
         updateShuffleButton();
     }
@@ -462,33 +419,23 @@ public class HelofyMainController {
         });
     }
 
-    @FXML
-    private void handleLibraryClick() {
+    @FXML private void handleLibraryClick() {
         setCenterContent("/org/example/helofy/views/LibraryView.fxml");
     }
 
-    @FXML
-    private void handleCreatePlaylistClick() {
+    @FXML private void handleCreatePlaylistClick() {
         setCenterContent("/org/example/helofy/views/CreatePlaylistView.fxml");
     }
 
-    @FXML
-    private void handleEditPlaylistClick() {
+    @FXML private void handleEditPlaylistClick() {
         setCenterContent("/org/example/helofy/views/EditPlaylistView.fxml");
     }
 
-    @FXML
-    private void handleSuperPlayListlick() {
-        setCenterContent("/org/example/helofy/views/SuperPlayListView.fxml");
-    }
-
-    @FXML
-    private void handleUserClick() {
+    @FXML private void handleUserClick() {
         setCenterContent("/org/example/helofy/views/usuario/PerfilUsuario.fxml");
     }
 
-    @FXML
-    private void handleExitClick() {
+    @FXML private void handleExitClick() {
         Platform.exit();
     }
 
@@ -497,4 +444,10 @@ public class HelofyMainController {
         Stage stage = (Stage) header.getScene().getWindow();
         stage.setIconified(true);
     }
+
+    @FXML
+    private void handleSuperPlayListClick() {
+        setCenterContent("/org/example/helofy/views/SuperPlayListView.fxml");
+    }
+
 }
